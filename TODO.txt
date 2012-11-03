@@ -1,0 +1,12 @@
+TODO:
+==========
+Fix Constants (using ID types)
+History Objects
+Add absolute coords to GeoLocs
+Environment
+Terrain
+Items
+Figure out API scheme
+
+
+Actually think about how I want to do this.
