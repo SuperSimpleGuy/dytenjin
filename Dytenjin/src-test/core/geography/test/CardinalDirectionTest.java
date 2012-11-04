@@ -24,6 +24,11 @@ import org.junit.Test;
 
 import core.geography.CardinalDirection;
 
+/**
+ * Tests the CardinalDirection enums to ensure geography is
+ * going to be handled correctly
+ * @author SuperSimpleGuy
+ */
 public class CardinalDirectionTest {
 	
 	@Test

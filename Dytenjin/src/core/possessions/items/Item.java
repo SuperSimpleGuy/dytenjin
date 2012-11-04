@@ -18,6 +18,10 @@
 
 package core.possessions.items;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public class Item {
 
 }

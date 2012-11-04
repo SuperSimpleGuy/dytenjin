@@ -18,6 +18,10 @@
 
 package core.temporal;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public interface TimeChanging {
 
 	void updateDay(CalendarDate d);

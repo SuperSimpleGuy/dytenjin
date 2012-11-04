@@ -21,11 +21,21 @@ package core.entities.living;
 import core.geography.GeographicalLocation;
 import core.management.individual.AspectManager;
 
+/**
+ * Stub, doesn't really do anything at this point.
+ * @author SuperSimpleGuy
+ */
 public abstract class Player extends LivingEntity {
 	
+	/**
+	 * Creates a new basic player
+	 * @param s the player's name
+	 * @param id the player's unique id
+	 * @param aMan the player's aspects
+	 * @param l the location of this player
+	 */
 	public Player(String s, int id, AspectManager aMan, GeographicalLocation l) {
-		super(s, id);
-		super.setCurrentLoc(l);
+		super(s, id, l);
 		super.setAspectMan(aMan);
 	}
 	

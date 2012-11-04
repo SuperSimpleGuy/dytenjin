@@ -22,6 +22,10 @@ import java.util.HashMap;
 
 import core.management.individual.AspectManager;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public abstract class LocationLink extends GeographicalLocation {
 
 	private GeographicalLocation loc1;

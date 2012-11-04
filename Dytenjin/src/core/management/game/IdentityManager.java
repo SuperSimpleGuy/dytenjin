@@ -20,6 +20,10 @@ package core.management.game;
 
 import java.util.HashMap;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public class IdentityManager {
 
 	private HashMap<String, Integer> identities;

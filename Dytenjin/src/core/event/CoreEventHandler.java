@@ -24,6 +24,10 @@ import java.util.HashMap;
 
 import core.temporal.CalendarDate;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public class CoreEventHandler {
 
 	private HashMap<Integer, IEvent> dailyEvents;

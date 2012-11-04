@@ -23,6 +23,10 @@ import java.util.HashMap;
 
 import core.parsing.FileParser;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public class StatsManager implements IAspect {
 
 	protected HashMap<String, Integer> stats;

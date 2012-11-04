@@ -16,8 +16,20 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package core.geography.environment;
+package core.management.individual;
 
-public class Terrain {
+import core.parsing.FileParser;
+
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
+public class Terrain implements IAspect{
+
+	@Override
+	public String getDescription(FileParser p) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

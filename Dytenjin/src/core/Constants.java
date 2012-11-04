@@ -20,6 +20,10 @@ package core;
 
 import core.management.game.IdentityManager;
 
+/**
+ * This class manages the constants used in the framework
+ * @author SuperSimpleGuy
+ */
 public class Constants {
 	
 	public static final String MAP_PARSING_FILENAME = "PARSE_MAP.txt";
@@ -30,6 +34,8 @@ public class Constants {
 	
 	public static final String PARSER_ERROR_STRING = "";
 	public static final int PARSER_ERROR_CODE = 2;
+	
+	//TODO Remove/refactor all the crap below this line
 	
 	public static final String ID_REG = "REG";
 	public static final String ID_MAP = "MAP";

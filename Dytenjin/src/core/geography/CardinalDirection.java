@@ -18,6 +18,10 @@
 
 package core.geography;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public enum CardinalDirection {
 	N(0), NNE(1), NE(2), NEE(3), E(4), SEE(5), SE(6), SSE(7), S(8), 
 	SSW(9), SW(10), SWW(11), W(12), NWW(13), NW(14), NNW(15), ERR(-1), SAME(16);

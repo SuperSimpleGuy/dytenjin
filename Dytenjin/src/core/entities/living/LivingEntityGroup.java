@@ -22,9 +22,14 @@ import java.util.HashMap;
 
 import core.entities.Entity;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public abstract class LivingEntityGroup extends Entity {
 
 	protected HashMap<Integer, LivingEntity> entities;
+	
 	
 	public LivingEntityGroup(String s, int id) {
 		super(s, id);

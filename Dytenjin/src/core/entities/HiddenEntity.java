@@ -18,22 +18,50 @@
 
 package core.entities;
 
+/**
+ * Represents an entity whose fields are essentially a mask for
+ * another, secret entity. Think of the Dread Pirate Roberts from
+ * Princess Bride
+ * @author SuperSimpleGuy
+ * @param <T> class type of the entity to hide
+ */
 public abstract class HiddenEntity<T extends Entity> extends Entity {
 
 	protected T hiddenEntity;
 	
+	/**
+	 * Creates a default, nameless entity and default aspects.
+	 * @param id the entity's unique id
+	 */
 	public HiddenEntity(int id) {
 		super(id);
 	}
 	
+	/**
+	 * Creates an entity with a name and id, and default aspects.
+	 * @param s the entity's name
+	 * @param id the entity's unique id
+	 */
 	public HiddenEntity(String s, int id) {
 		super(s, id);
 	}
 	
+	/**
+	 * Used to determine if able to hide an entity
+	 * @return true if the current entity is acting as a mask, false if
+	 * a genuine entity
+	 */
 	public boolean isHidingEntity() {
 		return hiddenEntity != null;
 	}
 	
+	/**
+	 * Hides an entity of type T within this entity, returning whether
+	 * the given entity is successfully hidden or not
+	 * @param entity the entity to hide in this mask
+	 * @return true if the entity was successfully hidden, false if
+	 * another entity is already hidden in this mask
+	 */
 	public boolean hideEntity(T entity) {
 		if (hiddenEntity != null) {
 			return false;
@@ -42,12 +70,21 @@ public abstract class HiddenEntity<T extends Entity> extends Entity {
 		return true;
 	}
 	
+	/**
+	 * Removes the entity from hiding behind this mask, allows
+	 * other entities to hide behind it.
+	 * @return the entity that was being hidden by this mask
+	 */
 	public T unhideEntity() {
 		T temp = hiddenEntity;
 		hiddenEntity = null;
 		return temp;
 	}
 	
+	/**
+	 * Returns the entity that is hiding behind this mask
+	 * @return the entity that is hiding like a coward behind this mask
+	 */
 	public T getHiddenEntity() {
 		return hiddenEntity;
 	}

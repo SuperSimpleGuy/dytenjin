@@ -18,6 +18,10 @@
 
 package core.temporal;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public abstract class WorldTime {
 
 	private CalendarDate currDate;

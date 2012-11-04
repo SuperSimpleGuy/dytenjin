@@ -18,6 +18,11 @@
 
 package core;
 
+/**
+ * Placeholder for thinking out encounters and questlines.
+ * Currently does nothing.
+ * @author SuperSimpleGuy
+ */
 public class Scenario {
 
 }

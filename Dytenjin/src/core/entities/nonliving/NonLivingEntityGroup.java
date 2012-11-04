@@ -20,16 +20,20 @@ package core.entities.nonliving;
 
 import core.entities.Entity;
 
+/**
+ * Currently a stub, doesn't really do anything
+ * Things like political groups, etc
+ * @author SuperSimpleGuy
+ */
 public abstract class NonLivingEntityGroup extends Entity {
-
-	public NonLivingEntityGroup(int id) {
-		super(id);
-	}
 	
+	/**
+	 * Creates a named group of nonliving entities
+	 * @param s the name of the group
+	 * @param id the unique id of this group
+	 */
 	public NonLivingEntityGroup(String s, int id) {
 		super(s, id);
 	}
-	
-	
 	
 }

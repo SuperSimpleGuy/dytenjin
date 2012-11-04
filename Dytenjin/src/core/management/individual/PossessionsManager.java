@@ -18,6 +18,10 @@
 
 package core.management.individual;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public abstract class PossessionsManager implements IAspect{
 
 }

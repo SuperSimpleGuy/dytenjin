@@ -21,7 +21,10 @@ package core.stats;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public class GeographicalRegionStatsManager {
 
 	private TimeDepStat<Integer> geoRegions;

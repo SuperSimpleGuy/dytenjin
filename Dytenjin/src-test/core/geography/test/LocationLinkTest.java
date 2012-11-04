@@ -24,6 +24,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * Stub test case, too lazy to do anything with it at the moment
+ * @author SuperSimpleGuy
+ */
 public class LocationLinkTest {
 
 	@BeforeClass

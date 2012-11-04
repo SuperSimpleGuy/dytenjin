@@ -18,6 +18,13 @@
 
 package core;
 
+
+/**
+ * Placeholder while determining the other framework elements
+ * needed to support a World.
+ * Currently does nothing.
+ * @author SuperSimpleGuy
+ */
 public class World {
-	public static int currentLivEntID = 0;
+	
 }

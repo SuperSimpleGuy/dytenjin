@@ -18,6 +18,10 @@
 
 package core.geography;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public class RegionLink {
 
 	private GeographicalRegion loc1;

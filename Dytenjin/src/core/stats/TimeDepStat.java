@@ -21,6 +21,11 @@ package core.stats;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ * @param <T>
+ */
 public class TimeDepStat<T extends Number> {
 
 	private HashMap<String, ArrayList<T>> stat;

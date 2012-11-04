@@ -20,6 +20,10 @@ package core.stats.survival;
 
 import core.possessions.items.Item;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public interface Hunger {
 
 	int getHungerLevel();

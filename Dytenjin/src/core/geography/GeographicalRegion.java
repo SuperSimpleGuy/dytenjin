@@ -20,12 +20,16 @@ package core.geography;
 
 import java.util.HashMap;
 
-import core.geography.environment.Terrain;
 import core.management.individual.EnvironmentManager;
 import core.management.individual.HistoryManager;
+import core.management.individual.Terrain;
 import core.stats.GeographicalRegionStatsManager;
 import core.temporal.TimeChanging;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public abstract class GeographicalRegion implements TimeChanging {
 	
 	private GeographicalRegionStatsManager gStats;

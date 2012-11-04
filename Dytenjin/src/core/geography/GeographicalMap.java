@@ -23,6 +23,10 @@ import java.util.HashMap;
 import core.temporal.CalendarDate;
 import core.temporal.TimeChanging;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public class GeographicalMap implements TimeChanging {
 
 	private HashMap<Integer, GeographicalRegion> geoRegions;

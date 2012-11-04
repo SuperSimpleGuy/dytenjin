@@ -20,6 +20,10 @@ package core.event;
 
 import core.temporal.CalendarDate;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public interface ITemporalEvent extends IEvent {
 
 	boolean timeToTrigger(CalendarDate d);

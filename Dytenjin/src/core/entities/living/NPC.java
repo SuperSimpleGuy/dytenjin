@@ -18,6 +18,10 @@
 
 package core.entities.living;
 
+/**
+ * Stub, does nothing currently.
+ * @author SuperSimpleGuy
+ */
 public class NPC {
 
 }

@@ -1,12 +1,13 @@
 TODO:
 ==========
-Fix Constants (using ID types)
-History Objects
-Add absolute coords to GeoLocs
-Environment
-Terrain
-Items
-Figure out API scheme
+Actually think through about how I want to do this.
 
-
-Actually think about how I want to do this.
+Finish javadocing existing code.
+Work heavily on aspects (possessions, environment, terrain, history, stats),
+	like what is IAspect doing besides being pretty?
+Refactor GeoRegion to have generic aspect manager instead of lots of
+	hardcoded aspects.
+Refactor interfaces dealing with in-game stats (hunger, thirst, health)
+	and make them more aspect-oriented
+Not create more confusing stats about the game (I'm looking at you TimeDepStat
+	and GeographicalRegionStatsManager)

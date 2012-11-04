@@ -24,6 +24,10 @@ import core.entities.nonliving.NonLivingEntityGroup;
 import core.management.individual.AspectManager;
 import core.temporal.TimeChanging;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public abstract class GeographicalLocation implements TimeChanging {
 
 	private GeographicalRegion parent;

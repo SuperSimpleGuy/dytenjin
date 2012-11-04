@@ -25,6 +25,10 @@ import java.util.Scanner;
 import core.Constants;
 import core.management.individual.IAspect;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public abstract class FileParser {
 
 	protected Scanner inFile;

@@ -18,6 +18,10 @@
 
 package core.event;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public interface IDurationEvent extends IEvent {
 
 	int getDurationLengthDays();

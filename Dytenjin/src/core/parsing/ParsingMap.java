@@ -25,6 +25,10 @@ import java.util.Scanner;
 
 import core.Constants;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public class ParsingMap {
 
 	private HashMap<String, String> map;

@@ -20,6 +20,10 @@ package core.management.individual;
 
 import core.parsing.FileParser;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public interface IAspect {
 
 	String getDescription(FileParser p);

@@ -18,6 +18,10 @@
 
 package core.event;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public interface IRandomEvent extends IEvent {
 
 	double getProbOccurance();

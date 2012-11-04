@@ -22,6 +22,10 @@ import java.util.ArrayList;
 
 import core.parsing.FileParser;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public abstract class AspectStatDependent implements IAspect {
 	
 	protected ArrayList<String> statsDependent;

@@ -20,6 +20,10 @@ package core.management.individual;
 
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author SuperSimpleGuy
+ */
 public class AspectManager {
 
 	private ArrayList<IAspect> aspects;
