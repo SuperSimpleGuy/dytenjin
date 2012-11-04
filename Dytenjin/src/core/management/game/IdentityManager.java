@@ -1,4 +1,4 @@
-package core;
+package core.management.game;
 
 import java.util.HashMap;
 

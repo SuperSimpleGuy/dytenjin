@@ -1,10 +1,15 @@
 package core;
 
+import core.management.game.IdentityManager;
+
 public class Constants {
 	
-	public static final String ID_REGLINK = "RL";
-	public static final String ID_
-	public static final String[] ID_TYPES = {ID_REGLINK,};
+	public static final String ID_REG = "REG";
+	public static final String ID_MAP = "MAP";
+	public static final String ID_LOC = "LOC";
+	public static final String[] ID_TYPES = {ID_REG,
+											 ID_MAP,
+											 ID_LOC};
 	public static IdentityManager ID_MANAGER = new IdentityManager(ID_TYPES);
 	
 	public static final int BASE_CORE_STAT = 10;

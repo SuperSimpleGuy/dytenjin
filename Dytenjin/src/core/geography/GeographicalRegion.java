@@ -2,9 +2,9 @@ package core.geography;
 
 import java.util.HashMap;
 
-import core.HistoryManager;
-import core.geography.environment.EnvironmentManager;
 import core.geography.environment.Terrain;
+import core.management.individual.EnvironmentManager;
+import core.management.individual.HistoryManager;
 import core.stats.geography.GeographicalRegionStatsManager;
 import core.temporal.TimeChanging;
 

@@ -1,9 +1,9 @@
-package core.stats;
+package core.management.individual;
 
 import java.util.Collection;
 import java.util.HashMap;
 
-public class StatsManager {
+public class StatsManager implements IAspect {
 
 	protected HashMap<String, Integer> stats;
 	protected HashMap<String, StatsManager> subStats;

@@ -2,9 +2,7 @@ package core.geography;
 
 import java.util.HashMap;
 
-import core.HistoryManager;
-import core.geography.environment.EnvironmentManager;
-import core.geography.environment.Terrain;
+import core.management.individual.AspectManager;
 
 public abstract class LocationLink extends GeographicalLocation {
 
@@ -18,15 +16,15 @@ public abstract class LocationLink extends GeographicalLocation {
 	
 	public LocationLink(String name,
 				int id,
-				HistoryManager history,
-				Terrain terrain,
-				EnvironmentManager env,
+				int xCoord,
+				int yCoord,
+				AspectManager asp,
 				GeographicalRegion parent,
 				GeographicalLocation loc1,
 				GeographicalLocation loc2,
 				CardinalDirection dirFrom1,
 				CardinalDirection dirFrom2) {
-		super(name, id, history, terrain, env, parent);
+		super(name, id, xCoord, yCoord, asp, parent);
 		this.loc1 = loc1;
 		this.loc2 = loc2;
 		this.dirFrom1 = dirFrom1;
@@ -37,16 +35,16 @@ public abstract class LocationLink extends GeographicalLocation {
 	
 	public LocationLink(String name,
 			int id,
-			HistoryManager history,
-			Terrain terrain,
-			EnvironmentManager env,
+			int xCoord,
+			int yCoord,
+			AspectManager asp,
 			GeographicalRegion parent,
 			GeographicalLocation loc1,
 			GeographicalLocation loc2,
 			CardinalDirection dirFrom1,
 			CardinalDirection dirFrom2,
 			int length) {
-		super(name, id, history, terrain, env, parent);
+		super(name, id, xCoord, yCoord, asp, parent);
 		this.loc1 = loc1;
 		this.loc2 = loc2;
 		this.dirFrom1 = dirFrom1;

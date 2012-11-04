@@ -2,6 +2,7 @@ package core.geography;
 
 import java.util.HashMap;
 
+import core.temporal.CalendarDate;
 import core.temporal.TimeChanging;
 
 public class GeographicalMap implements TimeChanging {
@@ -74,30 +75,6 @@ public class GeographicalMap implements TimeChanging {
 	public int getId() {
 		return id;
 	}
-
-	@Override
-	public void updateYear() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateMonth() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateWeek() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateDay() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public boolean equals(Object other) {
 		if (!(other instanceof GeographicalMap)) {
@@ -105,6 +82,12 @@ public class GeographicalMap implements TimeChanging {
 		}
 		GeographicalMap gM = (GeographicalMap)other;
 		return this.id == gM.getId();
+	}
+
+	@Override
+	public void updateDay(CalendarDate d) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
