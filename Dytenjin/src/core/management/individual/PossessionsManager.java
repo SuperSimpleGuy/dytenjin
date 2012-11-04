@@ -1,5 +1,5 @@
 package core.management.individual;
 
-public class PossessionsManager implements IAspect{
+public abstract class PossessionsManager implements IAspect{
 
 }

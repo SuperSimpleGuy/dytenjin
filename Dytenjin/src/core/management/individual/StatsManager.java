@@ -3,6 +3,8 @@ package core.management.individual;
 import java.util.Collection;
 import java.util.HashMap;
 
+import core.parsing.ParsingMap;
+
 public class StatsManager implements IAspect {
 
 	protected HashMap<String, Integer> stats;
@@ -146,6 +148,12 @@ public class StatsManager implements IAspect {
 	
 	public boolean hasMyStat(String s) {
 		return stats.containsKey(s);
+	}
+
+	@Override
+	public String getDescription(ParsingMap p) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

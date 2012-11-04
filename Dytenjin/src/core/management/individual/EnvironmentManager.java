@@ -1,5 +1,7 @@
 package core.management.individual;
 
-public class EnvironmentManager implements IAspect {
+public abstract class EnvironmentManager implements IAspect {
 
+	
+	
 }
