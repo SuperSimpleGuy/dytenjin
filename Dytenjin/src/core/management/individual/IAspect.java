@@ -1,9 +1,9 @@
 package core.management.individual;
 
-import core.parsing.ParsingMap;
+import core.parsing.FileParser;
 
 public interface IAspect {
 
-	String getDescription(ParsingMap p);
+	String getDescription(FileParser p);
 	
 }

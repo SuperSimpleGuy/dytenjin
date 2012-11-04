@@ -4,6 +4,15 @@ import core.management.game.IdentityManager;
 
 public class Constants {
 	
+	public static final String MAP_PARSING_FILENAME = "PARSE_MAP.txt";
+	public static final String MAP_PARSING_ERROR_STRING = "";
+	public static final String MAP_PARSING_ERROR_INCORRECT_FORMAT = "";
+	public static final String MAP_PARSING_ERROR_NO_CLASS = "";
+	public static final int MAP_PARSING_ERROR_CODE = 1;
+	
+	public static final String PARSER_ERROR_STRING = "";
+	public static final int PARSER_ERROR_CODE = 2;
+	
 	public static final String ID_REG = "REG";
 	public static final String ID_MAP = "MAP";
 	public static final String ID_LOC = "LOC";

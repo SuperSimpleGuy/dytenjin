@@ -3,7 +3,7 @@ package core.management.individual;
 import java.util.Collection;
 import java.util.HashMap;
 
-import core.parsing.ParsingMap;
+import core.parsing.FileParser;
 
 public class StatsManager implements IAspect {
 
@@ -151,7 +151,7 @@ public class StatsManager implements IAspect {
 	}
 
 	@Override
-	public String getDescription(ParsingMap p) {
+	public String getDescription(FileParser p) {
 		// TODO Auto-generated method stub
 		return null;
 	}

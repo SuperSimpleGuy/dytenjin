@@ -1,9 +1,8 @@
-package core.stats.geography;
+package core.stats;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import core.stats.TimeDepStat;
 
 public class GeographicalRegionStatsManager {
 

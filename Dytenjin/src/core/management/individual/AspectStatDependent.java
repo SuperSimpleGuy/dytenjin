@@ -2,7 +2,7 @@ package core.management.individual;
 
 import java.util.ArrayList;
 
-import core.parsing.ParsingMap;
+import core.parsing.FileParser;
 
 public abstract class AspectStatDependent implements IAspect {
 	
@@ -25,6 +25,6 @@ public abstract class AspectStatDependent implements IAspect {
 	}
 	
 	@Override
-	public abstract String getDescription(ParsingMap p);
+	public abstract String getDescription(FileParser p);
 
 }

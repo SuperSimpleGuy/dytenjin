@@ -5,7 +5,7 @@ import java.util.HashMap;
 import core.geography.environment.Terrain;
 import core.management.individual.EnvironmentManager;
 import core.management.individual.HistoryManager;
-import core.stats.geography.GeographicalRegionStatsManager;
+import core.stats.GeographicalRegionStatsManager;
 import core.temporal.TimeChanging;
 
 public abstract class GeographicalRegion implements TimeChanging {
