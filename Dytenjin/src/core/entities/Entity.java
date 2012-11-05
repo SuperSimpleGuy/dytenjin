@@ -32,24 +32,26 @@ public abstract class Entity {
 	protected AspectManager aMan;
 	
 	/**
-	 * Creates a default, nameless entity and default aspects.
-	 * @param id the entity's unique id
-	 */
-	public Entity(int id) {
-		this.id = id;
-		this.name = "";
-		this.aMan = new AspectManager();
-	}
-	
-	/**
 	 * Creates an entity with a name and id, and default aspects.
 	 * @param s the entity's name
 	 * @param identificationNumber the entity's unique id
 	 */
 	public Entity(String s, int identificationNumber) {
-		name = s;
-		id = identificationNumber;
+		this.name = s;
+		this.id = identificationNumber;
 		this.aMan = new AspectManager();
+	}
+	
+	/**
+	 * Creates an entity with a name and id, and specific aspects.
+	 * @param s the entity's name
+	 * @param identificationNumber the entity's unique id
+	 * @param asp the entity's starting AspectManager
+	 */
+	public Entity(String s, int identificationNumber, AspectManager asp) {
+		this.name = s;
+		this.id = identificationNumber;
+		this.aMan = asp;
 	}
 	
 	/**
@@ -83,11 +85,4 @@ public abstract class Entity {
 	 * @return the aspects of this entity
 	 */
 	public abstract AspectManager getAspectMan();
-	
-	/**
-	 * Sets this entity's aspects.
-	 * @param aMan the aspect manager to set for this entity
-	 * @return the old aspects of this entity
-	 */
-	public abstract AspectManager setAspectMan(AspectManager aMan);
 }

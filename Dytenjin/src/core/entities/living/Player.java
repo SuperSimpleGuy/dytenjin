@@ -35,8 +35,7 @@ public abstract class Player extends LivingEntity {
 	 * @param l the location of this player
 	 */
 	public Player(String s, int id, AspectManager aMan, GeographicalLocation l) {
-		super(s, id, l);
-		super.setAspectMan(aMan);
+		super(s, id, l, aMan);
 	}
 	
 }

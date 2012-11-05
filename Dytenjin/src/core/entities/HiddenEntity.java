@@ -30,14 +30,6 @@ public abstract class HiddenEntity<T extends Entity> extends Entity {
 	protected T hiddenEntity;
 	
 	/**
-	 * Creates a default, nameless entity and default aspects.
-	 * @param id the entity's unique id
-	 */
-	public HiddenEntity(int id) {
-		super(id);
-	}
-	
-	/**
 	 * Creates an entity with a name and id, and default aspects.
 	 * @param s the entity's name
 	 * @param id the entity's unique id

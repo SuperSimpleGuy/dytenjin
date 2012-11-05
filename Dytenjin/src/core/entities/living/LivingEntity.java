@@ -42,6 +42,19 @@ public class LivingEntity extends Entity {
 		super(s, id);
 		currentLoc = l;
 	}
+	
+	/**
+	 * Living entities require a name, a unique id, and
+	 * a location
+	 * @param s the name of this living entity
+	 * @param id the id of this living entity
+	 * @param l the physical location of this entity
+	 * @param asp the starting AspectManager of this entity
+	 */
+	public LivingEntity(String s, int id, GeographicalLocation l, AspectManager asp) {
+		super(s, id, asp);
+		currentLoc = l;
+	}
 
 	/**
 	 * Returns the location of this living entity
@@ -86,12 +99,6 @@ public class LivingEntity extends Entity {
 
 	@Override
 	public AspectManager getAspectMan() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public AspectManager setAspectMan(AspectManager aMan) {
 		// TODO Auto-generated method stub
 		return null;
 	}
