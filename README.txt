@@ -1,7 +1,7 @@
-||==============================||
-||===========Dytenjin===========||
-||Dynamic Text-Based Java Engine||
-||==============================||
+||====================================||
+||==============Dytenjin==============||
+||Dynamic Text--Based Java Game Engine||
+||====================================||
 This is an engine for making dynamic text-based java games.
 
 Last Version Release: Never

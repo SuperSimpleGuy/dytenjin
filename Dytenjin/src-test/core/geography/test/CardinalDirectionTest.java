@@ -64,13 +64,13 @@ public class CardinalDirectionTest {
 	@Test
 	public void testLeftEigthN() {
 		CardinalDirection e = CardinalDirection.N;
-		assertTrue(e.leftEigth() == CardinalDirection.NW);
+		assertTrue(e.leftEighth() == CardinalDirection.NW);
 	}
 	
 	@Test
 	public void testRightEigthNNW() {
 		CardinalDirection e = CardinalDirection.NNW;
-		assertTrue(e.rightEigth() == CardinalDirection.NNE);
+		assertTrue(e.rightEighth() == CardinalDirection.NNE);
 	}
 	
 	@Test
@@ -100,13 +100,13 @@ public class CardinalDirectionTest {
 	@Test
 	public void testLeftEigthERR() {
 		CardinalDirection e = CardinalDirection.ERR;
-		assertTrue(e.leftEigth() == CardinalDirection.ERR);
+		assertTrue(e.leftEighth() == CardinalDirection.ERR);
 	}
 	
 	@Test
 	public void testRightEigthERR() {
 		CardinalDirection e = CardinalDirection.ERR;
-		assertTrue(e.rightEigth() == CardinalDirection.ERR);
+		assertTrue(e.rightEighth() == CardinalDirection.ERR);
 	}
 	
 	@Test
