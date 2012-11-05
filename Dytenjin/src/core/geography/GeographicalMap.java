@@ -160,6 +160,7 @@ public class GeographicalMap implements ITimeChanging {
 		return id;
 	}
 	
+	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof GeographicalMap)) {
 			return false;

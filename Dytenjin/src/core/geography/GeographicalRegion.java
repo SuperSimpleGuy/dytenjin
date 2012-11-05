@@ -20,14 +20,14 @@ package core.geography;
 
 import java.util.HashMap;
 
-import core.management.individual.EnvironmentManager;
-import core.management.individual.HistoryManager;
-import core.management.individual.Terrain;
+import core.management.individual.AspectManager;
 import core.stats.GeographicalRegionStatsManager;
 import core.temporal.ITimeChanging;
 
 /**
- * 
+ * Manages a region of locations, and as a parent map. Maintains its
+ * own set of aspects and region links between itself and neighboring
+ * regions
  * @author SuperSimpleGuy
  */
 public abstract class GeographicalRegion implements ITimeChanging {
@@ -35,29 +35,29 @@ public abstract class GeographicalRegion implements ITimeChanging {
 	private GeographicalRegionStatsManager gStats;
 	private int id;
 	private String name;
-	private HistoryManager history;
-	private Terrain terrain;
-	private EnvironmentManager environment;
+	private AspectManager aspects;
 	
 	protected HashMap<Integer, RegionLink> paths;
 	protected HashMap<Integer, GeographicalLocation> childLocs;
 	
+	/**
+	 * Constructor for a GeographicalRegion, assigning it a name,
+	 * unique id, aspects and initializing managers that aid in
+	 * game statistics, child locations, and region links
+	 * @param name the name of the region
+	 * @param id the unique id for the region
+	 * @param asp initial aspects for the region
+	 */
 	public GeographicalRegion (String name,
 							   int id,
-							   HistoryManager history,
-							   Terrain terrain,
-							   EnvironmentManager env) {
+							   AspectManager asp) {
 		this.id = id;
 		this.name = name;
-		this.history = history;
-		this.terrain = terrain;
-		this.environment = env;
+		this.aspects = asp;
 		this.paths = new HashMap<Integer, RegionLink>();
 		this.childLocs = new HashMap<Integer, GeographicalLocation>();
 		this.gStats = new GeographicalRegionStatsManager();
 	}
-	
-	public abstract void updateYear();
 	
 	public void updateMonth() {
 		HashMap<String, Integer> hmGeo = new HashMap<String, Integer>();
@@ -82,10 +82,6 @@ public abstract class GeographicalRegion implements ITimeChanging {
 		}
 		gStats.addStatBatch(hmGeo, hmReg);
 	}
-	
-	public abstract void updateWeek();
-	
-	public abstract void updateDay();
 	
 	public boolean addChildLoc(GeographicalLocation gL) {
 		if (childLocs.containsKey(gL.getId())) {
@@ -153,28 +149,12 @@ public abstract class GeographicalRegion implements ITimeChanging {
 		this.name = name;
 	}
 
-	public HistoryManager getHistory() {
-		return history;
+	public AspectManager getAspects() {
+		return aspects;
 	}
 
-	public void setHistory(HistoryManager history) {
-		this.history = history;
-	}
-
-	public Terrain getTerrain() {
-		return terrain;
-	}
-
-	public void setTerrain(Terrain terrain) {
-		this.terrain = terrain;
-	}
-
-	public EnvironmentManager getEnvironment() {
-		return environment;
-	}
-
-	public void setEnvironment(EnvironmentManager environment) {
-		this.environment = environment;
+	public void setEnvironment(AspectManager aspects) {
+		this.aspects = aspects;
 	}
 
 	public HashMap<Integer, RegionLink> getPaths() {
