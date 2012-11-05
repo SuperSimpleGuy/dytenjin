@@ -53,7 +53,7 @@ public class IdentityManager {
 	
 	public int getNextFreeId(String key) {
 		if (!identities.containsKey(key)) {
-			return -1;
+			return 0;
 		}
 		int temp = identities.get(key);
 		identities.put(key, temp + 1);
