@@ -19,7 +19,8 @@
 package core.geography;
 
 /**
- * 
+ * Represents one of the sixteen cardinal directions, in combinations
+ * of north, south, east, and west.
  * @author SuperSimpleGuy
  */
 public enum CardinalDirection {
@@ -28,14 +29,27 @@ public enum CardinalDirection {
 	
 	private int dir;
 	
+	/**
+	 * Creates a Cardinal Direction as defined in this enum
+	 * @param dir the directional value of this Cardinal Direction
+	 */
 	private CardinalDirection(int dir) {
 		this.dir = dir;
 	}
 	
+	/**
+	 * Gets the direction of the Cardinal Direction
+	 * @return the direction of this cardinal direction
+	 */
 	public int getDir() {
 		return dir;
 	}
 	
+	/**
+	 * Returns the cardinal direction when turning left
+	 * a sixteenth of a circle from this direction
+	 * @return the new direction
+	 */
 	public CardinalDirection leftSixteenth() {
 		if (dir < 0 || dir >= 16) {
 			return ERR;
@@ -43,6 +57,11 @@ public enum CardinalDirection {
 		return CardinalDirection.values()[(dir + 15) % 16];
 	}
 	
+	/**
+	 * Returns the cardinal direction when turning right
+	 * a sixteenth of a circle from this direction
+	 * @return the new direction
+	 */
 	public CardinalDirection rightSixteenth() {
 		if (dir < 0 || dir >= 16) {
 			return ERR;
@@ -50,20 +69,35 @@ public enum CardinalDirection {
 		return CardinalDirection.values()[(dir + 1) % 16];
 	}
 	
-	public CardinalDirection leftEigth() {
+	/**
+	 * Returns the cardinal direction when turning left
+	 * an eighth of a circle from this direction
+	 * @return the new direction
+	 */
+	public CardinalDirection leftEighth() {
 		if (dir < 0 || dir >= 16) {
 			return ERR;
 		}
 		return CardinalDirection.values()[(dir + 14) % 16];
 	}
 	
-	public CardinalDirection rightEigth() {
+	/**
+	 * Returns the cardinal direction when turning right
+	 * an eighth of a circle from this direction
+	 * @return the new direction
+	 */
+	public CardinalDirection rightEighth() {
 		if (dir < 0 || dir >= 16) {
 			return ERR;
 		}
 		return CardinalDirection.values()[(dir + 2) % 16];
 	}
 	
+	/**
+	 * Returns the cardinal direction when turning left
+	 * a fourth of a circle from this direction
+	 * @return the new direction
+	 */
 	public CardinalDirection leftFourth() {
 		if (dir < 0 || dir >= 16) {
 			return ERR;
@@ -71,6 +105,11 @@ public enum CardinalDirection {
 		return CardinalDirection.values()[(dir + 12) % 16];
 	}
 	
+	/**
+	 * Returns the cardinal direction when turning right
+	 * a fourth of a circle from this direction
+	 * @return the new direction
+	 */
 	public CardinalDirection rightFourth() {
 		if (dir < 0 || dir >= 16) {
 			return ERR;
@@ -78,6 +117,11 @@ public enum CardinalDirection {
 		return CardinalDirection.values()[(dir + 4) % 16];
 	}
 	
+	/**
+	 * Returns the cardinal direction when turning around
+	 * from this direction
+	 * @return the new direction
+	 */
 	public CardinalDirection opposite() {
 		if (dir < 0 || dir >= 16) {
 			return ERR;
@@ -85,6 +129,19 @@ public enum CardinalDirection {
 		return CardinalDirection.values()[(dir + 8) % 16];
 	}
 	
+	/**
+	 * Returns the cardinal direction from a set of x and y coordinates
+	 * representing two points
+	 * @param xFrom the x position of the point from where the new
+	 * 				direction is determined
+	 * @param yFrom the y position of the point from where the new 
+	 * 				direction is determined
+	 * @param xTo the x position of the point towards where the new 
+	 * 				direction is determined
+	 * @param yTo the y position of the point towards where the new 
+	 * 				direction is determined
+	 * @return the new cardinal direction
+	 */
 	public static CardinalDirection getDirFromCoords(int xFrom, int yFrom, int xTo, int yTo) {
 		int deltaX = xTo - xFrom;
 		int deltaY = yTo - yFrom;

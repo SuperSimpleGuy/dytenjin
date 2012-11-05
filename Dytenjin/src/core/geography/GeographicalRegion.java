@@ -24,13 +24,13 @@ import core.management.individual.EnvironmentManager;
 import core.management.individual.HistoryManager;
 import core.management.individual.Terrain;
 import core.stats.GeographicalRegionStatsManager;
-import core.temporal.TimeChanging;
+import core.temporal.ITimeChanging;
 
 /**
  * 
  * @author SuperSimpleGuy
  */
-public abstract class GeographicalRegion implements TimeChanging {
+public abstract class GeographicalRegion implements ITimeChanging {
 	
 	private GeographicalRegionStatsManager gStats;
 	private int id;

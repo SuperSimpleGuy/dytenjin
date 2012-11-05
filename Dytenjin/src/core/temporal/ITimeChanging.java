@@ -22,7 +22,7 @@ package core.temporal;
  * 
  * @author SuperSimpleGuy
  */
-public interface TimeChanging {
+public interface ITimeChanging {
 
 	void updateDay(CalendarDate d);
 	

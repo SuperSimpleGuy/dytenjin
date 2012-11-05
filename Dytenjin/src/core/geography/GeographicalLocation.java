@@ -20,15 +20,17 @@ package core.geography;
 
 import java.util.HashMap;
 
-import core.entities.nonliving.NonLivingEntityGroup;
+import core.entities.Entity;
 import core.management.individual.AspectManager;
-import core.temporal.TimeChanging;
+import core.temporal.ITimeChanging;
 
 /**
- * 
+ * Represents a geographical location that entities can occupy and own.
+ * Has certain aspects depending on the kind of location a subclass
+ * instantiates.
  * @author SuperSimpleGuy
  */
-public abstract class GeographicalLocation implements TimeChanging {
+public abstract class GeographicalLocation implements ITimeChanging {
 
 	private GeographicalRegion parent;
 	private int id;
@@ -38,8 +40,21 @@ public abstract class GeographicalLocation implements TimeChanging {
 	private int yCoord;
 	
 	protected HashMap<Integer, LocationLink> paths;
-	protected NonLivingEntityGroup owner;
+	protected Entity owner;
 	
+	/**
+	 * The constructor for a geographical location, completely
+	 * isolated (containing no adjacent links), with a name, a
+	 * unique id, an x and y coordinate of this location,
+	 * predefined aspects and a parent GeographicalRegion. It
+	 * starts off with no owning Entity.
+	 * @param name
+	 * @param id
+	 * @param xCoord
+	 * @param yCoord
+	 * @param aspMan
+	 * @param parent
+	 */
 	public GeographicalLocation(String name,
 								int id,
 								int xCoord,
@@ -56,6 +71,12 @@ public abstract class GeographicalLocation implements TimeChanging {
 		owner = null;
 	}
 	
+	/**
+	 * Given a link id, returns the cardinal direction towards
+	 * that LocationLink
+	 * @param id the id of the Location Link
+	 * @return the CardinalDirection towards that LocationLink
+	 */
 	public CardinalDirection getDirToPath(int id) {
 		LocationLink temp = this.paths.get(id);
 		if (temp != null) {
@@ -65,6 +86,12 @@ public abstract class GeographicalLocation implements TimeChanging {
 		}
 	}
 	
+	/**
+	 * Given a link id, returns the cardinal direction from
+	 * that LocationLink
+	 * @param id the id of the Location Link
+	 * @return the CardinalDirection from that LocationLink
+	 */
 	public CardinalDirection getDirFromPath(int id) {
 		LocationLink temp = this.paths.get(id);
 		if (temp != null) {
@@ -74,13 +101,24 @@ public abstract class GeographicalLocation implements TimeChanging {
 		}
 	}
 	
+	/**
+	 * Removes a link with the unique id passed as a parameter,
+	 * returning the link or null if none was found
+	 * @param id the id of the link to remove
+	 * @return the link with the unique id, or null if no link
+	 * was found
+	 */
 	public LocationLink removeLocationLink(int id) {
-		if (!paths.containsKey(id)) {
-			return paths.remove(id);
-		}
-		return null;
+		return paths.remove(id);
 	}
 	
+	/**
+	 * Adds a location link, returning true if the addition
+	 * was successful and false otherwise
+	 * @param l the link to add
+	 * @return true if the link was successfully added, false
+	 * otherwise
+	 */
 	public boolean addLocationLink(LocationLink l) {
 		if (!paths.containsKey(l.getId())) {
 			paths.put(l.getId(), l);
@@ -89,46 +127,91 @@ public abstract class GeographicalLocation implements TimeChanging {
 		return false;
 	}
 
+	/**
+	 * Returns this location's regional parent
+	 * @return the GeographicalRegion parent
+	 */
 	public GeographicalRegion getParent() {
 		return parent;
 	}
 
+	/**
+	 * Sets this location's regional parent
+	 * @param parent the new GeographicalRegion parent
+	 */
 	public void setParent(GeographicalRegion parent) {
 		this.parent = parent;
 	}
 
+	/**
+	 * Returns the name of this location
+	 * @return the name of this location
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Sets the name of this location
+	 * @param name the new name of this location
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Returns this location's aspects
+	 * @return the AspectManager for this location
+	 */
 	public AspectManager getAspect() {
 		return aspMan;
 	}
 
+	/**
+	 * Returns a HashMap of links connecting this location
+	 * to other locations
+	 * @return the HashMap of connected links
+	 */
 	public HashMap<Integer, LocationLink> getPaths() {
 		return paths;
 	}
 
-	public NonLivingEntityGroup getOwner() {
+	/**
+	 * Returns the current owning entity of this location
+	 * @return the current owning entity of this location
+	 */
+	public Entity getOwner() {
 		return owner;
 	}
 
-	public void setOwner(NonLivingEntityGroup owner) {
+	/**
+	 * Sets the current owning entity of this location
+	 * @param owner the new owning entity of this location
+	 */
+	public void setOwner(Entity owner) {
 		this.owner = owner;
 	}
 	
+	/**
+	 * Returns this location's unique id
+	 * @return this location's unique id
+	 */
 	public int getId() {
 		return id;
 	}
 	
+	/**
+	 * Returns this location's x coordinate
+	 * @return this location's x coordinate
+	 */
 	public int getxCoord() {
 		return xCoord;
 	}
 
+	/**
+	 * Returns this location's y coordinate
+	 * @return this location's y coordinate
+	 */
 	public int getyCoord() {
 		return yCoord;
 	}
