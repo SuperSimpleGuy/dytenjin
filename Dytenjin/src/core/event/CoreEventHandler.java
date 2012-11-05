@@ -25,7 +25,10 @@ import java.util.HashMap;
 import core.temporal.CalendarDate;
 
 /**
- * 
+ * Maintains a singular way to manage different kinds of basic events:
+ * those that happen on a daily basis, those that happen on specific
+ * dates, and those that happen randomly. Furthermore, events that last
+ * longer than a day also can be triggered multiple times.
  * @author SuperSimpleGuy
  */
 public class CoreEventHandler {
@@ -33,9 +36,12 @@ public class CoreEventHandler {
 	private HashMap<Integer, IEvent> dailyEvents;
 	private HashMap<Integer, IRandomEvent> randomEvents;
 	private HashMap<CalendarDate, HashMap<Integer, ITemporalEvent>> tempEvents;
-	
 	private ArrayList<IEvent> prevTriggers;
 	
+	/**
+	 * Default constructor, initializes non-null values to
+	 * private fields.
+	 */
 	public CoreEventHandler() {
 		dailyEvents = new HashMap<Integer, IEvent>();
 		randomEvents = new HashMap<Integer, IRandomEvent>();
@@ -43,6 +49,12 @@ public class CoreEventHandler {
 		prevTriggers = new ArrayList<IEvent>();
 	}
 	
+	/**
+	 * Checks every kind of event to determine if it isn't
+	 * already included in any of the lists.
+	 * @param id the id of the event to check for
+	 * @return true if the key isn't in any of the lists, false otherwise
+	 */
 	private boolean isKeyFree(int id) {
 		Collection<CalendarDate> keys = tempEvents.keySet();
 		for (CalendarDate key : keys) {
@@ -60,6 +72,11 @@ public class CoreEventHandler {
 			   !randomEvents.containsKey(id);
 	}
 	
+	/**
+	 * Adds an event to the list of daily events
+	 * @param e the event to add
+	 * @return true if the event was successfully added, false otherwise
+	 */
 	public boolean addDailyEvent(IEvent e) {
 		if (!isKeyFree(e.getId())) {
 			return false;
@@ -68,6 +85,11 @@ public class CoreEventHandler {
 		return true;
 	}
 	
+	/**
+	 * Adds multiple events to the list of daily events
+	 * @param e an ArrayList of events to add
+	 * @return an ArrayList of events that could not be added
+	 */
 	public ArrayList<IEvent> addDailyEvents(ArrayList<IEvent> e) {
 		ArrayList<IEvent> temp = new ArrayList<IEvent>();
 		for (IEvent event : e) {
@@ -78,6 +100,11 @@ public class CoreEventHandler {
 		return temp;
 	}
 	
+	/**
+	 * Adds an event to the random event list
+	 * @param e the random event to add
+	 * @return true if the event was successfully added, false otherwise
+	 */
 	public boolean addRandomEvent(IRandomEvent e) {
 		if (!isKeyFree(e.getId())) {
 			return false;
@@ -86,6 +113,11 @@ public class CoreEventHandler {
 		return true;
 	}
 	
+	/**
+	 * Adds multiple random events to the random event list
+	 * @param e an ArrayList of random events to add
+	 * @return an ArrayList of random events unsuccessfully added
+	 */
 	public ArrayList<IRandomEvent> addRandomEvents(ArrayList<IRandomEvent> e) {
 		ArrayList<IRandomEvent> temp = new ArrayList<IRandomEvent>();
 		for (IRandomEvent event : e) {
@@ -96,6 +128,11 @@ public class CoreEventHandler {
 		return temp;
 	}
 	
+	/**
+	 * Adds a temporal event to the list of temporal events
+	 * @param e the event to add
+	 * @return true if successfully added, false otherwise
+	 */
 	public boolean addTemporalEvent(ITemporalEvent e) {
 		if (!isKeyFree(e.getId())) {
 			return false;
@@ -111,6 +148,11 @@ public class CoreEventHandler {
 		return true;
 	}
 	
+	/**
+	 * Adds a list of temporal events to the current list
+	 * @param e the ArrayList of temporal events to add
+	 * @return an ArrayList of temporal events unsuccessfully added
+	 */
 	public ArrayList<ITemporalEvent> addTemporalEvents(ArrayList<ITemporalEvent> e) {
 		ArrayList<ITemporalEvent> temp = new ArrayList<ITemporalEvent>();
 		for (ITemporalEvent event : e) {
@@ -121,10 +163,20 @@ public class CoreEventHandler {
 		return temp;
 	}
 	
+	/**
+	 * Removes an event based on the event object's id
+	 * @param e the event object to remove
+	 * @return the event removed, or null if nothing was removed
+	 */
 	public IEvent removeEvent(IEvent e) {
 		return this.removeEvent(e.getId());
 	}
 	
+	/**
+	 * Removes an event based on the id
+	 * @param id the id of the event to remove
+	 * @return the IEvent removed, or null if nothing was removed
+	 */
 	public IEvent removeEvent(int id) {
 		IEvent temp = dailyEvents.remove(id);
 		if (temp == null) {
@@ -150,6 +202,10 @@ public class CoreEventHandler {
 		return temp;
 	}
 	
+	/**
+	 * Triggers events based on the date passed
+	 * @param d the date to trigger events on
+	 */
 	public void thisDateEvents(CalendarDate d) {
 		for (int i = 0; i < prevTriggers.size(); i++) {
 			IEvent e = prevTriggers.get(i);
