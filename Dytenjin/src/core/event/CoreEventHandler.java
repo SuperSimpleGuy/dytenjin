@@ -21,7 +21,7 @@ package core.event;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import core.temporal.CalendarDate;
+import core.temporal.IWorldCalendarDate;
 
 /**
  * Maintains a singular way to manage different kinds of basic events by
@@ -171,7 +171,7 @@ public class CoreEventHandler {
 	 * Triggers events based on the date passed
 	 * @param d the date to trigger events on
 	 */
-	public void triggerDateEvents(CalendarDate d) {
+	public void triggerDateEvents(IWorldCalendarDate d) {
 		//Trigger previous IEvents
 		for (int i = 0; i < prevEventTriggers.size(); i++) {
 			IEvent e = prevEventTriggers.get(i);

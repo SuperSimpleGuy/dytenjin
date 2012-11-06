@@ -20,7 +20,7 @@ package core.geography;
 
 import java.util.HashMap;
 
-import core.temporal.CalendarDate;
+import core.temporal.IWorldCalendarDate;
 import core.temporal.ITimeChanging;
 
 /**
@@ -170,7 +170,7 @@ public class GeographicalMap implements ITimeChanging {
 	}
 
 	@Override
-	public void updateDay(CalendarDate d) {
+	public void updateDay(IWorldCalendarDate d) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -15,15 +15,32 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package core.temporal;
 
 /**
- * 
  * @author SuperSimpleGuy
  */
-public interface ITimeChanging {
+public abstract class CulturalCalendar extends WorldCalendar {
 
-	void updateDay(IWorldCalendarDate d);
+	/**
+	 * @param monthNames
+	 * @param daysPerMonth
+	 */
+	public CulturalCalendar(String[] monthNames, int[] daysPerMonth) {
+		super(monthNames, daysPerMonth);
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param monthNames
+	 * @param daysPerMonth
+	 * @param baseYear
+	 */
+	public CulturalCalendar(String[] monthNames, int[] daysPerMonth,
+			int baseYear) {
+		super(monthNames, daysPerMonth, baseYear);
+		// TODO Auto-generated constructor stub
+	}
+
 	
 }
