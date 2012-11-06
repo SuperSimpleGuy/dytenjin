@@ -15,23 +15,25 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package core.temporal;
 
 /**
  * 
  * @author SuperSimpleGuy
  */
-public abstract class WorldTime {
+public interface IWorldCalendarDate {
 
-	private CalendarDate currDate;
+	int getYear();
+	String getYearName();
+	int getMonth();
+	String getMonthName();
+	int getDay();
+	String getDayName();
+	boolean isHoliday();
+	String getHolidayName();
+	String getFullDateString();
 	
-	public WorldTime(CalendarDate currDate) {
-		this.currDate = currDate;
-	}
+	void advanceOneDay();
 	
-	public CalendarDate getCurrDate() {
-		return currDate;
-	}
 	
 }

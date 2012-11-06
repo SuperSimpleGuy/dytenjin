@@ -22,19 +22,16 @@ package core.temporal;
  * 
  * @author SuperSimpleGuy
  */
-public interface CalendarDate {
+public abstract class WorldTimeHandler {
 
-	int getYear();
-	String getYearName();
-	int getMonth();
-	String getMonthName();
-	int getDay();
-	String getDayName();
-	boolean isHoliday();
-	String getHolidayName();
-	String getFullDateString();
+	private IWorldCalendarDate currDate;
 	
-	void advanceOneDay();
+	public WorldTimeHandler(IWorldCalendarDate currDate) {
+		this.currDate = currDate;
+	}
 	
+	public IWorldCalendarDate getCurrDate() {
+		return currDate;
+	}
 	
 }
