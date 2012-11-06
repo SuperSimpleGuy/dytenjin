@@ -19,13 +19,48 @@
 package core.event;
 
 /**
- * 
+ * Provides an interface for executing events not
+ * dependent on a CalendarDate
  * @author SuperSimpleGuy
  */
 public interface IEvent {
 
+	/**
+	 * Returns the unique id of this event
+	 * @return the unique id of this event
+	 */
 	int getId();
-	void triggerEvent();
+	
+	/**
+	 * Possibly triggers this event. An event can maintain
+	 * its own status that affects its probability of getting
+	 * triggered
+	 * @return true if the event triggered, false otherwise
+	 */
+	boolean triggerEvent();
+	
+	/**
+	 * Allows for post-event cleanup/modifying functions to be called
+	 */
 	void endTriggerEvent();
+	
+	/**
+	 * Returns the duration of the event in number of days
+	 * @return the duration of the event in number of days
+	 */
+	int getDurationLengthDays();
+	
+	/**
+	 * Returns the number of days left for this event to be triggered
+	 * @return the number of days left for this event to be triggered
+	 */
+	int getDaysRemaining();
+	
+	/**
+	 * Possibly decreases the number of days left in the
+	 * event, depending whether the event has a variable
+	 * duration or not
+	 */
+	void decreaseDay();
 	
 }
