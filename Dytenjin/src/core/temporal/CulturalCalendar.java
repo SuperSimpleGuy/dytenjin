@@ -23,24 +23,22 @@ package core.temporal;
 public abstract class CulturalCalendar extends WorldCalendar {
 
 	/**
-	 * @param monthNames
-	 * @param daysPerMonth
+	 * 
 	 */
-	public CulturalCalendar(String[] monthNames, int[] daysPerMonth) {
-		super(monthNames, daysPerMonth);
+	public CulturalCalendar() {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 * @param monthNames
-	 * @param daysPerMonth
-	 * @param baseYear
+	 * @param years
 	 */
-	public CulturalCalendar(String[] monthNames, int[] daysPerMonth,
-			int baseYear) {
-		super(monthNames, daysPerMonth, baseYear);
+	public CulturalCalendar(IWorldYear years) {
+		super(years);
 		// TODO Auto-generated constructor stub
 	}
+
+	
 
 	
 }

@@ -71,5 +71,7 @@ public class WorldCompleteDate {
 		return currentTime;
 	}
 	
-	
+	public void advanceTime(IWorldTimeDuration d) {
+		
+	}
 }

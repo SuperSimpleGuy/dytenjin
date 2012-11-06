@@ -43,11 +43,12 @@ public abstract class WorldCalendar {
 	 * Returns the number of days in a world year
 	 * @return the total number of days per world year
 	 */
-	public int numDaysPerYear() {
-		int sum = 0;
-		for (int i = 0; i < ; i++) {
-			
+	public int numDaysPerYear(int yearNum) {
+		for (int i = 0; i < years.size(); i++) {
+			if (years.get(i).getYearValue() == yearNum) {
+				return years.get(i).getTotalNumDays();
+			}
 		}
-		return sum;
+		return -1;
 	}
 }

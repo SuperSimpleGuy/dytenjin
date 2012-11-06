@@ -22,4 +22,14 @@ package core.temporal;
  */
 public interface IWorldTimeDuration {
 
+	int getYearDuration();
+	int getMonthDuration();
+	int getDayDuration();
+	int getHourDuration();
+	int getSubHourDuration();
+	
+	void addDuration(IWorldTimeDuration other);
+	void decreaseDuration(IWorldTimeDuration other);
+	boolean longerThanOther(IWorldTimeDuration other);
+	
 }
