@@ -20,15 +20,12 @@ package core.geography;
 
 import java.util.HashMap;
 
-import core.temporal.IWorldCalendarDate;
-import core.temporal.ITimeChanging;
-
 /**
  * Maintains all geographical regions and regional links, and
  * maintain the evolution of the entire map.
  * @author SuperSimpleGuy
  */
-public class GeographicalMap implements ITimeChanging {
+public class GeographicalMap {
 
 	private HashMap<Integer, GeographicalRegion> geoRegions;
 	private HashMap<Integer, RegionLink> regLinks;
@@ -167,12 +164,6 @@ public class GeographicalMap implements ITimeChanging {
 		}
 		GeographicalMap gM = (GeographicalMap)other;
 		return this.id == gM.getId();
-	}
-
-	@Override
-	public void updateDay(IWorldCalendarDate d) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

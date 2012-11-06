@@ -17,34 +17,37 @@
  */
 package core.temporal;
 
+import java.util.ArrayList;
+
 /**
+ * Maintains the world-level calendar for both system mechanics,
+ * game mechanics and possibly in-game mechanics.
  * @author SuperSimpleGuy
  */
 public abstract class WorldCalendar {
-
-	private String[] monthNames;
-	private int[] daysPerMonth;
-	private int baseYear;
 	
-	protected IWorldCalendarDate currentDateAndTime;
+	private ArrayList<IWorldYear> years;
 	
-	public WorldCalendar(String[] monthNames, int[] daysPerMonth) {
-		if (monthNames.length != daysPerMonth.length) {
-			throw new IllegalArgumentException("WorldCalendar: monthNames and daysPerMonth must be the same length!");
-		}
-		this.monthNames = monthNames.clone();
-		this.daysPerMonth = daysPerMonth.clone();
-		this.baseYear = 0;
+	public WorldCalendar() {
+		this.years = new ArrayList<IWorldYear>();
 	}
 	
-	public WorldCalendar(String[] monthNames, int[] daysPerMonth, int baseYear) {
-		if (monthNames.length != daysPerMonth.length) {
-			throw new IllegalArgumentException("WorldCalendar: monthNames and daysPerMonth must be the same length!");
-		}
-		this.monthNames = monthNames.clone();
-		this.daysPerMonth = daysPerMonth.clone();
-		this.baseYear = baseYear;
+	public WorldCalendar(IWorldYear years) {
+		this();
+		this.years.add(years);
 	}
 	
 	
+	
+	/**
+	 * Returns the number of days in a world year
+	 * @return the total number of days per world year
+	 */
+	public int numDaysPerYear() {
+		int sum = 0;
+		for (int i = 0; i < ; i++) {
+			
+		}
+		return sum;
+	}
 }

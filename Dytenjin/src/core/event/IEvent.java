@@ -18,6 +18,8 @@
 
 package core.event;
 
+import core.temporal.IWorldTimeDuration;
+
 /**
  * Provides an interface for executing events not
  * dependent on a CalendarDate
@@ -45,22 +47,15 @@ public interface IEvent {
 	void endTriggerEvent();
 	
 	/**
-	 * Returns the duration of the event in number of days
-	 * @return the duration of the event in number of days
+	 * Returns the duration of the event
+	 * @return the IWorldTimeDuration of the event
 	 */
-	int getDurationLengthDays();
+	IWorldTimeDuration getDurationLengthDays();
 	
 	/**
-	 * Returns the number of days left for this event to be triggered
-	 * @return the number of days left for this event to be triggered
+	 * 
+	 * @param d
 	 */
-	int getDaysRemaining();
-	
-	/**
-	 * Possibly decreases the number of days left in the
-	 * event, depending whether the event has a variable
-	 * duration or not
-	 */
-	void decreaseDay();
+	void decreaseDay(IWorldTimeDuration d);
 	
 }

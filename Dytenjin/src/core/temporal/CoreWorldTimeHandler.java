@@ -22,8 +22,16 @@ package core.temporal;
  * 
  * @author SuperSimpleGuy
  */
-public interface ITimeChanging {
+public abstract class CoreWorldTimeHandler {
 
-	void updateDay(IWorldDay d);
+	private IWorldDay currDate;
+	
+	public CoreWorldTimeHandler(IWorldDay currDate) {
+		this.currDate = currDate;
+	}
+	
+	public IWorldDay getCurrDate() {
+		return currDate;
+	}
 	
 }

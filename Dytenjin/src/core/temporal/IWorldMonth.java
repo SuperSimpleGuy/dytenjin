@@ -15,23 +15,28 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package core.temporal;
 
+import java.util.ArrayList;
+
+import core.management.individual.AspectManager;
+
 /**
- * 
  * @author SuperSimpleGuy
  */
-public abstract class WorldTimeHandler {
+public interface IWorldMonth {
 
-	private IWorldCalendarDate currDate;
+	int getMonthValue();
+	int getNumDays();
+	String getName();
 	
-	public WorldTimeHandler(IWorldCalendarDate currDate) {
-		this.currDate = currDate;
-	}
-	
-	public IWorldCalendarDate getCurrDate() {
-		return currDate;
-	}
+	/**
+	 * Returns seasonal aspects or unique aspects related to the
+	 * month on this particular date
+	 * @param day
+	 * @return
+	 */
+	AspectManager getSpecialAspects(IWorldDay day);
+	ArrayList<IWorldDay> getDays();
 	
 }

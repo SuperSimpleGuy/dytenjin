@@ -17,7 +17,8 @@
  */
 package core.event;
 
-import core.temporal.IWorldCalendarDate;
+import core.temporal.IWorldTimeDuration;
+import core.temporal.WorldCompleteDate;
 
 /**
  * Provides an interface for executing events that are
@@ -39,34 +40,24 @@ public interface ICalendarEvent {
 	 * @param d the CalendarDate of the world
 	 * @return true if the event triggered, false otherwise
 	 */
-	boolean triggerEvent(IWorldCalendarDate d);
+	boolean triggerEvent(WorldCompleteDate d);
 	
 	/**
 	 * Allows for post-event cleanup/modifying functions to be called
 	 * @param d the date of the ending trigger event
 	 */
-	void endTriggerEvent(IWorldCalendarDate d);
+	void endTriggerEvent(WorldCompleteDate d);
 	
 	/**
-	 * Returns the duration of the event in number of days. Valid
-	 * returns should be zero or greater
-	 * @return the duration of the event in number of days
+	 * Returns the duration of the event
+	 * @return the IWorldTimeDuration of the event
 	 */
-	int getDurationLengthDays();
+	IWorldTimeDuration getDurationLengthDays();
 	
 	/**
-	 * Returns the number of days left for this event to be triggered,
-	 * valid returns should be zero or greater or -1 if event is not
-	 * currently being triggered
-	 * @return the number of days left for this event to be triggered
+	 * 
+	 * @param d
 	 */
-	int getDaysRemaining();
-	
-	/**
-	 * Possibly decreases the number of days left in the
-	 * event, depending whether the event has a variable
-	 * duration or not
-	 */
-	void decreaseDay();
+	void decreaseDuration(IWorldTimeDuration d);
 	
 }

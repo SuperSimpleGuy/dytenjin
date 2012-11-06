@@ -21,7 +21,7 @@ package core.event;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import core.temporal.IWorldCalendarDate;
+import core.temporal.WorldCompleteDate;
 
 /**
  * Maintains a singular way to manage different kinds of basic events by
@@ -171,7 +171,15 @@ public class CoreEventHandler {
 	 * Triggers events based on the date passed
 	 * @param d the date to trigger events on
 	 */
-	public void triggerDateEvents(IWorldCalendarDate d) {
+	public void triggerDateEvents(WorldCompleteDate d) {
+		triggerEvents();
+		triggerCalEvents(d);
+	}
+	
+	/**
+	 * Triggers all IEvents
+	 */
+	public void triggerEvents() {
 		//Trigger previous IEvents
 		for (int i = 0; i < prevEventTriggers.size(); i++) {
 			IEvent e = prevEventTriggers.get(i);
@@ -183,6 +191,21 @@ public class CoreEventHandler {
 				prevEventTriggers.remove(i);
 			}
 		}
+		//Trigger possible IEvents
+		for (IEvent e : dailyEvents.values()) {
+			if (e.triggerEvent()) {
+				if (!prevEventTriggers.contains(e)) {
+					prevEventTriggers.add(e);
+				}
+			}
+		}		
+	}
+	
+	/**
+	 * Triggers all ICalendarEvents
+	 * @param d current world date to trigger on
+	 */
+	public void triggerCalEvents(WorldCompleteDate d) {
 		//Trigger previous ICalendarEvents
 		for (int i = 0; i < prevCalEventTriggers.size(); i++) {
 			ICalendarEvent e = prevCalEventTriggers.get(i);
@@ -194,16 +217,12 @@ public class CoreEventHandler {
 				prevCalEventTriggers.remove(i);
 			}
 		}
-		//Trigger possible IEvents
-		for (IEvent e : dailyEvents.values()) {
-			if (e.triggerEvent()) {
-				prevEventTriggers.add(e);
-			}
-		}
 		//Trigger possible ICalendarEvents
 		for (ICalendarEvent e : dailyCalEvents.values()) {
 			if (e.triggerEvent(d)) {
-				prevCalEventTriggers.add(e);
+				if (!prevCalEventTriggers.contains(e)) {
+					prevCalEventTriggers.add(e);
+				}
 			}
 		}
 	}

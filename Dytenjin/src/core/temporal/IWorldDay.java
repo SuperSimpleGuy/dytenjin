@@ -17,23 +17,19 @@
  */
 package core.temporal;
 
+import core.management.individual.AspectManager;
+
 /**
  * 
  * @author SuperSimpleGuy
  */
-public interface IWorldCalendarDate {
+public interface IWorldDay {
 
-	int getYear();
-	String getYearName();
-	int getMonth();
-	String getMonthName();
-	int getDay();
-	String getDayName();
+	int getDayValue();
+	String getName();
 	boolean isHoliday();
 	String getHolidayName();
-	String getFullDateString();
-	
-	void advanceOneDay();
+	AspectManager getSpecialAspects(IWorldTime time);
 	
 	
 }
