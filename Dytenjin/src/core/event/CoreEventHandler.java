@@ -21,6 +21,7 @@ package core.event;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import core.temporal.IWorldTimeDuration;
 import core.temporal.WorldCompleteDate;
 
 /**
@@ -168,24 +169,38 @@ public class CoreEventHandler {
 	}
 	
 	/**
-	 * Triggers events based on the date passed
+	 * Triggers events based on the date passed. The date is advanced if
+	 * a period of time allows multiple triggers.
+	 * @param timeSinceLast the duration since the last time events were
+	 * triggered
+	 * @param triggerStep the amount of time that must pass before events
+	 * are triggered again
 	 * @param d the date to trigger events on
 	 */
-	public void triggerDateEvents(WorldCompleteDate d) {
-		triggerEvents();
-		triggerCalEvents(d);
+	public void triggerDateEvents(IWorldTimeDuration timeSinceLast,
+			IWorldTimeDuration triggerStep,
+			WorldCompleteDate d) {
+		while (timeSinceLast.longerThanOther(triggerStep)) {
+			triggerEvents(triggerStep);
+			triggerCalEvents(triggerStep, d);
+			timeSinceLast.decreaseDuration(triggerStep);
+			d.advanceTime(triggerStep);
+		}
 	}
 	
 	/**
-	 * Triggers all IEvents
+	 * Given a trigger step, triggers all events and reduces the duration
+	 * on any continuing events by the appropriate amount
+	 * @param triggerStep the amount of time that passes by between the
+	 * an event being re-triggered
 	 */
-	public void triggerEvents() {
+	private void triggerEvents(IWorldTimeDuration triggerStep) {
 		//Trigger previous IEvents
 		for (int i = 0; i < prevEventTriggers.size(); i++) {
 			IEvent e = prevEventTriggers.get(i);
-			if (e.getDaysRemaining() > 0) {
+			if (e.getDurationLength().longerThanOther(triggerStep)) {
 				e.triggerEvent();
-				e.decreaseDay();
+				e.decreaseDuration(triggerStep);
 			} else {
 				e.endTriggerEvent();
 				prevEventTriggers.remove(i);
@@ -202,16 +217,19 @@ public class CoreEventHandler {
 	}
 	
 	/**
-	 * Triggers all ICalendarEvents
-	 * @param d current world date to trigger on
+	 * Given a trigger step, triggers all events and reduces the duration
+	 * on any continuing events by the appropriate amount
+	 * @param triggerStep the amount of time that passes by between the
+	 * an event being re-triggered
+	 * @param d the date of the trigger
 	 */
-	public void triggerCalEvents(WorldCompleteDate d) {
+	private void triggerCalEvents(IWorldTimeDuration triggerStep, WorldCompleteDate d) {
 		//Trigger previous ICalendarEvents
 		for (int i = 0; i < prevCalEventTriggers.size(); i++) {
 			ICalendarEvent e = prevCalEventTriggers.get(i);
-			if (e.getDaysRemaining() > 0) {
+			if (e.getDurationLength().longerThanOther(triggerStep)) {
 				e.triggerEvent(d);
-				e.decreaseDay();
+				e.decreaseDuration(triggerStep);
 			} else {
 				e.endTriggerEvent(d);
 				prevCalEventTriggers.remove(i);

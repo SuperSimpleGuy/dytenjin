@@ -50,12 +50,12 @@ public interface IEvent {
 	 * Returns the duration of the event
 	 * @return the IWorldTimeDuration of the event
 	 */
-	IWorldTimeDuration getDurationLengthDays();
+	IWorldTimeDuration getDurationLength();
 	
 	/**
 	 * 
 	 * @param d
 	 */
-	void decreaseDay(IWorldTimeDuration d);
+	void decreaseDuration(IWorldTimeDuration d);
 	
 }

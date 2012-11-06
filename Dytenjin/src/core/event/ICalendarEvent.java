@@ -52,7 +52,7 @@ public interface ICalendarEvent {
 	 * Returns the duration of the event
 	 * @return the IWorldTimeDuration of the event
 	 */
-	IWorldTimeDuration getDurationLengthDays();
+	IWorldTimeDuration getDurationLength();
 	
 	/**
 	 * 
