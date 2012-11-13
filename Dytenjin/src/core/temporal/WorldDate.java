@@ -20,28 +20,53 @@ package core.temporal;
 /**
  * @author SuperSimpleGuy
  */
-public class WorldCompleteDate extends WorldDate{
+public class WorldDate {
 
-	private IWorldTime currentTime;
+	private IWorldYear currentYear;
+	private IWorldMonth currentMonth;
+	private IWorldDay currentDay;
+	private String calendarName;
 	
-	public WorldCompleteDate(String calendarName,
+	public WorldDate(String calendarName,
 			IWorldYear currentYear,
 			IWorldMonth currentMonth,
-			IWorldDay currentDay,
-			IWorldTime currentTime) {
-		super(calendarName, currentYear, currentMonth, currentDay);
-		this.currentTime =currentTime;
+			IWorldDay currentDay) {
+		this.calendarName = calendarName;
+		this.currentDay = currentDay;
+		this.currentMonth = currentMonth;
+		this.currentYear = currentYear;
 	}
 
 	/**
-	 * Returns the currentTime 
-	 * @return the currentTime
+	 * Returns the currentYear 
+	 * @return the currentYear
 	 */
-	public IWorldTime getCurrentTime() {
-		return currentTime;
+	public IWorldYear getCurrentYear() {
+		return currentYear;
+	}
+
+	/**
+	 * Returns the currentMonth 
+	 * @return the currentMonth
+	 */
+	public IWorldMonth getCurrentMonth() {
+		return currentMonth;
+	}
+
+	/**
+	 * Returns the currentDay 
+	 * @return the currentDay
+	 */
+	public IWorldDay getCurrentDay() {
+		return currentDay;
 	}
 	
-	public void advanceTime(IWorldTimeDuration d) {
-		
+	/**
+	 * Returns the calendar name which this date applies to
+	 * @return the calendar name which this date applies to
+	 */
+	public String getCalendarName() {
+		return calendarName;
 	}
+	
 }
