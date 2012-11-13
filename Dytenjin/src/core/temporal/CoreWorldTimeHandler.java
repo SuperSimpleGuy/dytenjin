@@ -24,14 +24,24 @@ package core.temporal;
  */
 public abstract class CoreWorldTimeHandler {
 
-	private IWorldDay currDate;
+	private WorldCompleteDate currDate;
+	private WorldCalendar systemCalendar;
 	
-	public CoreWorldTimeHandler(IWorldDay currDate) {
+	public CoreWorldTimeHandler(WorldCompleteDate currDate, WorldCalendar systemCalendar) {
 		this.currDate = currDate;
+		this.systemCalendar = systemCalendar;
 	}
 	
-	public IWorldDay getCurrDate() {
+	public WorldCompleteDate getCurrDate() {
 		return currDate;
+	}
+	
+	public WorldCalendar getSystemCalendar() {
+		return systemCalendar;
+	}
+	
+	public WorldDate getCurrDateInOtherCalendar(WorldCalendar other) {
+		return other.getDateFromOtherCalendarDate(currDate, systemCalendar);
 	}
 	
 }

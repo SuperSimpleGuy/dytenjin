@@ -28,7 +28,7 @@ public interface IWorldYear {
 
 	/**
 	 * Returns the unique value of the year, so there can't be
-	 * two year 5134s.
+	 * two year 5134s for example
 	 * @return the unique value of this year object
 	 */
 	int getYearValue();
@@ -64,5 +64,7 @@ public interface IWorldYear {
 	 * @return a list of all the IWorldMonths for this year
 	 */
 	ArrayList<IWorldMonth> getMonths();
+	
+	IWorldYear clone();
 	
 }

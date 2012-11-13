@@ -37,6 +37,9 @@ public interface IWorldMonth {
 	 * @return
 	 */
 	AspectManager getSpecialAspects(IWorldDay day);
-	ArrayList<IWorldDay> getDays();
+	ArrayList<IWorldDay> getHolidays();
+	IWorldMonth clone();
+	boolean isDayValueHoliday(int dayValue);
+	IWorldDay getDayByValue(int dayValue);
 	
 }
