@@ -32,20 +32,20 @@ import core.temporal.WorldCompleteDate;
  */
 public class CoreEventHandler {
 
-	private HashMap<Integer, IEvent> dailyEvents;
-	private HashMap<Integer, ICalendarEvent> dailyCalEvents;
-	private ArrayList<IEvent> prevEventTriggers;
-	private ArrayList<ICalendarEvent> prevCalEventTriggers;
+	private HashMap<Integer, ICoreEvent> dailyEvents;
+	private HashMap<Integer, ICoreCalendarEvent> dailyCalEvents;
+	private ArrayList<ICoreEvent> prevEventTriggers;
+	private ArrayList<ICoreCalendarEvent> prevCalEventTriggers;
 	
 	/**
 	 * Default constructor, initializes non-null values to
 	 * private fields.
 	 */
 	public CoreEventHandler() {
-		dailyEvents = new HashMap<Integer, IEvent>();
-		dailyCalEvents = new HashMap<Integer, ICalendarEvent>();
-		prevEventTriggers = new ArrayList<IEvent>();
-		prevCalEventTriggers = new ArrayList<ICalendarEvent>();
+		dailyEvents = new HashMap<Integer, ICoreEvent>();
+		dailyCalEvents = new HashMap<Integer, ICoreCalendarEvent>();
+		prevEventTriggers = new ArrayList<ICoreEvent>();
+		prevCalEventTriggers = new ArrayList<ICoreCalendarEvent>();
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class CoreEventHandler {
 	 * @param e the event to add
 	 * @return true if the event was successfully added, false otherwise
 	 */
-	public boolean addDailyEvent(IEvent e) {
+	public boolean addDailyEvent(ICoreEvent e) {
 		if (!isKeyFree(e.getId())) {
 			return false;
 		}
@@ -76,9 +76,9 @@ public class CoreEventHandler {
 	 * @param e an ArrayList of events to add
 	 * @return an ArrayList of events that could not be added
 	 */
-	public ArrayList<IEvent> addDailyEvents(ArrayList<IEvent> e) {
-		ArrayList<IEvent> temp = new ArrayList<IEvent>();
-		for (IEvent event : e) {
+	public ArrayList<ICoreEvent> addDailyEvents(ArrayList<ICoreEvent> e) {
+		ArrayList<ICoreEvent> temp = new ArrayList<ICoreEvent>();
+		for (ICoreEvent event : e) {
 			if (!this.addDailyEvent(event)) {
 				temp.add(event);
 			}
@@ -91,7 +91,7 @@ public class CoreEventHandler {
 	 * @param e the random event to add
 	 * @return true if the event was successfully added, false otherwise
 	 */
-	public boolean addDailyCalEvents(ICalendarEvent e) {
+	public boolean addDailyCalEvents(ICoreCalendarEvent e) {
 		if (!isKeyFree(e.getId())) {
 			return false;
 		}
@@ -104,9 +104,9 @@ public class CoreEventHandler {
 	 * @param e an ArrayList of random events to add
 	 * @return an ArrayList of random events unsuccessfully added
 	 */
-	public ArrayList<ICalendarEvent> addRandomEvents(ArrayList<ICalendarEvent> e) {
-		ArrayList<ICalendarEvent> temp = new ArrayList<ICalendarEvent>();
-		for (ICalendarEvent event : e) {
+	public ArrayList<ICoreCalendarEvent> addRandomEvents(ArrayList<ICoreCalendarEvent> e) {
+		ArrayList<ICoreCalendarEvent> temp = new ArrayList<ICoreCalendarEvent>();
+		for (ICoreCalendarEvent event : e) {
 			if (!this.addDailyCalEvents(event)) {
 				temp.add(event);
 			}
@@ -119,7 +119,7 @@ public class CoreEventHandler {
 	 * @param e the event object to remove
 	 * @return the event removed, or null if nothing was removed
 	 */
-	public IEvent removeDailyEvent(IEvent e) {
+	public ICoreEvent removeDailyEvent(ICoreEvent e) {
 		return this.removeDailyEvent(e.getId());
 	}
 	
@@ -128,8 +128,8 @@ public class CoreEventHandler {
 	 * @param id the id of the event to remove
 	 * @return the IEvent removed, or null if nothing was removed
 	 */
-	public IEvent removeDailyEvent(int id) {
-		IEvent temp = dailyEvents.remove(id);
+	public ICoreEvent removeDailyEvent(int id) {
+		ICoreEvent temp = dailyEvents.remove(id);
 		if (temp != null) {
 			for (int i = 0; i < prevEventTriggers.size(); i++) {
 				if (prevEventTriggers.get(i).getId() == id) {
@@ -146,7 +146,7 @@ public class CoreEventHandler {
 	 * @param e the event object to remove
 	 * @return the event removed, or null if nothing was removed
 	 */
-	public ICalendarEvent removeDailyCalEvent(ICalendarEvent e) {
+	public ICoreCalendarEvent removeDailyCalEvent(ICoreCalendarEvent e) {
 		return this.removeDailyCalEvent(e.getId());
 	}
 	
@@ -155,8 +155,8 @@ public class CoreEventHandler {
 	 * @param id the id of the event to remove
 	 * @return the ICalendarEvent removed, or null if nothing was removed
 	 */
-	public ICalendarEvent removeDailyCalEvent(int id) {
-		ICalendarEvent temp = dailyCalEvents.remove(id);
+	public ICoreCalendarEvent removeDailyCalEvent(int id) {
+		ICoreCalendarEvent temp = dailyCalEvents.remove(id);
 		if (temp != null) {
 			for (int i = 0; i < prevCalEventTriggers.size(); i++) {
 				if (prevCalEventTriggers.get(i).getId() == id) {
@@ -197,7 +197,7 @@ public class CoreEventHandler {
 	private void triggerEvents(IWorldTimeDuration triggerStep) {
 		//Trigger previous IEvents
 		for (int i = 0; i < prevEventTriggers.size(); i++) {
-			IEvent e = prevEventTriggers.get(i);
+			ICoreEvent e = prevEventTriggers.get(i);
 			if (e.getDurationLength().longerThanOther(triggerStep)) {
 				e.triggerEvent();
 				e.decreaseDuration(triggerStep);
@@ -207,7 +207,7 @@ public class CoreEventHandler {
 			}
 		}
 		//Trigger possible IEvents
-		for (IEvent e : dailyEvents.values()) {
+		for (ICoreEvent e : dailyEvents.values()) {
 			if (e.triggerEvent()) {
 				if (!prevEventTriggers.contains(e)) {
 					prevEventTriggers.add(e);
@@ -226,7 +226,7 @@ public class CoreEventHandler {
 	private void triggerCalEvents(IWorldTimeDuration triggerStep, WorldCompleteDate d) {
 		//Trigger previous ICalendarEvents
 		for (int i = 0; i < prevCalEventTriggers.size(); i++) {
-			ICalendarEvent e = prevCalEventTriggers.get(i);
+			ICoreCalendarEvent e = prevCalEventTriggers.get(i);
 			if (e.getDurationLength().longerThanOther(triggerStep)) {
 				e.triggerEvent(d);
 				e.decreaseDuration(triggerStep);
@@ -236,7 +236,7 @@ public class CoreEventHandler {
 			}
 		}
 		//Trigger possible ICalendarEvents
-		for (ICalendarEvent e : dailyCalEvents.values()) {
+		for (ICoreCalendarEvent e : dailyCalEvents.values()) {
 			if (e.triggerEvent(d)) {
 				if (!prevCalEventTriggers.contains(e)) {
 					prevCalEventTriggers.add(e);

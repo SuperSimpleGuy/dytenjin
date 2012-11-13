@@ -20,14 +20,8 @@ package core.event;
 /**
  * @author SuperSimpleGuy
  */
-public interface IEvent {
+public interface IEventCaller {
 
-	/**
-	 * Possibly triggers this event. An event can maintain
-	 * its own status that affects its probability of getting
-	 * triggered
-	 * @return true if the event triggered, false otherwise
-	 */
-	boolean triggerEvent();
+	public void registerEventListener(IEvent e);
 	
 }

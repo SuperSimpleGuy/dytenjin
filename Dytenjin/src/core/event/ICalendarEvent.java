@@ -17,22 +17,13 @@
  */
 package core.event;
 
-import core.temporal.IWorldTimeDuration;
 import core.temporal.WorldCompleteDate;
 
 /**
- * Provides an interface for executing events that are
- * dependent on a CalendarDate
  * @author SuperSimpleGuy
  */
 public interface ICalendarEvent {
 
-	/**
-	 * Returns the unique id of this event
-	 * @return the unique id of this event
-	 */
-	int getId();
-	
 	/**
 	 * Possibly triggers this event. An event can maintain
 	 * its own status that affects its probability of getting
@@ -41,23 +32,5 @@ public interface ICalendarEvent {
 	 * @return true if the event triggered, false otherwise
 	 */
 	boolean triggerEvent(WorldCompleteDate d);
-	
-	/**
-	 * Allows for post-event cleanup/modifying functions to be called
-	 * @param d the date of the ending trigger event
-	 */
-	void endTriggerEvent(WorldCompleteDate d);
-	
-	/**
-	 * Returns the duration of the event
-	 * @return the IWorldTimeDuration of the event
-	 */
-	IWorldTimeDuration getDurationLength();
-	
-	/**
-	 * 
-	 * @param d
-	 */
-	void decreaseDuration(IWorldTimeDuration d);
 	
 }

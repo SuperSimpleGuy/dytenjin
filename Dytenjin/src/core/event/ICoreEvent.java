@@ -15,19 +15,39 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package core.event;
 
+import core.temporal.IWorldTimeDuration;
+
 /**
+ * Provides an interface for executing events not
+ * dependent on a CalendarDate
  * @author SuperSimpleGuy
  */
-public interface IEvent {
+public interface ICoreEvent extends IEvent {
 
 	/**
-	 * Possibly triggers this event. An event can maintain
-	 * its own status that affects its probability of getting
-	 * triggered
-	 * @return true if the event triggered, false otherwise
+	 * Returns the unique id of this event
+	 * @return the unique id of this event
 	 */
-	boolean triggerEvent();
+	int getId();
+	
+	/**
+	 * Allows for post-event cleanup/modifying functions to be called
+	 */
+	void endTriggerEvent();
+	
+	/**
+	 * Returns the duration of the event
+	 * @return the IWorldTimeDuration of the event
+	 */
+	IWorldTimeDuration getDurationLength();
+	
+	/**
+	 * 
+	 * @param d
+	 */
+	void decreaseDuration(IWorldTimeDuration d);
 	
 }
