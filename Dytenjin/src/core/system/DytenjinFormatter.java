@@ -17,8 +17,6 @@
  */
 package core.system;
 
-import java.text.DateFormat;
-import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 

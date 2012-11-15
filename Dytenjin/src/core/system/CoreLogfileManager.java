@@ -34,7 +34,7 @@ public class CoreLogfileManager {
 	
 	private HashMap<String, Level> logLevel;
 	
-	public CoreLogfileManager() {
+	private CoreLogfileManager() {
 		logLevel = new HashMap<String, Level>();
 	}
 	

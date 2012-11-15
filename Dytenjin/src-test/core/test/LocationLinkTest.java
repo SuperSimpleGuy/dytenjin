@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package core.geography.test;
+package core.test;
 
 import static org.junit.Assert.*;
 

@@ -17,6 +17,8 @@
  */
 package core.system;
 
+import java.util.logging.Level;
+
 /**
  * @author SuperSimpleGuy
  */
@@ -24,5 +26,45 @@ public class ExceptionManager {
 
 	public static final ExceptionManager SYS_EXCEPTION_MANAGER = new ExceptionManager();
 	
+	private boolean severeQuit;
+	private boolean warningQuit;
 	
+	private ExceptionManager() {
+		this.severeQuit = true;
+		this.warningQuit = false;
+	}
+	
+	public void setSevereQuit(boolean severeQuit) {
+		this.severeQuit = severeQuit;
+	}
+	
+	public void setWarningQuit(boolean warningQuit) {
+		this.warningQuit = warningQuit;
+	}
+	
+	public boolean getSevereQuit() {
+		return severeQuit;
+	}
+	
+	public boolean getWarningQuit() {
+		return warningQuit;
+	}
+	
+	public void throwException(Exception e, Level level, String fileName) {
+		if (!(level.equals(Level.SEVERE) || level.equals(Level.WARNING))) {
+			return;
+		}
+		String method = "";
+		if (e.getStackTrace().length > 0) {
+			method = e.getStackTrace()[0].getMethodName();
+		}
+		CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(this.getClass().toString(), fileName, level, this.getClass().toString(), method, e.getLocalizedMessage());
+		if (severeQuit && level.equals(Level.SEVERE)) {
+			e.printStackTrace();
+			System.exit(1);
+		} else if (warningQuit && level.equals(Level.WARNING)) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
 }
