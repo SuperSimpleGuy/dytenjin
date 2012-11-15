@@ -193,7 +193,7 @@ public abstract class RegionLink extends GeographicalRegion {
 	}
 	
 	@Override
-	public RegionLink removeRegionLink(int id) {
+	public RegionLink unregisterRegionLink(int id) {
 		if (paths.containsKey(id)) {
 			dirFromPath.remove(id);
 			return paths.remove(id);
@@ -202,7 +202,7 @@ public abstract class RegionLink extends GeographicalRegion {
 	}
 	
 	@Override
-	public boolean addRegionLink(RegionLink l) {
+	public boolean registerRegionLink(RegionLink l) {
 		if (!paths.containsKey(l.getId())) {
 			paths.put(l.getId(), l);
 			dirFromPath.put(l.getId(), CardinalDirection.getDirFromCoords(l.getxCoord(), l.getyCoord(), this.getxCoord(), this.getyCoord()));

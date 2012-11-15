@@ -62,28 +62,200 @@ public abstract class GeographicalRegion implements IUniqueId {
 	}
 	
 	/**
-	 * Adds a child location to this region, returning true if
-	 * successful and false otherwise
+	 * Adds a child GeographicalLocation to this region, returning true if
+	 * successful and false otherwise. Note that passing in a LocationLink
+	 * or one of its subtypes automatically returns false.
 	 * @param gL the GeographicalLocation to add
 	 * @return true if the GeographicalLocation was added, false
 	 * otherwise
 	 */
-	public boolean addChildLoc(GeographicalLocation gL) {
+	public boolean registerChildLoc(GeographicalLocation gL) {
+		if (gL instanceof LocationLink) {
+			return false;
+		}
 		if (childLocs.containsKey(gL.getId())) {
 			return false;
 		} else {
 			childLocs.put(gL.getId(), gL);
+			gL.setParent(this);
 			return true;
 		}
 	}
 	
 	/**
-	 * Removes a child location based upon a unique id
+	 * Adds a linking LocationLink between a GeographicalLocation belonging to this region and
+	 * a GeographicalLocation belonging to an adjacent GeographicalRegion as specified. If the
+	 * child location cannot be found, cannot be successfully added, are trying to link other
+	 * LocationLinks already linking with themselves, or are trying to link between this region
+	 * and a non-adjacent region then this method will not succeed and will return false. Upon
+	 * a successful insertion, returns true.
+	 * @param newLL the new LocationLink to insert
+	 * @param myLocation the id of the first GeographicalLocation to link
+	 * @param neighborRegion the id of the neighboring GeographicalRegion
+	 * @param neighborLocation the id of the second GeographicalLocation to link, belonging to
+	 * the neighboring GeographicalRegion
+	 * @return true when successfully inserted, false otherwise.
+	 */
+	public boolean putEdgeLocLinkBetween(LocationLink newLL, GeographicalLocation myLocation, GeographicalRegion neighborRegion, GeographicalLocation neighborLocation) {
+		return this.putEdgeLocLinkBetween(newLL, myLocation.getId(), neighborRegion.getId(), neighborLocation.getId());
+	}
+	
+	/**
+	 * Adds a linking LocationLink between a GeographicalLocation belonging to this region and
+	 * a GeographicalLocation belonging to an adjacent GeographicalRegion as specified by the
+	 * ids. If the child location cannot be found, cannot be successfully added, are trying to
+	 * link other LocationLinks already linking with themselves, or are trying to link between
+	 * this region and a non-adjacent region then this method will not succeed and will return
+	 * false. Upon a successful insertion, returns true.
+	 * @param newLL the new LocationLink to insert
+	 * @param idFirstGR the id of the first GeographicalLocation to link
+	 * @param idRegionParent the id of the neighboring GeographicalRegion
+	 * @param idLocChild the id of the second GeographicalLocation to link, belonging to
+	 * the neighboring GeographicalRegion
+	 * @return true when successfully inserted, false otherwise.
+	 */
+	public boolean putEdgeLocLinkBetween(LocationLink newLL, int idFirstGR, int idRegionParent, int idLocChild) {
+		if (idFirstGR == idLocChild) {
+			return false;
+		}
+		GeographicalLocation r1 = null;
+		boolean rLink1 = false;
+		if (childLocs.containsKey(idFirstGR)) {
+			r1 = childLocs.get(idFirstGR);
+			if (r1 instanceof LocationLink) {
+				rLink1 = true;
+			}
+			if (rLink1 && ((LocationLink)r1).getPathById(newLL.getId()) != null) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+		GeographicalRegion neighborParent = paths.get(idRegionParent);
+		if (neighborParent == null) {
+			return false;
+		}
+		GeographicalLocation r2 = neighborParent.getChildLocById(idLocChild);
+		boolean rLink2 = false;
+		if (r2 != null) {
+			if (r2 instanceof LocationLink) {
+				rLink2 = true;
+			}
+			if (rLink2 && ((LocationLink)r2).getPathById(newLL.getId()) != null) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+		if (!(r1.registerLocationLink(newLL) && r2.registerLocationLink(newLL))) {
+			r1.unregisterLocationLink(newLL.getId());
+			r2.unregisterLocationLink(newLL.getId());
+			return false;
+		}
+		newLL.setParent(this);
+		newLL.setLoc1(r1);
+		newLL.setLoc2(r2);
+		childLocs.put(newLL.getId(), newLL);
+		return true;
+	}
+	
+	/**
+	 * Adds a LocationLink between two GeographicalLocation children as specified by
+	 * the specified object ids. If the children are not contained within this region,
+	 * cannot be successfully added to the neighboring GeographicalLocation or are trying
+	 * to link LocationLinks that are linking themselves, then this method will not
+	 * succeed and return false
+	 * @param newLL the new LocationLink to insert
+	 * @param gL1 the first GeographicalLocation to link
+	 * @param gL2 the second GeographicalLocation to link
+	 * @return true when successfully inserted, false otherwise.
+	 */
+	public boolean putLocLinkBetween(LocationLink newLL, GeographicalLocation gL1, GeographicalLocation gL2) {
+		return this.putLocLinkBetween(newLL, gL1.getId(), gL2.getId());
+	}
+	
+	/**
+	 * Adds a LocationLink between two GeographicalLocation children as specified by
+	 * their ids. If the children are not contained within this region, cannot be
+	 * successfully added to the neighboring GeographicalLocation or are trying
+	 * to link LocationLinks that are linking themselves, then this method will not
+	 * succeed and return false
+	 * @param newLL the new LocationLink to insert
+	 * @param idFirstGR the id of the first GeographicalLocation to link
+	 * @param idSecondGR the id of the second GeographicalLocation to link
+	 * @return true when successfully inserted, false otherwise.
+	 */
+	public boolean putLocLinkBetween(LocationLink newLL, int idFirstGR, int idSecondGR) {
+		if (idFirstGR == idSecondGR) {
+			return false;
+		}
+		GeographicalLocation r1 = null;
+		boolean rLink1 = false;
+		if (childLocs.containsKey(idFirstGR)) {
+			r1 = childLocs.get(idFirstGR);
+			if (r1 instanceof LocationLink) {
+				rLink1 = true;
+			}
+			if (rLink1 && ((LocationLink)r1).getPathById(newLL.getId()) != null) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+		GeographicalLocation r2 = null;
+		boolean rLink2 = false;
+		if (childLocs.containsKey(idSecondGR)) {
+			r2 = childLocs.get(idSecondGR);
+			if (r2 instanceof LocationLink) {
+				rLink2 = true;
+			}
+			if (rLink2 && ((LocationLink)r2).getPathById(newLL.getId()) != null) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+		if (!(r1.registerLocationLink(newLL) && r2.registerLocationLink(newLL))) {
+			r1.unregisterLocationLink(newLL.getId());
+			r2.unregisterLocationLink(newLL.getId());
+			return false;
+		}
+		newLL.setParent(this);
+		newLL.setLoc1(r1);
+		newLL.setLoc2(r2);
+		childLocs.put(newLL.getId(), newLL);
+		return true;
+	}
+	
+	public LocationLink removeLocationLink(LocationLink l) {
+		return this.removeLocationLink(l.getId());
+	}
+	
+	public LocationLink removeLocationLink(int id) {
+		GeographicalLocation temp = childLocs.get(id);
+		if (temp == null || !(temp instanceof LocationLink)) {
+			return null;
+		}
+		((LocationLink)temp).removeSelfFromParent();
+		return (LocationLink)temp;
+	}
+	
+	/**
+	 * Removes a child location based upon a unique id. Also
+	 * removes all associated LocationLinks connected to the
+	 * GeographicalLcoation. Should not be called with a
+	 * LocationLink object
 	 * @param id the id of the GeographicalLocation to remove
 	 * @return the GeographicalLocation removed, or null if
 	 * not a child of this region
 	 */
-	public GeographicalLocation removeChildLoc(int id) {
+	public GeographicalLocation unregisterChildLoc(int id) {
+		GeographicalLocation gL = childLocs.get(id);
+		if ((gL instanceof LocationLink)) {
+			return null;
+		}
+		gL.setParent(null);
+		gL.removeSelfFromParent();
 		return childLocs.remove(id);
 	}
 	
@@ -148,8 +320,21 @@ public abstract class GeographicalRegion implements IUniqueId {
 	 * @return the RegionalLink object removed, or null if
 	 * not linked to this region
 	 */
-	public RegionLink removeRegionLink(int id) {
+	public RegionLink unregisterRegionLink(int id) {
 		return paths.remove(id);
+	}
+	
+	/**
+	 * Removes all edge LocationLinks that link this Region to
+	 * neighboring regions. Retains any RegionLinks to neighbors,
+	 * and all LocationLinks that link its own child locations
+	 */
+	public void isolateThisRegionLocationLinks() {
+		for (GeographicalLocation gL : childLocs.values()) {
+			if (gL instanceof LocationLink && ((LocationLink)gL).isEdge()) {
+				gL.removeSelfFromParent();
+			}
+		}
 	}
 	
 	/**
@@ -159,7 +344,7 @@ public abstract class GeographicalRegion implements IUniqueId {
 	 * @return true if successfully added to this region,
 	 * false otherwise
 	 */
-	public boolean addRegionLink(RegionLink l) {
+	public boolean registerRegionLink(RegionLink l) {
 		if (!paths.containsKey(l.getId())) {
 			paths.put(l.getId(), l);
 			return true;

@@ -198,7 +198,7 @@ public abstract class LocationLink extends GeographicalLocation {
 	}
 	
 	@Override
-	public LocationLink removeLocationLink(int id) {
+	public LocationLink unregisterLocationLink(int id) {
 		if (!paths.containsKey(id)) {
 			dirFromPath.remove(id);
 			return paths.remove(id);
@@ -207,7 +207,7 @@ public abstract class LocationLink extends GeographicalLocation {
 	}
 	
 	@Override
-	public boolean addLocationLink(LocationLink l) {
+	public boolean registerLocationLink(LocationLink l) {
 		if (!paths.containsKey(l.getId())) {
 			paths.put(l.getId(), l);
 			dirFromPath.put(l.getId(), CardinalDirection.getDirFromCoords(l.getxCoord(), l.getyCoord(), this.getxCoord(), this.getyCoord()));
@@ -226,7 +226,7 @@ public abstract class LocationLink extends GeographicalLocation {
 	 * towards this
 	 * @return true if successfully added, false otherwise
 	 */
-	public boolean addLocationLink(LocationLink l, CardinalDirection dir) {
+	public boolean registerLocationLink(LocationLink l, CardinalDirection dir) {
 		if (!paths.containsKey(l.getId())) {
 			paths.put(l.getId(), l);
 			dirFromPath.put(l.getId(), dir);
@@ -261,6 +261,15 @@ public abstract class LocationLink extends GeographicalLocation {
 			return (LocationLink)loc2;
 		}
 		return paths.get(id);
+	}
+	
+	@Override
+	public void removeSelfFromParent() {
+		super.removeSelfFromParent();
+		this.loc1 = null;
+		this.loc2 = null;
+		this.dirFrom1 = null;
+		this.dirFrom2 = null;
 	}
 	
 	/**
@@ -321,5 +330,18 @@ public abstract class LocationLink extends GeographicalLocation {
 	public void setLoc2(GeographicalLocation gR) {
 		loc2 = gR;
 		resetDirectionAndLength();
+	}
+	
+	/**
+	 * Determines whether this LocationLink is an edge
+	 * LocationLink or not
+	 * @return true if linking two GeographicalLocations with
+	 * different parent GeographicalRegions, false otherwise
+	 */
+	public boolean isEdge() {
+		if (loc1 == null || loc2 == null) {
+			return false;
+		}
+		return loc1.getParent().getId() != loc2.getParent().getId();
 	}
 }

@@ -110,7 +110,7 @@ public abstract class GeographicalLocation implements ITimeChanging, IUniqueId {
 	 * @return the link with the unique id, or null if no link
 	 * was found
 	 */
-	public LocationLink removeLocationLink(int id) {
+	public LocationLink unregisterLocationLink(int id) {
 		return paths.remove(id);
 	}
 	
@@ -132,7 +132,7 @@ public abstract class GeographicalLocation implements ITimeChanging, IUniqueId {
 	 * @return true if the link was successfully added, false
 	 * otherwise
 	 */
-	public boolean addLocationLink(LocationLink l) {
+	public boolean registerLocationLink(LocationLink l) {
 		if (!paths.containsKey(l.getId())) {
 			paths.put(l.getId(), l);
 			return true;
@@ -146,6 +146,21 @@ public abstract class GeographicalLocation implements ITimeChanging, IUniqueId {
 	 */
 	public GeographicalRegion getParent() {
 		return parent;
+	}
+	
+	/**
+	 * The GeographicalLocation will call upon its parent
+	 * to remove itself, which will also remove any linking
+	 * LocationLinks from the parent as well
+	 */
+	public void removeSelfFromParent() {
+		for (LocationLink l : paths.values()) {
+			l.removeSelfFromParent();
+			this.unregisterLocationLink(l.getId());
+		}
+		if (parent != null) {
+			parent.unregisterChildLoc(this.getId());
+		}
 	}
 
 	/**

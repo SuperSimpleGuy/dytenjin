@@ -55,19 +55,116 @@ public class GeographicalMap implements IUniqueId {
 		this.id = id;
 	}
 	
+	
+	public boolean addLocationLink(LocationLink locLink, GeographicalLocation gL1, GeographicalLocation gL2) {
+		return this.addLocationLink(locLink, gL1.getId(), gL2.getId());
+	}
+	
+	public boolean addLocationLink(LocationLink locLink, int idOfGL1, int idOfGL2) {
+		//TODO: Shit
+		return true;
+	}
+	
+	
+	public boolean removeLocationLink(LocationLink locLink) {
+		return this.removeLocationLink(locLink.getId());
+	}
+	
+	public boolean removeLocationLink(int idOfLL) {
+		//TODO: Shit
+		return true;
+	}
+	
 	/**
-	 * Adds a GeographicalLocation to a GeographicalRegion
+	 * Adds a GeographicalLocation to a GeographicalRegion. LocationLinks should
+	 * not be added this way
 	 * @param gL the GeographicalLocation to add
 	 * @param idOfGeoReg the GeographicalRegion to receive a child location
 	 * @return true if the add was successful, false otherwise
 	 */
-	public boolean addGeoLocation(GeographicalLocation gL, int idOfGeoReg) {
+	public boolean registerGeoLocation(GeographicalLocation gL, GeographicalRegion gR) {
+		return this.registerGeoLocation(gL, gR.getId());
+	}
+	
+	/**
+	 * Adds a GeographicalLocation to a GeographicalRegion. LocationLinks should
+	 * not be added this way
+	 * @param gL the GeographicalLocation to add
+	 * @param idOfGeoReg the GeographicalRegion to receive a child location
+	 * @return true if the add was successful, false otherwise
+	 */
+	public boolean registerGeoLocation(GeographicalLocation gL, int idOfGeoReg) {
+		if (gL instanceof LocationLink) {
+			return false;
+		}
 		GeographicalRegion temp = geoRegions.get(idOfGeoReg);
 		if (temp == null) {
 			return false;
 		}
-		temp.addChildLoc(gL);
-		return true;
+		return temp.registerChildLoc(gL);
+	}
+	
+	/**
+	 * Remove a GeographicalLocation from a GeographicalRegion. LocationLinks should
+	 * not be removed in this manner. Returns true if the removal is successful, and
+	 * false otherwise
+	 * @param gR the GeographicalRegion that will have a Location removed from it
+	 * @param gL the GeographicalLocation that will be removed
+	 * @return true if the removal is successful, false otherwise
+	 */
+	public boolean unregisterGeoLocation(GeographicalRegion gR, GeographicalLocation gL) {
+		return this.unregisterGeoLocation(gR.getId(), gL.getId());
+	}
+	
+	/**
+	 * Remove a GeographicalLocation from a GeographicalRegion based off of ids.
+	 * LocationLinks should not be removed in this manner. Returns true if the
+	 * removal is successful, and false otherwise
+	 * @param idOfGR the id of the GeographicalRegion that will have a Location
+	 * removed from it
+	 * @param idOfGL the id of the GeographicalLocation that will be removed
+	 * @return true if the removal is successful, false otherwise
+	 */
+	public boolean unregisterGeoLocation(int idOfGR, int idOfGL) {
+		GeographicalRegion gR = geoRegions.get(idOfGR);
+		if (gR == null) {
+			gR = regLinks.get(idOfGR);
+		}
+		if (gR != null) {
+			gR.unregisterChildLoc(idOfGL);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Remove a GeographicalLocation from a GeographicalRegion. This searches all
+	 * available regions to attempt to remove the location. LocationLinks should
+	 * not be removed in this manner. Returns true if the removal is successful, and
+	 * false otherwise
+	 * @param gL the GeographicalLocation that will be removed
+	 * @return true if the removal is successful, false otherwise
+	 */
+	public boolean unregisterGeoLocation(GeographicalLocation gL) {
+		return this.unregisterGeoLocation(gL.getId());
+	}
+	
+	/**
+	 * Remove a GeographicalLocation from a GeographicalRegion based off of ids.
+	 * LocationLinks should not be removed in this manner. This searches all
+	 * available regions to attempt to remove the location. Returns true if the
+	 * removal is successful, and false otherwise
+	 * @param idOfGl the id of the GeographicalLocation that will be removed
+	 * @return true if the removal is successful, false otherwise
+	 */
+	public boolean unregisterGeoLocation(int idOfGL) {
+		for (GeographicalRegion gR : geoRegions.values()) {
+			if (gR.getChildLocById(idOfGL) != null) {
+				gR.unregisterChildLoc(idOfGL);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -77,7 +174,7 @@ public class GeographicalMap implements IUniqueId {
 	 * @return true if the region was successfully added to this
 	 * map, false otherwise
 	 */
-	public boolean addGeoRegion(GeographicalRegion gR) {
+	public boolean registerGeoRegion(GeographicalRegion gR) {
 		if (geoRegions.containsKey(gR.getId())) {
 			return false;
 		}
@@ -93,8 +190,56 @@ public class GeographicalMap implements IUniqueId {
 	 * @return the removed region, or null if no such region exists
 	 * in this map
 	 */
-	public GeographicalRegion removeGeoRegion(int id) {
-		return geoRegions.remove(id);
+	public GeographicalRegion unregisterGeoRegion(int id) {
+		GeographicalRegion gr = geoRegions.remove(id);
+		if (gr == null) {
+			return null;
+		}
+		gr.isolateThisRegionLocationLinks();
+		for (RegionLink rL : gr.getPaths().values()) {
+			this.removeRegionLink(rL.getId());
+			gr.unregisterRegionLink(rL.getId());
+		}
+		return gr;
+	}
+	
+	/**
+	 * Removes a link between regions, or null if no such link exists with
+	 * the given id. Also isolates the GeographicalLocations that belong
+	 * to the RegionLink from the rest of the map.
+	 * @param id the unique of id the regional link to remove
+	 * @return the RegionLink removed, or null if no such link existed
+	 */
+	public RegionLink removeRegionLink(int id) {
+		RegionLink temp = regLinks.remove(id);
+		if (temp == null) {
+			return null;
+		}
+		temp.getLoc1().unregisterRegionLink(temp.getId());
+		temp.getLoc2().unregisterRegionLink(temp.getId());
+		temp.isolateThisRegionLocationLinks();
+		temp.setLoc1(null);
+		temp.setLoc2(null);
+		for (RegionLink rL : temp.getPaths().values()) {
+			temp.unregisterRegionLink(rL.getId());
+		}
+		return temp;
+	}
+	
+	/**
+	 * Puts a regional link between two regions, returning true if successfully
+	 * inserted and false otherwise. None, some or both of these Geographical
+	 * Regions that the link will be inserted between can be Region Links.
+	 * @param freshRL the new RegionLink to insert between two regions
+	 * @param gR1 the first GeographialRegion to link
+	 * @param gR2 the second GeographicalRegion to link
+	 * @return true when the RegionLink was successfully inserted between the
+	 * Geographical Regions, false if no such regions exist for this map or when
+	 * one of the GeoRegions is an instance of a RegionLink and already links to
+	 * the new RegionLink trying to be inserted (prevents double-pathing)
+	 */
+	public boolean putRegLinkBetween(RegionLink freshRL, GeographicalRegion gR1, GeographicalRegion gR2) {
+		return this.putRegLinkBetween(freshRL, gR1.getId(), gR2.getId());
 	}
 	
 	/**
@@ -110,6 +255,9 @@ public class GeographicalMap implements IUniqueId {
 	 * the new RegionLink trying to be inserted (prevents double-pathing)
 	 */
 	public boolean putRegLinkBetween(RegionLink freshRL, int idFirstGR, int idSecondGR) {
+		if (idFirstGR == idSecondGR) {
+			return false;
+		}
 		GeographicalRegion r1 = null;
 		boolean rLink1 = false;
 		if (geoRegions.containsKey(idFirstGR)) {
@@ -138,38 +286,23 @@ public class GeographicalMap implements IUniqueId {
 		}
 		freshRL.setLoc1(r1);
 		freshRL.setLoc2(r2);
-		if (!(r1.addRegionLink(freshRL) && r2.addRegionLink(freshRL))) {
-			r1.removeRegionLink(freshRL.getId());
-			r2.removeRegionLink(freshRL.getId());
+		if (!(r1.registerRegionLink(freshRL) && r2.registerRegionLink(freshRL))) {
+			r1.unregisterRegionLink(freshRL.getId());
+			r2.unregisterRegionLink(freshRL.getId());
 			return false;
 		}
 		if (rLink1 && !((RegionLink)r1).changeRegLinkDir(freshRL, freshRL.getDirFromGeoReg(idFirstGR).opposite())) {
-			r1.removeRegionLink(freshRL.getId());
-			r2.removeRegionLink(freshRL.getId());
+			r1.unregisterRegionLink(freshRL.getId());
+			r2.unregisterRegionLink(freshRL.getId());
 			return false;
 		}
-		if (rLink2 && !((RegionLink)r1).changeRegLinkDir(freshRL, freshRL.getDirFromGeoReg(idSecondGR).opposite())) {
-			r1.removeRegionLink(freshRL.getId());
-			r2.removeRegionLink(freshRL.getId());
+		if (rLink2 && !((RegionLink)r2).changeRegLinkDir(freshRL, freshRL.getDirFromGeoReg(idSecondGR).opposite())) {
+			r1.unregisterRegionLink(freshRL.getId());
+			r2.unregisterRegionLink(freshRL.getId());
 			return false;
 		}
+		regLinks.put(freshRL.getId(), freshRL);
 		return true;
-	}
-	
-	/**
-	 * Removes a link between regions, or null if no such link exists with
-	 * the given id
-	 * @param id the unique of id the regional link to remove
-	 * @return the RegionLink removed, or null if no such link existed
-	 */
-	public RegionLink removeRegLink(int id) {
-		RegionLink temp = regLinks.remove(id);
-		if (temp == null) {
-			return null;
-		}
-		temp.getLoc1().removeRegionLink(temp.getId());
-		temp.getLoc2().removeRegionLink(temp.getId());
-		return temp;
 	}
 
 	/**
