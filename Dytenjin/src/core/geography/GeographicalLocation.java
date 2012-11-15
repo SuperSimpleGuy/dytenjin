@@ -50,12 +50,12 @@ public abstract class GeographicalLocation implements ITimeChanging, IUniqueId {
 	 * unique id, an x and y coordinate of this location,
 	 * predefined aspects and a parent GeographicalRegion. It
 	 * starts off with no owning Entity.
-	 * @param name
-	 * @param id
-	 * @param xCoord
-	 * @param yCoord
-	 * @param aspMan
-	 * @param parent
+	 * @param name the name of this Geo Location
+	 * @param id the unique id of this Geo Location
+	 * @param xCoord the x coordinate of this Geo Location
+	 * @param yCoord the y coordinate of this Geo Location
+	 * @param aspMan the AspectManager for this Geo Location
+	 * @param parent the parent Geo Region for this Geo Location
 	 */
 	public GeographicalLocation(String name,
 								int id,
@@ -112,6 +112,17 @@ public abstract class GeographicalLocation implements ITimeChanging, IUniqueId {
 	 */
 	public LocationLink removeLocationLink(int id) {
 		return paths.remove(id);
+	}
+	
+	/**
+	 * Returns a location link from its unique id, or null if no
+	 * entry exists for that id
+	 * @param id the unique id of the LocationLink
+	 * @return the LocationLink object with the unique id, or null
+	 * if no id was found
+	 */
+	public LocationLink getPathById(int id) {
+		return paths.get(id);
 	}
 	
 	/**
@@ -227,5 +238,19 @@ public abstract class GeographicalLocation implements ITimeChanging, IUniqueId {
 		}
 		GeographicalLocation gL = (GeographicalLocation)other;
 		return this.id == gL.getId();
+	}
+	
+	/**
+	 * Sets the coordinates for this GeographicalLocation, which
+	 * then updates the lengths of all adjacent paths.
+	 * @param newXCoord the new x coordinate for this location
+	 * @param newYCoord the new y coordinate for this location
+	 */
+	public void setCoords(int newXCoord, int newYCoord) {
+		this.xCoord = newXCoord;
+		this.yCoord = newYCoord;
+		for (LocationLink rL : paths.values()) {
+			rL.resetDirectionAndLength();
+		}
 	}
 }

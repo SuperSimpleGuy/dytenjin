@@ -22,8 +22,6 @@ import java.util.HashMap;
 
 import core.Constants;
 import core.management.game.IUniqueId;
-import core.management.game.IdentityManager;
-import core.management.individual.AspectManager;
 
 /**
  * Maintains all geographical regions and regional links, and
@@ -100,48 +98,62 @@ public class GeographicalMap implements IUniqueId {
 	}
 	
 	/**
-	 * Creates a regional link between two regions, returning the
-	 * newly created link
-	 * @param name the name of the RegionLink
-	 * @param xCoord the xCoordinate of the RegionLink to create
-	 * @param yCoord the yCoordinate of the RegionLink to create
+	 * Puts a regional link between two regions, returning true if successfully
+	 * inserted and false otherwise. None, some or both of these Geographical
+	 * Regions that the link will be inserted between can be Region Links.
+	 * @param freshRL the new RegionLink to insert between two regions
 	 * @param idFirstGR the unique id of the first GeographialRegion to link
 	 * @param idSecondGr the unique id of the second GeographicalRegion to link
-	 * @return the new RegionalLink between the GeographicalRegions
+	 * @return true when the RegionLink was successfully inserted between the
+	 * Geographical Regions, false if no such regions exist for this map or when
+	 * one of the GeoRegions is an instance of a RegionLink and already links to
+	 * the new RegionLink trying to be inserted (prevents double-pathing)
 	 */
-	public RegionLink createRegLinkBetween(String name, int xCoord, int yCoord, int idFirstGR, int idSecondGR) {
-		if (!geoRegions.containsKey(idFirstGR) || !geoRegions.containsKey(idSecondGR)) {
-			return null;
+	public boolean putRegLinkBetween(RegionLink freshRL, int idFirstGR, int idSecondGR) {
+		GeographicalRegion r1 = null;
+		boolean rLink1 = false;
+		if (geoRegions.containsKey(idFirstGR)) {
+			r1 = geoRegions.get(idFirstGR);
+		} else if (regLinks.containsKey(idFirstGR)) {
+			r1 = regLinks.get(idFirstGR);
+			if (r1.getPathById(freshRL.getId()) != null) {
+				return false;
+			}
+			rLink1 = true;
+		} else {
+			return false;
 		}
-		GeographicalRegion r1 = geoRegions.get(idFirstGR);
-		GeographicalRegion r2 = geoRegions.get(idSecondGR);
-		CardinalDirection dirOneToRL = CardinalDirection.getDirFromCoords(r1.getxCoord(), r1.getyCoord(), xCoord, yCoord);
-		CardinalDirection dirTwoToRL = CardinalDirection.getDirFromCoords(r2.getxCoord(), r2.getyCoord(), xCoord, yCoord);
-		double dist = Math.sqrt((r1.getxCoord() - xCoord)*(r1.getxCoord() - xCoord) + (r1.getyCoord() - yCoord)*(r1.getyCoord() - yCoord));
-		dist += Math.sqrt((xCoord - r2.getxCoord())*(xCoord - r2.getxCoord()) + (yCoord - r2.getyCoord())*(yCoord - r2.getyCoord()));
-		RegionLink freshRL = new RegionLink(name, IdentityManager.SYS_IDMNGR.getNextFreeId(Constants.ID_RLINK), xCoord, yCoord, new AspectManager(), r1, dirOneToRL, r2, dirTwoToRL, dist);
-		regLinks.put(freshRL.getId(), freshRL);
-		if (r1.addRegionLink(freshRL) && r2.addRegionLink(freshRL)) {
+		GeographicalRegion r2 = null;
+		boolean rLink2 = false;
+		if (geoRegions.containsKey(idSecondGR)) {
+			r2 = geoRegions.get(idSecondGR);
+		} else if (regLinks.containsKey(idSecondGR)) {
+			r2 = regLinks.get(idFirstGR);
+			if (r2.getPathById(freshRL.getId()) != null) {
+				return false;
+			}
+			rLink2 = true;
+		} else {
+			return false;
+		}
+		freshRL.setLoc1(r1);
+		freshRL.setLoc2(r2);
+		if (!(r1.addRegionLink(freshRL) && r2.addRegionLink(freshRL))) {
 			r1.removeRegionLink(freshRL.getId());
 			r2.removeRegionLink(freshRL.getId());
-			return null;
+			return false;
 		}
-		return freshRL;
-	}
-	
-	public RegionLink putRegLinkBetween(RegionLink freshRL, int idFirstGR, int idSecondGR) {
-		if (!geoRegions.containsKey(idFirstGR) || !geoRegions.containsKey(idSecondGR)) {
-			return null;
-		}
-		GeographicalRegion r1 = geoRegions.get(idFirstGR);
-		GeographicalRegion r2 = geoRegions.get(idSecondGR);
-		regLinks.put(freshRL.getId(), freshRL);
-		if (r1.addRegionLink(freshRL) && r2.addRegionLink(freshRL)) {
+		if (rLink1 && !((RegionLink)r1).changeRegLinkDir(freshRL, freshRL.getDirFromGeoReg(idFirstGR).opposite())) {
 			r1.removeRegionLink(freshRL.getId());
 			r2.removeRegionLink(freshRL.getId());
-			return null;
+			return false;
 		}
-		return freshRL;
+		if (rLink2 && !((RegionLink)r1).changeRegLinkDir(freshRL, freshRL.getDirFromGeoReg(idSecondGR).opposite())) {
+			r1.removeRegionLink(freshRL.getId());
+			r2.removeRegionLink(freshRL.getId());
+			return false;
+		}
+		return true;
 	}
 	
 	/**

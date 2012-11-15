@@ -23,7 +23,6 @@ import java.util.HashMap;
 import core.Constants;
 import core.management.game.IUniqueId;
 import core.management.individual.AspectManager;
-import core.stats.GeographicalRegionStatsManager;
 
 /**
  * Manages a region of locations, and as a parent map. Maintains its
@@ -33,7 +32,6 @@ import core.stats.GeographicalRegionStatsManager;
  */
 public abstract class GeographicalRegion implements IUniqueId {
 	
-	private GeographicalRegionStatsManager gStats;
 	private int id;
 	private String name;
 	private AspectManager aspects;
@@ -61,33 +59,7 @@ public abstract class GeographicalRegion implements IUniqueId {
 		this.aspects = asp;
 		this.paths = new HashMap<Integer, RegionLink>();
 		this.childLocs = new HashMap<Integer, GeographicalLocation>();
-		this.gStats = new GeographicalRegionStatsManager();
 	}
-	
-//  Legacy:	
-//	public void updateMonth() {
-//		HashMap<String, Integer> hmGeo = new HashMap<String, Integer>();
-//		HashMap<String, Integer> hmReg = new HashMap<String, Integer>();
-//		for (GeographicalLocation gL : childLocs.values()) {
-//			String key = gL.getOwner().getName();
-//			if (gL instanceof LocationLink) {
-//				if (!hmReg.containsKey(key)) {
-//					hmReg.put(key, 1);
-//				} else {
-//					int tempVal = hmReg.get(key);
-//					hmReg.put(key, tempVal + 1);
-//				}
-//			} else {
-//				if (!hmGeo.containsKey(key)) {
-//					hmGeo.put(key, 1);
-//				} else {
-//					int tempVal = hmGeo.get(key);
-//					hmGeo.put(key, tempVal + 1);
-//				}
-//			}
-//		}
-//		gStats.addStatBatch(hmGeo, hmReg);
-//	}
 	
 	/**
 	 * Adds a child location to this region, returning true if
@@ -126,9 +98,11 @@ public abstract class GeographicalRegion implements IUniqueId {
 	}
 	
 	/**
-	 * Returns a regional link from its unique id
+	 * Returns a regional link from its unique id, or null if no
+	 * entry exists for that id
 	 * @param id the unique id of the RegionLink
-	 * @return the RegionLink object with the unique id
+	 * @return the RegionLink object with the unique id, or null
+	 * if no id was found
 	 */
 	public RegionLink getPathById(int id) {
 		return paths.get(id);
@@ -245,14 +219,6 @@ public abstract class GeographicalRegion implements IUniqueId {
 		return childLocs;
 	}
 	
-	/**
-	 * Returns the game statistics for this region
-	 * @return the game statistics for this region
-	 */
-	public GeographicalRegionStatsManager getGeoStats() {
-		return gStats;
-	}
-	
 	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof GeographicalRegion)) {
@@ -276,5 +242,19 @@ public abstract class GeographicalRegion implements IUniqueId {
 	 */
 	public int getyCoord() {
 		return yCoord;
+	}
+	
+	/**
+	 * Sets the coordinates for this GeographicalLocation, which
+	 * then updates the lengths of all adjacent paths.
+	 * @param newXCoord the new x coordinate for this location
+	 * @param newYCoord the new y coordinate for this location
+	 */
+	public void setCoords(int newXCoord, int newYCoord) {
+		this.xCoord = newXCoord;
+		this.yCoord = newYCoord;
+		for (RegionLink rL : paths.values()) {
+			rL.resetDirectionAndLength();
+		}
 	}
 }

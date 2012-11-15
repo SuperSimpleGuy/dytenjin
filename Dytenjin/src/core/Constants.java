@@ -18,20 +18,25 @@
 
 package core;
 
-import core.management.game.IdentityManager;
-
 /**
  * This class manages the constants used in the framework
  * @author SuperSimpleGuy
  */
 public class Constants {
 	
+	public static final String ERR_WORLDCAL_YEARS = "Cannot have gap between consecutive years.";
+	
+	
 	public static final boolean LOG_APPEND = true;
 	public static final int MAX_LOG_BYTES = 2097152;
 	public static final int MAX_LOG_FILES = 1;
 	public static final String SYS_LOGGER_NAME = "DYTENJIN_MASTER";
 	public static final String SYS_LOG_FILE = "logs/sys.log";
+	public static final String SYS_ERR_FILE = "logs/err.log";
+	public static final String SYS_FINER_FILE = "logs/finer.log";
 	
+	public static final String ID_VERTEX = "VTX";
+	public static final String ID_EDGE = "EDG";
 	public static final String ID_CAL = "CAL";
 	public static final String ID_ENTITY = "ENT";
 	public static final String ID_RLINK = "RLK";
@@ -53,7 +58,7 @@ public class Constants {
 	public static final String[] ID_TYPES = {ID_REG,
 											 ID_MAP,
 											 ID_LOC};
-	public static IdentityManager ID_MANAGER = new IdentityManager(ID_TYPES);
+	//public static IdentityManager ID_MANAGER = new IdentityManager(ID_TYPES);
 	
 	public static final int BASE_CORE_STAT = 10;
 	
