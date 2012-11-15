@@ -26,6 +26,16 @@ import core.management.game.IdentityManager;
  */
 public class Constants {
 	
+	public static final boolean LOG_APPEND = true;
+	public static final int MAX_LOG_BYTES = 2097152;
+	public static final int MAX_LOG_FILES = 1;
+	public static final String SYS_LOGGER_NAME = "DYTENJIN_MASTER";
+	public static final String SYS_LOG_FILE = "logs/sys.log";
+	
+	public static final String ID_CAL = "CAL";
+	public static final String ID_ENTITY = "ENT";
+	public static final String ID_RLINK = "RLK";
+	
 	public static final String MAP_PARSING_FILENAME = "PARSE_MAP.txt";
 	public static final String MAP_PARSING_ERROR_STRING = "";
 	public static final String MAP_PARSING_ERROR_INCORRECT_FORMAT = "";
