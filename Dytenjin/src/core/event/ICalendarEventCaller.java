@@ -15,34 +15,22 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package core.event;
 
-import core.management.game.IUniqueId;
-import core.temporal.IWorldTimeDuration;
-
 /**
- * Provides an interface for executing events not
- * dependent on a CalendarDate
+ * Interface for creating a class that will accept
+ * and call upon an event
  * @author SuperSimpleGuy
  */
-public interface ICoreEvent extends IEvent, IUniqueId {
-	
+public interface ICalendarEventCaller {
+
 	/**
-	 * Allows for post-event cleanup/modifying functions to be called
+	 * Registers an event with this object to call
+	 * upon
+	 * @param e the event to call
+	 * @return true if the event was successfully
+	 * added, false otherwise
 	 */
-	void endTriggerEvent();
-	
-	/**
-	 * Returns the duration of the event
-	 * @return the IWorldTimeDuration of the event
-	 */
-	IWorldTimeDuration getDurationLength();
-	
-	/**
-	 * 
-	 * @param d
-	 */
-	void decreaseDuration(IWorldTimeDuration d);
+	public boolean registerEvent(ICalendarEvent e);
 	
 }

@@ -18,11 +18,14 @@
 
 package core.geography;
 
+import core.Constants;
+import core.management.game.IUniqueId;
+
 /**
  * 
  * @author SuperSimpleGuy
  */
-public class RegionLink {
+public class RegionLink implements IUniqueId {
 
 	private GeographicalRegion loc1;
 	private CardinalDirection dirFrom1;
@@ -108,7 +111,13 @@ public class RegionLink {
 		return loc2;
 	}
 
+	@Override
 	public int getId() {
 		return id;
+	}
+
+	@Override
+	public String getIdType() {
+		return Constants.ID_RLINK;
 	}
 }

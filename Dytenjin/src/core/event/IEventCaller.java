@@ -18,10 +18,19 @@
 package core.event;
 
 /**
+ * Interface for creating a class that will accept
+ * and call upon an event
  * @author SuperSimpleGuy
  */
 public interface IEventCaller {
 
-	public void registerEventListener(IEvent e);
+	/**
+	 * Registers an event with this object to call
+	 * upon
+	 * @param e the event to call
+	 * @return true if the event was successfully
+	 * registered, false otherwise
+	 */
+	public boolean registerEvent(IEvent e);
 	
 }

@@ -20,7 +20,9 @@ package core.geography;
 
 import java.util.HashMap;
 
+import core.Constants;
 import core.entities.Entity;
+import core.management.game.IUniqueId;
 import core.management.individual.AspectManager;
 import core.temporal.ITimeChanging;
 
@@ -30,7 +32,7 @@ import core.temporal.ITimeChanging;
  * instantiates.
  * @author SuperSimpleGuy
  */
-public abstract class GeographicalLocation implements ITimeChanging {
+public abstract class GeographicalLocation implements ITimeChanging, IUniqueId {
 
 	private GeographicalRegion parent;
 	private int id;
@@ -192,12 +194,14 @@ public abstract class GeographicalLocation implements ITimeChanging {
 		this.owner = owner;
 	}
 	
-	/**
-	 * Returns this location's unique id
-	 * @return this location's unique id
-	 */
+	@Override
 	public int getId() {
 		return id;
+	}
+	
+	@Override
+	public String getIdType() {
+		return Constants.ID_LOC;
 	}
 	
 	/**

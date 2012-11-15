@@ -30,7 +30,7 @@ import core.temporal.WorldCompleteDate;
  * allows events longer than a day also can be triggered multiple times.
  * @author SuperSimpleGuy
  */
-public class CoreEventHandler {
+public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 
 	private HashMap<Integer, ICoreEvent> dailyEvents;
 	private HashMap<Integer, ICoreCalendarEvent> dailyCalEvents;
@@ -242,6 +242,26 @@ public class CoreEventHandler {
 					prevCalEventTriggers.add(e);
 				}
 			}
+		}
+	}
+
+	@Override
+	public boolean registerEvent(IEvent e) {
+		if (e instanceof ICoreEvent) {
+			return addDailyEvent((ICoreEvent)e);
+		} else {
+			//TODO: Use exception class
+			return false;
+		}
+	}
+
+	@Override
+	public boolean registerEvent(ICalendarEvent e) {
+		if (e instanceof ICoreCalendarEvent) {
+			return addDailyCalEvents((ICoreCalendarEvent)e);
+		} else {
+			//TODO: Use exception class
+			return false;
 		}
 	}
 	

@@ -20,12 +20,15 @@ package core.geography;
 
 import java.util.HashMap;
 
+import core.Constants;
+import core.management.game.IUniqueId;
+
 /**
  * Maintains all geographical regions and regional links, and
  * maintain the evolution of the entire map.
  * @author SuperSimpleGuy
  */
-public class GeographicalMap {
+public class GeographicalMap implements IUniqueId {
 
 	private HashMap<Integer, GeographicalRegion> geoRegions;
 	private HashMap<Integer, RegionLink> regLinks;
@@ -149,10 +152,7 @@ public class GeographicalMap {
 		return regLinks;
 	}
 
-	/**
-	 * Returns this map's unique id
-	 * @return this map's unique id
-	 */
+	@Override
 	public int getId() {
 		return id;
 	}
@@ -164,6 +164,11 @@ public class GeographicalMap {
 		}
 		GeographicalMap gM = (GeographicalMap)other;
 		return this.id == gM.getId();
+	}
+
+	@Override
+	public String getIdType() {
+		return Constants.ID_MAP;
 	}
 	
 }

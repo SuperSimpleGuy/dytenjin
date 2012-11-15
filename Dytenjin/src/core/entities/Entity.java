@@ -18,6 +18,8 @@
 
 package core.entities;
 
+import core.Constants;
+import core.management.game.IUniqueId;
 import core.management.individual.AspectManager;
 
 /**
@@ -25,7 +27,7 @@ import core.management.individual.AspectManager;
  * with a name, a unique id number, and aspects.
  * @author SuperSimpleGuy
  */
-public abstract class Entity {
+public abstract class Entity implements IUniqueId {
 	
 	protected String name;
 	private int id;
@@ -54,12 +56,12 @@ public abstract class Entity {
 		this.aMan = asp;
 	}
 	
-	/**
-	 * Returns the unique id of this entity
-	 * @return the unique id of this entity
-	 */
 	public int getId() {
 		return id;
+	}
+	
+	public String getIdType() {
+		return Constants.ID_ENTITY;
 	}
 	
 	/**

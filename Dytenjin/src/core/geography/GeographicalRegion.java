@@ -20,6 +20,8 @@ package core.geography;
 
 import java.util.HashMap;
 
+import core.Constants;
+import core.management.game.IUniqueId;
 import core.management.individual.AspectManager;
 import core.stats.GeographicalRegionStatsManager;
 import core.temporal.ITimeChanging;
@@ -30,7 +32,7 @@ import core.temporal.ITimeChanging;
  * regions
  * @author SuperSimpleGuy
  */
-public abstract class GeographicalRegion implements ITimeChanging {
+public abstract class GeographicalRegion implements ITimeChanging, IUniqueId {
 	
 	private GeographicalRegionStatsManager gStats;
 	private int id;
@@ -221,12 +223,14 @@ public abstract class GeographicalRegion implements ITimeChanging {
 		return paths;
 	}
 
-	/**
-	 * Returns the unique id of this region
-	 * @return the unique id of this region
-	 */
+	@Override
 	public int getId() {
 		return id;
+	}
+	
+	@Override
+	public String getIdType() {
+		return Constants.ID_REG;
 	}
 	
 	/**

@@ -19,23 +19,28 @@ package core.temporal;
 
 import java.util.ArrayList;
 
+import core.Constants;
+import core.management.game.IUniqueId;
+
 /**
  * Maintains the world-level calendar for both system mechanics,
  * game mechanics and possibly in-game mechanics.
  * @author SuperSimpleGuy
  */
-public abstract class WorldCalendar {
+public abstract class WorldCalendar implements IUniqueId {
 	
 	private ArrayList<IWorldYear> years;
 	private String name;
+	private int id;
 	
-	public WorldCalendar(String name) {
+	public WorldCalendar(int id, String name) {
 		this.years = new ArrayList<IWorldYear>();
 		this.name = name;
+		this.id = id;
 	}
 	
-	public WorldCalendar(IWorldYear years, String name) {
-		this(name);
+	public WorldCalendar(int id, String name, IWorldYear years) {
+		this(id, name);
 		this.years.add(years);
 	}
 	
@@ -43,8 +48,8 @@ public abstract class WorldCalendar {
 	 * Creates a WorldCalendar from an array of years.
 	 * @param years an array of years to generate a calendar from
 	 */
-	public WorldCalendar(IWorldYear[] years, String name) {
-		this(name);
+	public WorldCalendar(int id, String name, IWorldYear[] years) {
+		this(id, name);
 		sortYears(years);
 		for (IWorldYear y : years) {
 			this.years.add(y);
@@ -216,4 +221,13 @@ public abstract class WorldCalendar {
 		return temp;
 	}
 	
+	@Override
+	public int getId() {
+		return id;
+	}
+	
+	@Override
+	public String getIdType() {
+		return Constants.ID_CAL;
+	}
 }

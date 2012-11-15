@@ -15,34 +15,27 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package core.event;
-
-import core.management.game.IUniqueId;
-import core.temporal.IWorldTimeDuration;
+package core.management.game;
 
 /**
- * Provides an interface for executing events not
- * dependent on a CalendarDate
+ * Requires the implemented object to have a unique
+ * id compared to others that share its id type
  * @author SuperSimpleGuy
  */
-public interface ICoreEvent extends IEvent, IUniqueId {
+public interface IUniqueId {
+
+	/**
+	 * Returns the unique id of this object
+	 * @return the unique id of this object
+	 */
+	int getId();
 	
 	/**
-	 * Allows for post-event cleanup/modifying functions to be called
+	 * Gets the type of this id, all other objects
+	 * that share this id type must have a unique
+	 * id amongst themselves. Objects with different
+	 * id types can share the same id.
+	 * @return the id type
 	 */
-	void endTriggerEvent();
-	
-	/**
-	 * Returns the duration of the event
-	 * @return the IWorldTimeDuration of the event
-	 */
-	IWorldTimeDuration getDurationLength();
-	
-	/**
-	 * 
-	 * @param d
-	 */
-	void decreaseDuration(IWorldTimeDuration d);
-	
+	String getIdType();
 }
