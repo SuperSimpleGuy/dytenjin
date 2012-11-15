@@ -34,21 +34,21 @@ public class DytenjinFormatter extends SimpleFormatter {
 			return formattedString;
 		}
 		String temp = params[0].toString();
-		formattedString += "\"" + temp;
+		formattedString += "PARAMS: " + temp;
 		int count = temp.length();
 		int i = 1;
 		for (; i < params.length; i++) {
 			temp = params[i].toString();
-			if (count + temp.length() >= 76) {
+			if (count + temp.length() >= 70) {
 				break;
 			}
-			formattedString += "\", \"" + temp;
+			formattedString += " " + temp;
 			count += temp.length();
 		}
 		if (i != params.length) {
-			formattedString += "\"...["+ (params.length-i) +" more]";
+			formattedString += "... ["+ (params.length-i) +" more]";
 		} else {
-			formattedString += "\"";
+			formattedString += "";
 		}
 		
 		return formattedString + "\n";
