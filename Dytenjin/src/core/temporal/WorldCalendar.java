@@ -18,9 +18,11 @@
 package core.temporal;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import core.Constants;
 import core.management.game.IUniqueId;
+import core.system.ExceptionManager;
 
 /**
  * Maintains the world-level calendar for both system mechanics,
@@ -71,7 +73,7 @@ public abstract class WorldCalendar implements IUniqueId {
 			years[finalPos] = years[index];
 			years[index] = temp;
 			if (finalPos > 0 && years[finalPos].getYearValue() != years[finalPos-1].getYearValue() + 1) {
-				//TODO: throw exception.
+				ExceptionManager.SYS_EXCEPTION_MANAGER.throwException(new IllegalArgumentException(Constants.ERR_WORLDCAL_YEARS), Level.WARNING, Constants.SYS_ERR_FILE);
 			}
 		}
 	}

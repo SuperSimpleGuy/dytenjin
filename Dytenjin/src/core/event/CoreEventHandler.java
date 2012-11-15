@@ -20,7 +20,10 @@ package core.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 
+import core.Constants;
+import core.system.CoreLogfileManager;
 import core.temporal.IWorldTimeDuration;
 import core.temporal.WorldCompleteDate;
 
@@ -250,7 +253,7 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 		if (e instanceof ICoreEvent) {
 			return addDailyEvent((ICoreEvent)e);
 		} else {
-			//TODO: Use exception class
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(this.getClass().toString(), Constants.SYS_LOG_FILE, Level.INFO, this.getClass().toString(), "registerEvent(IEvent)", "IEvent parameter passed not of ICoreEvent type.", new IEvent[] {e});
 			return false;
 		}
 	}
@@ -260,7 +263,7 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 		if (e instanceof ICoreCalendarEvent) {
 			return addDailyCalEvents((ICoreCalendarEvent)e);
 		} else {
-			//TODO: Use exception class
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(this.getClass().toString(), Constants.SYS_LOG_FILE, Level.INFO, this.getClass().toString(), "registerEvent(IEvent)", "ICalendarEvent parameter passed not of ICoreCalendarEvent type.", new ICalendarEvent[] {e});
 			return false;
 		}
 	}

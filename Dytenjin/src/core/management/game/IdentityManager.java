@@ -25,14 +25,16 @@ import java.util.HashMap;
  * @author SuperSimpleGuy
  */
 public class IdentityManager {
+	
+	public static IdentityManager SYS_IDMNGR = new IdentityManager();
 
 	private HashMap<String, Integer> identities;
 	
-	public IdentityManager() {
+	private IdentityManager() {
 		identities = new HashMap<String, Integer>();
 	}
 	
-	public IdentityManager(String[] keys) {
+	private IdentityManager(String[] keys) {
 		this();
 		for (String s : keys) {
 			this.addNewIdTracking(s);
