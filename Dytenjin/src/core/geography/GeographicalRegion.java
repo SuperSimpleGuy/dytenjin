@@ -24,7 +24,6 @@ import core.Constants;
 import core.management.game.IUniqueId;
 import core.management.individual.AspectManager;
 import core.stats.GeographicalRegionStatsManager;
-import core.temporal.ITimeChanging;
 
 /**
  * Manages a region of locations, and as a parent map. Maintains its
@@ -32,12 +31,14 @@ import core.temporal.ITimeChanging;
  * regions
  * @author SuperSimpleGuy
  */
-public abstract class GeographicalRegion implements ITimeChanging, IUniqueId {
+public abstract class GeographicalRegion implements IUniqueId {
 	
 	private GeographicalRegionStatsManager gStats;
 	private int id;
 	private String name;
 	private AspectManager aspects;
+	private int xCoord;
+	private int yCoord;
 	
 	protected HashMap<Integer, RegionLink> paths;
 	protected HashMap<Integer, GeographicalLocation> childLocs;
@@ -52,6 +53,8 @@ public abstract class GeographicalRegion implements ITimeChanging, IUniqueId {
 	 */
 	public GeographicalRegion (String name,
 							   int id,
+							   int xCoord,
+							   int yCoord,
 							   AspectManager asp) {
 		this.id = id;
 		this.name = name;
@@ -258,5 +261,20 @@ public abstract class GeographicalRegion implements ITimeChanging, IUniqueId {
 		GeographicalRegion gR = (GeographicalRegion)other;
 		return this.id == gR.getId();
 	}
-	
+
+	/**
+	 * Returns the xCoord 
+	 * @return the xCoord
+	 */
+	public int getxCoord() {
+		return xCoord;
+	}
+
+	/**
+	 * Returns the yCoord 
+	 * @return the yCoord
+	 */
+	public int getyCoord() {
+		return yCoord;
+	}
 }

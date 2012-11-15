@@ -20,6 +20,7 @@ package core.geography;
 
 import java.util.HashMap;
 
+import core.Constants;
 import core.management.individual.AspectManager;
 
 /**
@@ -32,7 +33,7 @@ public abstract class LocationLink extends GeographicalLocation {
 	private CardinalDirection dirFrom1;
 	private GeographicalLocation loc2;
 	private CardinalDirection dirFrom2;
-	private int length;
+	private double length;
 	
 	private HashMap<Integer, CardinalDirection> dirFromPath;
 	
@@ -65,7 +66,7 @@ public abstract class LocationLink extends GeographicalLocation {
 			GeographicalLocation loc2,
 			CardinalDirection dirFrom1,
 			CardinalDirection dirFrom2,
-			int length) {
+			double length) {
 		super(name, id, xCoord, yCoord, asp, parent);
 		this.loc1 = loc1;
 		this.loc2 = loc2;
@@ -75,6 +76,7 @@ public abstract class LocationLink extends GeographicalLocation {
 		this.length = length;
 	}
 	
+	@Override
 	public CardinalDirection getDirFromPath(int id) {
 		LocationLink temp = this.paths.get(id);
 		if (temp != null && dirFromPath.containsKey(temp.getId())) {
@@ -84,6 +86,7 @@ public abstract class LocationLink extends GeographicalLocation {
 		}
 	}
 	
+	@Override
 	public CardinalDirection getDirToPath(int id) {
 		LocationLink temp = this.paths.get(id);
 		if (temp != null && dirFromPath.containsKey(temp.getId())) {
@@ -120,10 +123,11 @@ public abstract class LocationLink extends GeographicalLocation {
 		return null;
 	}
 	
+	@Override
 	public boolean addLocationLink(LocationLink l) {
 		if (!paths.containsKey(l.getId())) {
 			paths.put(l.getId(), l);
-			addDirFromPath(l.getId(), CardinalDirection.ERR);
+			dirFromPath.put(l.getId(), CardinalDirection.ERR);
 			return true;
 		}
 		return false;
@@ -132,7 +136,7 @@ public abstract class LocationLink extends GeographicalLocation {
 	public boolean addLocationLink(LocationLink l, CardinalDirection dir) {
 		if (!paths.containsKey(l.getId())) {
 			paths.put(l.getId(), l);
-			addDirFromPath(l.getId(), dir);
+			dirFromPath.put(l.getId(), dir);
 			return true;
 		}
 		return false;
@@ -141,27 +145,33 @@ public abstract class LocationLink extends GeographicalLocation {
 	public boolean changeLocLinkDir(LocationLink l, CardinalDirection dirNew) {
 		if (dirFromPath.containsKey(l.getId())) {
 			dirFromPath.remove(l.getId());
-			addDirFromPath(l.getId(), dirNew);
+			dirFromPath.put(l.getId(), dirNew);
 			return true;
 		}
 		return false;
 	}
 	
-	private boolean addDirFromPath(int id, CardinalDirection fromId) {
-		if (!paths.containsKey(id)) {
-			dirFromPath.put(id, fromId);
-			return true;
-		}
-		return false;
-	}
-	
-	public int getLength() {
+	public double getLength() {
 		return length;
 	}
 	
-	public int setLength(int length) {
-		int temp = this.length;
+	public double setLength(double length) {
+		double temp = this.length;
 		this.length = length;
 		return temp;
 	}
+	
+	public GeographicalLocation getLoc1() {
+		return loc1;
+	}
+
+	public GeographicalLocation getLoc2() {
+		return loc2;
+	}
+	
+	@Override
+	public String getIdType() {
+		return Constants.ID_RLINK;
+	}
+	
 }

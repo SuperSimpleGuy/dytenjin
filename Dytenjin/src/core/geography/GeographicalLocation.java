@@ -220,6 +220,7 @@ public abstract class GeographicalLocation implements ITimeChanging, IUniqueId {
 		return yCoord;
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof GeographicalLocation)) {
 			return false;

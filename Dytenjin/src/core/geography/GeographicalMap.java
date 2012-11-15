@@ -22,6 +22,8 @@ import java.util.HashMap;
 
 import core.Constants;
 import core.management.game.IUniqueId;
+import core.management.game.IdentityManager;
+import core.management.individual.AspectManager;
 
 /**
  * Maintains all geographical regions and regional links, and
@@ -100,13 +102,46 @@ public class GeographicalMap implements IUniqueId {
 	/**
 	 * Creates a regional link between two regions, returning the
 	 * newly created link
+	 * @param name the name of the RegionLink
+	 * @param xCoord the xCoordinate of the RegionLink to create
+	 * @param yCoord the yCoordinate of the RegionLink to create
 	 * @param idFirstGR the unique id of the first GeographialRegion to link
 	 * @param idSecondGr the unique id of the second GeographicalRegion to link
 	 * @return the new RegionalLink between the GeographicalRegions
 	 */
-	public RegionLink createRegLinkBetween(int idFirstGR, int idSecondGr) {
-		//TODO Add stuff here
-		return null;
+	public RegionLink createRegLinkBetween(String name, int xCoord, int yCoord, int idFirstGR, int idSecondGR) {
+		if (!geoRegions.containsKey(idFirstGR) || !geoRegions.containsKey(idSecondGR)) {
+			return null;
+		}
+		GeographicalRegion r1 = geoRegions.get(idFirstGR);
+		GeographicalRegion r2 = geoRegions.get(idSecondGR);
+		CardinalDirection dirOneToRL = CardinalDirection.getDirFromCoords(r1.getxCoord(), r1.getyCoord(), xCoord, yCoord);
+		CardinalDirection dirTwoToRL = CardinalDirection.getDirFromCoords(r2.getxCoord(), r2.getyCoord(), xCoord, yCoord);
+		double dist = Math.sqrt((r1.getxCoord() - xCoord)*(r1.getxCoord() - xCoord) + (r1.getyCoord() - yCoord)*(r1.getyCoord() - yCoord));
+		dist += Math.sqrt((xCoord - r2.getxCoord())*(xCoord - r2.getxCoord()) + (yCoord - r2.getyCoord())*(yCoord - r2.getyCoord()));
+		RegionLink freshRL = new RegionLink(name, IdentityManager.SYS_IDMNGR.getNextFreeId(Constants.ID_RLINK), xCoord, yCoord, new AspectManager(), r1, dirOneToRL, r2, dirTwoToRL, dist);
+		regLinks.put(freshRL.getId(), freshRL);
+		if (r1.addRegionLink(freshRL) && r2.addRegionLink(freshRL)) {
+			r1.removeRegionLink(freshRL.getId());
+			r2.removeRegionLink(freshRL.getId());
+			return null;
+		}
+		return freshRL;
+	}
+	
+	public RegionLink putRegLinkBetween(RegionLink freshRL, int idFirstGR, int idSecondGR) {
+		if (!geoRegions.containsKey(idFirstGR) || !geoRegions.containsKey(idSecondGR)) {
+			return null;
+		}
+		GeographicalRegion r1 = geoRegions.get(idFirstGR);
+		GeographicalRegion r2 = geoRegions.get(idSecondGR);
+		regLinks.put(freshRL.getId(), freshRL);
+		if (r1.addRegionLink(freshRL) && r2.addRegionLink(freshRL)) {
+			r1.removeRegionLink(freshRL.getId());
+			r2.removeRegionLink(freshRL.getId());
+			return null;
+		}
+		return freshRL;
 	}
 	
 	/**
@@ -116,8 +151,13 @@ public class GeographicalMap implements IUniqueId {
 	 * @return the RegionLink removed, or null if no such link existed
 	 */
 	public RegionLink removeRegLink(int id) {
-		//TODO Add stuff here
-		return null;
+		RegionLink temp = regLinks.remove(id);
+		if (temp == null) {
+			return null;
+		}
+		temp.getLoc1().removeRegionLink(temp.getId());
+		temp.getLoc2().removeRegionLink(temp.getId());
+		return temp;
 	}
 
 	/**
