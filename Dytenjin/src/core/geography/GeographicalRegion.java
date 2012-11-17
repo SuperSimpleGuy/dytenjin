@@ -57,6 +57,8 @@ public abstract class GeographicalRegion implements IUniqueId {
 		this.id = id;
 		this.name = name;
 		this.aspects = asp;
+		this.xCoord = xCoord;
+		this.yCoord = yCoord;
 		this.paths = new HashMap<Integer, RegionLink>();
 		this.childLocs = new HashMap<Integer, GeographicalLocation>();
 	}
@@ -108,20 +110,20 @@ public abstract class GeographicalRegion implements IUniqueId {
 	 * this region and a non-adjacent region then this method will not succeed and will return
 	 * false. Upon a successful insertion, returns true.
 	 * @param newLL the new LocationLink to insert
-	 * @param idFirstGR the id of the first GeographicalLocation to link
+	 * @param idFirstGL the id of the first GeographicalLocation to link
 	 * @param idRegionParent the id of the neighboring GeographicalRegion
 	 * @param idLocChild the id of the second GeographicalLocation to link, belonging to
 	 * the neighboring GeographicalRegion
 	 * @return true when successfully inserted, false otherwise.
 	 */
-	public boolean putEdgeLocLinkBetween(LocationLink newLL, int idFirstGR, int idRegionParent, int idLocChild) {
-		if (idFirstGR == idLocChild) {
+	public boolean putEdgeLocLinkBetween(LocationLink newLL, int idFirstGL, int idRegionParent, int idLocChild) {
+		if (idFirstGL == idLocChild) {
 			return false;
 		}
 		GeographicalLocation r1 = null;
 		boolean rLink1 = false;
-		if (childLocs.containsKey(idFirstGR)) {
-			r1 = childLocs.get(idFirstGR);
+		if (childLocs.containsKey(idFirstGL)) {
+			r1 = childLocs.get(idFirstGL);
 			if (r1 instanceof LocationLink) {
 				rLink1 = true;
 			}
@@ -181,18 +183,18 @@ public abstract class GeographicalRegion implements IUniqueId {
 	 * to link LocationLinks that are linking themselves, then this method will not
 	 * succeed and return false
 	 * @param newLL the new LocationLink to insert
-	 * @param idFirstGR the id of the first GeographicalLocation to link
-	 * @param idSecondGR the id of the second GeographicalLocation to link
+	 * @param idFirstGL the id of the first GeographicalLocation to link
+	 * @param idSecondGL the id of the second GeographicalLocation to link
 	 * @return true when successfully inserted, false otherwise.
 	 */
-	public boolean putLocLinkBetween(LocationLink newLL, int idFirstGR, int idSecondGR) {
-		if (idFirstGR == idSecondGR) {
+	public boolean putLocLinkBetween(LocationLink newLL, int idFirstGL, int idSecondGL) {
+		if (idFirstGL == idSecondGL) {
 			return false;
 		}
 		GeographicalLocation r1 = null;
 		boolean rLink1 = false;
-		if (childLocs.containsKey(idFirstGR)) {
-			r1 = childLocs.get(idFirstGR);
+		if (childLocs.containsKey(idFirstGL)) {
+			r1 = childLocs.get(idFirstGL);
 			if (r1 instanceof LocationLink) {
 				rLink1 = true;
 			}
@@ -204,8 +206,8 @@ public abstract class GeographicalRegion implements IUniqueId {
 		}
 		GeographicalLocation r2 = null;
 		boolean rLink2 = false;
-		if (childLocs.containsKey(idSecondGR)) {
-			r2 = childLocs.get(idSecondGR);
+		if (childLocs.containsKey(idSecondGL)) {
+			r2 = childLocs.get(idSecondGL);
 			if (r2 instanceof LocationLink) {
 				rLink2 = true;
 			}
@@ -227,10 +229,24 @@ public abstract class GeographicalRegion implements IUniqueId {
 		return true;
 	}
 	
+	/**
+	 * Removes a LocationLink from this GeographicalRegion by calling upon
+	 * the LocationLink's removeSelfFromParent method, which removes any
+	 * other LocationLinks that are linking with the one targeted for removal.
+	 * @param l the LocationLink to remove
+	 * @return the LocationLink removed, or null if no such link was removed.
+	 */
 	public LocationLink removeLocationLink(LocationLink l) {
 		return this.removeLocationLink(l.getId());
 	}
 	
+	/**
+	 * Removes a LocationLink from this GeographicalRegion by calling upon
+	 * the LocationLink's removeSelfFromParent method, which removes any
+	 * other LocationLinks that are linking with the one targeted for removal.
+	 * @param id the id of the LocationLink to remove
+	 * @return the LocationLink removed, or null if no such link was removed.
+	 */
 	public LocationLink removeLocationLink(int id) {
 		GeographicalLocation temp = childLocs.get(id);
 		if (temp == null || !(temp instanceof LocationLink)) {

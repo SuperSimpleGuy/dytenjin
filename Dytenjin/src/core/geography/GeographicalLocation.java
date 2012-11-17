@@ -24,7 +24,6 @@ import core.Constants;
 import core.entities.Entity;
 import core.management.game.IUniqueId;
 import core.management.individual.AspectManager;
-import core.temporal.ITimeChanging;
 
 /**
  * Represents a geographical location that entities can occupy and own.
@@ -32,7 +31,7 @@ import core.temporal.ITimeChanging;
  * instantiates.
  * @author SuperSimpleGuy
  */
-public abstract class GeographicalLocation implements ITimeChanging, IUniqueId {
+public abstract class GeographicalLocation implements IUniqueId {
 
 	private GeographicalRegion parent;
 	private int id;
