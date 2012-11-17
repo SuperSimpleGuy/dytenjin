@@ -26,7 +26,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import core.Constants;
 import core.system.CoreLogfileManager;
 
 /**
@@ -36,17 +35,13 @@ public class CoreLogfileManagerTest {
 
 	private CoreLogfileManager testingManager = CoreLogfileManager.ENGINE_LOGMNGR;
 
-	private static final String testLoggerName = "logger.test.one";
-	private static final String testFileName = "logs/test.log";
+	private static final String testLoggerName = "test.logger.log";
+	private static final String testFileName = "logs/test.logfilemanager.log";
 	private Level originalLevel;
 	
 	@BeforeClass
 	public static void setupTests() {
 		File f = new File(testFileName);
-		if (f.exists()) {
-			f.delete();
-		}
-		f = new File(Constants.SYS_LOG_FILE);
 		if (f.exists()) {
 			f.delete();
 		}
@@ -66,13 +61,13 @@ public class CoreLogfileManagerTest {
 	
 	@Test
 	public void testWithoutParams() {
-		boolean b = testingManager.logWithoutParams(testLoggerName, Constants.SYS_LOG_FILE, Level.WARNING, this.getClass().toString(), "testWithoutParams", "Success!");
+		boolean b = testingManager.logWithoutParams(testLoggerName, testFileName, Level.WARNING, this.getClass().toString(), "testWithoutParams", "Success!");
 		assert(b == true);
 	}
 	
 	@Test
 	public void testWithParams() {
-		boolean b = testingManager.logWithParams(testLoggerName, Constants.SYS_LOG_FILE, Level.WARNING, this.getClass().toString(), "testWithParams", "Success!", new String[] {"test", "this", "array"});
+		boolean b = testingManager.logWithParams(testLoggerName, testFileName, Level.WARNING, this.getClass().toString(), "testWithParams", "Success!", new String[] {"test", "this", "array"});
 		assert(b == true);
 	}
 	

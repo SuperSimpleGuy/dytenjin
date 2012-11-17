@@ -46,7 +46,7 @@ public class CoreLogfileManager {
 			fHand.setFormatter(new DytenjinFormatter());
 		} catch (Exception e) {
 			if (fileName.equals(Constants.SYS_LOG_FILE)) {
-				throw new RuntimeException("SEVERE: Could not register the core system's logging file (FileHandler failed).", e);
+				throw new RuntimeException("Could not register the core system's logging file (FileHandler failed).", e);
 			} else {
 				logWithParams(Constants.SYS_LOGGER_NAME, Constants.SYS_LOG_FILE, Level.WARNING, this.getClass().toString(), "registerFileLogger", "Could not register a file logger.", new String[] {fileName, e.getMessage()});
 			}

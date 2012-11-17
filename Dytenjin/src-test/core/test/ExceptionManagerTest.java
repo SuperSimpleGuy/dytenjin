@@ -32,7 +32,7 @@ import core.system.ExceptionManager;
  */
 public class ExceptionManagerTest {
 
-	private static final String testFileName = "logs/error.log";
+	private static final String testFileName = "logs/test.error.log";
 	
 	@BeforeClass
 	public static void setupTests() {
