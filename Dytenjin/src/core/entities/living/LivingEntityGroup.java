@@ -21,6 +21,7 @@ package core.entities.living;
 import java.util.HashMap;
 
 import core.entities.Entity;
+import core.management.game.UniqueId;
 
 /**
  * 
@@ -31,20 +32,20 @@ public abstract class LivingEntityGroup extends Entity {
 	protected HashMap<Integer, LivingEntity> entities;
 	
 	
-	public LivingEntityGroup(String s, int id) {
+	public LivingEntityGroup(String s, UniqueId id) {
 		super(s, id);
 		this.entities = new HashMap<Integer, LivingEntity>();
 	}
 	
-	public LivingEntityGroup(LivingEntity e, String s, int id) {
+	public LivingEntityGroup(LivingEntity e, String s, UniqueId id) {
 		this(s, id);
-		this.entities.put(e.getId(), e);
+		this.entities.put(e.getUniqueId().getId(), e);
 	}
 	
-	public LivingEntityGroup(LivingEntity[] e, String s, int id) {
+	public LivingEntityGroup(LivingEntity[] e, String s, UniqueId id) {
 		this(s, id);
 		for (LivingEntity ent : e) {
-			this.entities.put(ent.getId(), ent);
+			this.entities.put(ent.getUniqueId().getId(), ent);
 		}
 	}
 	
@@ -63,10 +64,10 @@ public abstract class LivingEntityGroup extends Entity {
 	}
 	
 	public boolean addEntity(LivingEntity e) {
-		if (entities.containsKey(e.getId())) {
+		if (entities.containsKey(e.getUniqueId().getId())) {
 			return false;
 		}
-		entities.put(e.getId(), e);
+		entities.put(e.getUniqueId().getId(), e);
 		return true;
 	}
 	

@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import core.Constants;
-import core.management.game.IUniqueId;
+import core.management.game.IHasUniqueId;
+import core.management.game.UniqueId;
 import core.system.CoreLogfileManager;
 import core.system.ExceptionManager;
 
@@ -30,41 +31,41 @@ import core.system.ExceptionManager;
  * game mechanics and possibly in-game mechanics.
  * @author SuperSimpleGuy
  */
-public abstract class WorldCalendar implements IUniqueId {
+public abstract class WorldCalendar implements IHasUniqueId {
 	
 	private ArrayList<IWorldYear> years;
 	private String name;
-	private int id;
+	private UniqueId id;
 	
-	public WorldCalendar(int id, String name) {
+	public WorldCalendar(UniqueId id, String name) {
 		this.years = new ArrayList<IWorldYear>();
 		this.name = name;
 		this.id = id;
-		CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(this.getClass().toString(), Constants.SYS_LOG_FILE, Level.INFO, this.getClass().toString(), "WorldCalendar", "WorldCalendar constructed with no years.", new Object[] {id});
+		CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.INFO, this.getClass(), "WorldCalendar", "WorldCalendar constructed with no years.", new Object[] {id});
 	}
 	
-	public WorldCalendar(int id, String name, IWorldYear years) {
+	public WorldCalendar(UniqueId id, String name, IWorldYear years) {
 		this(id, name);
 		this.years.add(years);
-		CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(this.getClass().toString(), Constants.SYS_LOG_FILE, Level.INFO, this.getClass().toString(), "WorldCalendar", "WorldCalendar constructed with a year.", new Object[] {id, years});
+		CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.INFO, this.getClass(), "WorldCalendar", "WorldCalendar constructed with a year.", new Object[] {id, years});
 	}
 	
 	/**
 	 * Creates a WorldCalendar from an array of years.
 	 * @param years an array of years to generate a calendar from
 	 */
-	public WorldCalendar(int id, String name, IWorldYear[] years) {
+	public WorldCalendar(UniqueId id, String name, IWorldYear[] years) {
 		this(id, name);
 		sortYears(years);
 		for (IWorldYear y : years) {
 			this.years.add(y);
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(this.getClass().toString(), Constants.SYS_LOG_FILE, Level.INFO, this.getClass().toString(), "WorldCalendar", "WorldCalendar constructed with array of years.", new Object[] {id, years});
+		CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.INFO, this.getClass(), "WorldCalendar", "WorldCalendar constructed with array of years.", new Object[] {id, years});
 	}
 	
 	private void sortYears(IWorldYear[] years) {
 		if (years.length == 0) {
-			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(this.getClass().toString(), Constants.SYS_LOG_FILE, Level.FINEST, this.getClass().toString(), "sortYears", "Parameter of years has length zero.", years);
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "sortYears", "Parameter of years has length zero.", years);
 			return;
 		}
 		for (int finalPos = 0; finalPos < years.length - 1; finalPos++) {
@@ -81,37 +82,37 @@ public abstract class WorldCalendar implements IUniqueId {
 				ExceptionManager.SYS_EXCEPTION_MANAGER.throwException(new IllegalArgumentException(Constants.ERR_WORLDCAL_YEARS), Level.WARNING, Constants.SYS_ERR_FILE);
 			}
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "sortYears", "Void method done.");
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "sortYears", "Void method done.");
 	}
 	
 	public boolean isCalendarValid() {
 		for (int i = 1; i < years.size(); i++) {
 			if (years.get(i).getYearValue() != years.get(i-1).getYearValue() + 1) {
 				ExceptionManager.SYS_EXCEPTION_MANAGER.throwException(new IllegalStateException(Constants.ERR_WORLDCAL_YEARS), Level.WARNING, Constants.SYS_ERR_FILE);
-				CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "isCalendarValid", "Boolean method done.", false);
+				CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "isCalendarValid", "Boolean method done.", false);
 				return false;
 			}
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "isCalendarValid", "Boolean method done.", true);
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "isCalendarValid", "Boolean method done.", true);
 		return true;
 	}
 	
 	public boolean addYearToEnd(IWorldYear year) {
 		if (years.size() == 0 || years.get(years.size() - 1).getYearValue() + 1 == year.getYearValue()) {
 			years.add(year);
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "addYearToEnd", "Boolean method done.", true);
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "addYearToEnd", "Boolean method done.", true);
 			return true;
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "addYearToEnd", "Boolean method done.", false);
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "addYearToEnd", "Boolean method done.", false);
 		return false;
 	}
 	
 	public IWorldYear removeYearFromEnd() {
 		if (years.size() == 0) {
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "removeYearFromEnd", "IWorldYear method done, returning null");
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "removeYearFromEnd", "IWorldYear method done, returning null");
 			return null;
 		} else {
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "removeYearFromEnd", "IWorldYear method done, returning removed");
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "removeYearFromEnd", "IWorldYear method done, returning removed");
 			return years.remove(years.size() - 1);
 		}
 	}
@@ -120,19 +121,19 @@ public abstract class WorldCalendar implements IUniqueId {
 														  WorldCalendar otherCal) {
 		int totalDays = otherCal.getTotalDaysToDate(otherDate);
 		if (totalDays == -1) {
-			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(this.getClass().toString(), Constants.SYS_ERR_FILE, Level.WARNING, this.getClass().toString(), "getDateFromOtherCalendarDate", "otherCal.getTotalDaysToDate(otherDate) returned -1", new Object[] {otherDate, otherCal});
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "getDateFromOtherCalendarDate", "WorldDate method done", null);
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_ERR_FILE, Level.WARNING, this.getClass(), "getDateFromOtherCalendarDate", "otherCal.getTotalDaysToDate(otherDate) returned -1", new Object[] {otherDate, otherCal});
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "getDateFromOtherCalendarDate", "WorldDate method done", null);
 			return null;
 		}
 		WorldDate temp = this.getDateFromTotalDays(totalDays);
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "getDateFromOtherCalendarDate", "WorldDate method done", new Object[] {temp});
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "getDateFromOtherCalendarDate", "WorldDate method done", new Object[] {temp});
 		return temp;
 	}
 	
 	public WorldDate getDateFromTotalDays(int totalDays) {
 		if (years.size() == 0) {
-			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(this.getClass().toString(), Constants.SYS_ERR_FILE, Level.WARNING, this.getClass().toString(), "getDateFromTotalDays", "years.size() is zero", new Object[] {totalDays});
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "getDateFromTotalDays", "WorldDate method done, returning null");
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_ERR_FILE, Level.WARNING, this.getClass(), "getDateFromTotalDays", "years.size() is zero", new Object[] {totalDays});
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "getDateFromTotalDays", "WorldDate method done, returning null");
 			return null;
 		}
 		int yearNumDays = years.get(0).getTotalNumDays();
@@ -142,8 +143,8 @@ public abstract class WorldCalendar implements IUniqueId {
 			index++;
 		}
 		if (index == years.size()) {
-			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(this.getClass().toString(), Constants.SYS_ERR_FILE, Level.WARNING, this.getClass().toString(), "getDateFromTotalDays", "totalDays refers to a date beyond this calendar's years", new Object[] {totalDays});
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "getDateFromTotalDays", "WorldDate method done, returning null");
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_ERR_FILE, Level.WARNING, this.getClass(), "getDateFromTotalDays", "totalDays refers to a date beyond this calendar's years", new Object[] {totalDays});
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "getDateFromTotalDays", "WorldDate method done, returning null");
 			return null;
 		}
 		IWorldYear tempYear = years.get(index).clone();
@@ -162,8 +163,8 @@ public abstract class WorldCalendar implements IUniqueId {
 //		}
 		ArrayList<IWorldMonth> months = years.get(index).getMonths();
 		if (months.size() == 0) {
-			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(this.getClass().toString(), Constants.SYS_ERR_FILE, Level.WARNING, this.getClass().toString(), "getDateFromTotalDays", "years.get(index).getMonths() returned a month array with size zero", new Object[] {totalDays, months});
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "getDateFromTotalDays", "WorldDate method done, returning null");
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_ERR_FILE, Level.WARNING, this.getClass(), "getDateFromTotalDays", "years.get(index).getMonths() returned a month array with size zero", new Object[] {totalDays, months});
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "getDateFromTotalDays", "WorldDate method done, returning null");
 			return null;
 		}
 		int monthNumDays = months.get(0).getNumDays();
@@ -175,7 +176,7 @@ public abstract class WorldCalendar implements IUniqueId {
 		IWorldMonth tempMonth = months.get(index).clone();
 		IWorldDay tempDay = months.get(index).getDayByValue(totalDays - yearNumDays - monthNumDays);
 		
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "getDateFromTotalDays", "WorldDate method done, returning new WorldDate");
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "getDateFromTotalDays", "WorldDate method done, returning new WorldDate");
 		return new WorldDate(this.name, tempYear, tempMonth, tempDay);
 	}
 	
@@ -188,11 +189,11 @@ public abstract class WorldCalendar implements IUniqueId {
 	public int numDaysInYear(int yearVal) {
 		int index = yearVal + years.get(0).getYearValue();
 		if (index >= 0 && index < years.size() && years.get(index).getYearValue() == yearVal) {
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "numDaysInYear", "Integer method done", years.get(index).getTotalNumDays());
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "numDaysInYear", "Integer method done", years.get(index).getTotalNumDays());
 			return years.get(index).getTotalNumDays();
 		} else {
-			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(this.getClass().toString(), Constants.SYS_ERR_FILE, Level.WARNING, this.getClass().toString(), "numDaysInYear", "yearVal not found or index outside bounds", new Object[] {yearVal, index});
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "numDaysInYear", "Integer method done", -1);
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_ERR_FILE, Level.WARNING, this.getClass(), "numDaysInYear", "yearVal not found or index outside bounds", new Object[] {yearVal, index});
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "numDaysInYear", "Integer method done", -1);
 			return -1;
 		}
 	}
@@ -206,7 +207,7 @@ public abstract class WorldCalendar implements IUniqueId {
 		for (int i = 0; i < temp.length; i++) {
 			temp[i] = years.get(i);
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "getYearsList", "IWorldYear[] method done", temp);
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "getYearsList", "IWorldYear[] method done", temp);
 		return temp;
 	}
 	
@@ -228,14 +229,14 @@ public abstract class WorldCalendar implements IUniqueId {
 		for (int i = 0; i < years.size(); i++) {
 			temp += years.get(i).getTotalNumDays();
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "getTotalDays", "Integer method done", temp);
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "getTotalDays", "Integer method done", temp);
 		return temp;
 	}
 	
 	public int getTotalDaysToDate(WorldDate otherDate) {
 		if (!otherDate.getCalendarName().equals(name)) {
-			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(this.getClass().toString(), Constants.SYS_ERR_FILE, Level.WARNING, this.getClass().toString(), "getTotalDaysToDate", "otherDate's calendar name doesn't match", new Object[] {otherDate});
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "getTotalDaysToDate", "Integer method done", -1);
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_ERR_FILE, Level.WARNING, this.getClass(), "getTotalDaysToDate", "otherDate's calendar name doesn't match", new Object[] {otherDate});
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "getTotalDaysToDate", "Integer method done", -1);
 			return -1;
 		}
 		int temp = 0;
@@ -251,17 +252,12 @@ public abstract class WorldCalendar implements IUniqueId {
 				temp += otherDate.getCurrentDay().getDayValue();
 			}
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass().toString(), Constants.SYS_LOG_FILE, "getTotalDaysToDate", "Integer method done", temp);
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "getTotalDaysToDate", "Integer method done", temp);
 		return temp;
 	}
 	
 	@Override
-	public int getId() {
+	public UniqueId getUniqueId() {
 		return id;
-	}
-	
-	@Override
-	public String getIdType() {
-		return Constants.ID_CAL;
 	}
 }

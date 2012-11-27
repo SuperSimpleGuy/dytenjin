@@ -19,7 +19,8 @@
 package core.entities.living;
 
 import core.geography.GeographicalLocation;
-import core.management.individual.AspectManager;
+import core.management.game.UniqueId;
+import core.management.ingame.AspectManager;
 
 /**
  * Stub, doesn't really do anything at this point.
@@ -34,7 +35,7 @@ public abstract class Player extends LivingEntity {
 	 * @param aMan the player's aspects
 	 * @param l the location of this player
 	 */
-	public Player(String s, int id, AspectManager aMan, GeographicalLocation l) {
+	public Player(String s, UniqueId id, AspectManager aMan, GeographicalLocation l) {
 		super(s, id, l, aMan);
 	}
 	

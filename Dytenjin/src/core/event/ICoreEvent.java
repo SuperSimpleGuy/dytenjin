@@ -18,7 +18,7 @@
 
 package core.event;
 
-import core.management.game.IUniqueId;
+import core.management.game.IHasUniqueId;
 import core.temporal.IWorldTimeDuration;
 
 /**
@@ -26,7 +26,7 @@ import core.temporal.IWorldTimeDuration;
  * dependent on a CalendarDate
  * @author SuperSimpleGuy
  */
-public interface ICoreEvent extends IEvent, IUniqueId {
+public interface ICoreEvent extends IEvent, IHasUniqueId {
 	
 	/**
 	 * Allows for post-event cleanup/modifying functions to be called

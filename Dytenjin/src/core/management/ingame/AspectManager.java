@@ -16,20 +16,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package core.management.individual;
-
-import core.parsing.FileParser;
+package core.management.ingame;
 
 /**
  * 
  * @author SuperSimpleGuy
  */
-public class Terrain implements IAspect{
+public class AspectManager {
 
-	@Override
-	public String getDescription(FileParser p) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
+	
 }

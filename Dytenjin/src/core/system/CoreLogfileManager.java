@@ -48,7 +48,7 @@ public class CoreLogfileManager {
 			if (fileName.equals(Constants.SYS_LOG_FILE)) {
 				throw new RuntimeException("Could not register the core system's logging file (FileHandler failed).", e);
 			} else {
-				logWithParams(Constants.SYS_LOGGER_NAME, Constants.SYS_LOG_FILE, Level.WARNING, this.getClass().toString(), "registerFileLogger", "Could not register a file logger.", new String[] {fileName, e.getMessage()});
+				logWithParams(Constants.SYS_LOG_FILE, Level.WARNING, this.getClass(), "registerFileLogger", "Could not register a file logger.", new String[] {fileName, e.getMessage()});
 			}
 		}
 		return fHand;
@@ -62,18 +62,17 @@ public class CoreLogfileManager {
 		logLevel.remove(fileName);
 	}
 	
-	public boolean logWithParams(String loggerName,
-								  String fileName,
-								  Level level,
-								  String clazz,
-								  String methodName,
-								  String message,
-								  Object[] args) {
+	public boolean logWithParams(String fileName,
+			Level level,
+			Class<?> clazz,
+			String methodName,
+			String message,
+			Object[] args) {
 		FileHandler f = getFileHandler(fileName);
 		if (f == null) {
 			return false;
 		}
-		Logger l = Logger.getLogger(loggerName);
+		Logger l = Logger.getLogger(clazz.toString());
 		l.setUseParentHandlers(false);
 		l.addHandler(f);
 		Level logL = logLevel.get(fileName);
@@ -81,7 +80,7 @@ public class CoreLogfileManager {
 		if (logL != null) {
 			l.setLevel(logL);
 		}
-		l.logp(level, clazz, methodName, message, args);
+		l.logp(level, clazz.toString(), methodName, message, args);
 		if (logL != null) {
 			l.setLevel(oldLogL);
 		}
@@ -91,17 +90,16 @@ public class CoreLogfileManager {
 		return true;
 	}
 	
-	public boolean logWithoutParams(String loggerName,
-								  String fileName,
-								  Level level,
-								  String clazz,
-								  String methodName,
-								  String message) {
+	public boolean logWithoutParams(String fileName,
+			Level level,
+			Class<?> clazz,
+			String methodName,
+			String message) {
 		FileHandler f = getFileHandler(fileName);
 		if (f == null) {
 			return false;
 		}
-		Logger l = Logger.getLogger(loggerName);
+		Logger l = Logger.getLogger(clazz.toString());
 		l.setUseParentHandlers(false);
 		l.addHandler(f);
 		Level logL = logLevel.get(fileName);
@@ -109,7 +107,7 @@ public class CoreLogfileManager {
 		if (logL != null) {
 			l.setLevel(logL);
 		}
-		l.logp(level, clazz, methodName, message);
+		l.logp(level, clazz.toString(), methodName, message);
 		if (logL != null) {
 			l.setLevel(oldLogL);
 		}
@@ -119,16 +117,16 @@ public class CoreLogfileManager {
 		return true;
 	}
 	
-	public boolean enteringWithParams(String loggerName,
-								 String fileName,
-								 String methodName,
-								 String message,
-								 Object[] args) {
+	public boolean enteringWithParams(Class<?> clazz,
+			String fileName,
+			String methodName,
+			String message,
+			Object[] args) {
 		FileHandler f = getFileHandler(fileName);
 		if (f == null) {
 			return false;
 		}
-		Logger l = Logger.getLogger(loggerName);
+		Logger l = Logger.getLogger(clazz.toString());
 		l.setUseParentHandlers(false);
 		l.addHandler(f);
 		Level logL = logLevel.get(fileName);
@@ -146,15 +144,15 @@ public class CoreLogfileManager {
 		return true;
 	}
 		
-	public boolean enteringWithoutParams(String loggerName,
-									String fileName,
-									String methodName,
-									String message) {
+	public boolean enteringWithoutParams(Class<?> clazz,
+			String fileName,
+			String methodName,
+			String message) {
 		FileHandler f = getFileHandler(fileName);
 		if (f == null) {
 			return false;
 		}
-		Logger l = Logger.getLogger(loggerName);
+		Logger l = Logger.getLogger(clazz.toString());
 		l.setUseParentHandlers(false);
 		l.addHandler(f);
 		Level logL = logLevel.get(fileName);
@@ -172,16 +170,16 @@ public class CoreLogfileManager {
 		return true;
 	}
 	
-	public boolean exitingWithResult(String loggerName,
-									  String fileName,
-									  String methodName,
-									  String message,
-									  Object args) {
+	public boolean exitingWithResult(Class<?> clazz,
+			String fileName,
+			String methodName,
+			String message,
+			Object args) {
 		FileHandler f = getFileHandler(fileName);
 		if (f == null) {
 			return false;
 		}
-		Logger l = Logger.getLogger(loggerName);
+		Logger l = Logger.getLogger(clazz.toString());
 		l.setUseParentHandlers(false);
 		l.addHandler(f);
 		Level logL = logLevel.get(fileName);
@@ -199,15 +197,15 @@ public class CoreLogfileManager {
 		return true;
 	}
 		
-	public boolean exitingWithoutResult(String loggerName,
-										String fileName,
-										String methodName,
-										String message) {
+	public boolean exitingWithoutResult(Class<?> clazz,
+			String fileName,
+			String methodName,
+			String message) {
 		FileHandler f = getFileHandler(fileName);
 		if (f == null) {
 			return false;
 		}
-		Logger l = Logger.getLogger(loggerName);
+		Logger l = Logger.getLogger(clazz.toString());
 		l.setUseParentHandlers(false);
 		l.addHandler(f);
 		Level logL = logLevel.get(fileName);

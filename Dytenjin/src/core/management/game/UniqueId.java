@@ -15,20 +15,53 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package core.management.individual;
-
-import core.parsing.FileParser;
+package core.management.game;
 
 /**
- * 
  * @author SuperSimpleGuy
  */
-public class HiddenStatsManager extends StatsManager {
+public class UniqueId implements Comparable<UniqueId> {
 
-	@Override
-	public String getDescription(FileParser p) {
-		return "";
+	private int id;
+	private int idType;
+	
+	public UniqueId(int id, int idType) {
+		this.id = id;
+		this.idType = idType;
+	}
+
+	/**
+	 * Returns the id 
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * Returns the idType 
+	 * @return the idType
+	 */
+	public int getIdType() {
+		return idType;
 	}
 	
+	public boolean hasSameType(UniqueId other) {
+		return other.getIdType() == this.idType;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof UniqueId) {
+			UniqueId temp = (UniqueId)o;
+			return temp.getId() == this.id && temp.getIdType() == this.idType;
+		}
+		return false;
+	}
+	
+	@Override
+	public int compareTo(UniqueId u) {
+		int temp = this.idType - u.getIdType();
+		return (temp != 0 ? temp : this.id - u.getId());
+	}
 }

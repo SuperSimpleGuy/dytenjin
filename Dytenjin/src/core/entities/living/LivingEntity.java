@@ -20,7 +20,8 @@ package core.entities.living;
 
 import core.entities.Entity;
 import core.geography.GeographicalLocation;
-import core.management.individual.AspectManager;
+import core.management.game.UniqueId;
+import core.management.ingame.AspectManager;
 
 /**
  * A living single individual is represented by a living entity
@@ -38,7 +39,7 @@ public class LivingEntity extends Entity {
 	 * @param id the id of this living entity
 	 * @param l the physical location of this entity
 	 */
-	public LivingEntity(String s, int id, GeographicalLocation l) {
+	public LivingEntity(String s, UniqueId id, GeographicalLocation l) {
 		super(s, id);
 		currentLoc = l;
 	}
@@ -51,7 +52,7 @@ public class LivingEntity extends Entity {
 	 * @param l the physical location of this entity
 	 * @param asp the starting AspectManager of this entity
 	 */
-	public LivingEntity(String s, int id, GeographicalLocation l, AspectManager asp) {
+	public LivingEntity(String s, UniqueId id, GeographicalLocation l, AspectManager asp) {
 		super(s, id, asp);
 		currentLoc = l;
 	}

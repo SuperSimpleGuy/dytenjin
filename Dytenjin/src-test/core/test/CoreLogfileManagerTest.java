@@ -35,7 +35,6 @@ public class CoreLogfileManagerTest {
 
 	private CoreLogfileManager testingManager = CoreLogfileManager.ENGINE_LOGMNGR;
 
-	private static final String testLoggerName = "test.logger.log";
 	private static final String testFileName = "logs/test.logfilemanager.log";
 	private Level originalLevel;
 	
@@ -61,13 +60,13 @@ public class CoreLogfileManagerTest {
 	
 	@Test
 	public void testWithoutParams() {
-		boolean b = testingManager.logWithoutParams(testLoggerName, testFileName, Level.WARNING, this.getClass().toString(), "testWithoutParams", "Success!");
+		boolean b = testingManager.logWithoutParams(testFileName, Level.WARNING, this.getClass(), "testWithoutParams", "Success!");
 		assert(b == true);
 	}
 	
 	@Test
 	public void testWithParams() {
-		boolean b = testingManager.logWithParams(testLoggerName, testFileName, Level.WARNING, this.getClass().toString(), "testWithParams", "Success!", new String[] {"test", "this", "array"});
+		boolean b = testingManager.logWithParams(testFileName, Level.WARNING, this.getClass(), "testWithParams", "Success!", new String[] {"test", "this", "array"});
 		assert(b == true);
 	}
 	
@@ -79,87 +78,87 @@ public class CoreLogfileManagerTest {
 	
 	@Test
 	public void testFinestLogLevelDefault() {
-		boolean b = testingManager.logWithoutParams(testLoggerName, testFileName, Level.FINEST, this.getClass().toString(), "testFinestLogLevelDefault", "Failure!");
+		boolean b = testingManager.logWithoutParams(testFileName, Level.FINEST, this.getClass(), "testFinestLogLevelDefault", "Failure!");
 		assert(b == true);
 	}
 	
 	@Test
 	public void testFinestLogLevelNonDefault() {
 		testingManager.setLogLevelForFile(testFileName, Level.FINEST);
-		boolean b = testingManager.logWithoutParams(testLoggerName, testFileName, Level.FINEST, this.getClass().toString(), "testFinestLogLevelNonDefault", "Success!");
+		boolean b = testingManager.logWithoutParams(testFileName, Level.FINEST, this.getClass(), "testFinestLogLevelNonDefault", "Success!");
 		assert(b == true);
 	}
 	
 	@Test
 	public void testFinestLogLevelDefaultEmptyParams() {
-		boolean b = testingManager.logWithParams(testLoggerName, testFileName, Level.FINEST, this.getClass().toString(), "testFinestLogLevelDefaultEmptyParams", "Failure!", new Object[] {});
+		boolean b = testingManager.logWithParams(testFileName, Level.FINEST, this.getClass(), "testFinestLogLevelDefaultEmptyParams", "Failure!", new Object[] {});
 		assert(b == true);
 	}
 	
 	@Test
 	public void testFinestLogLevelNonDefaultEmptyParams() {
 		testingManager.setLogLevelForFile(testFileName, Level.FINEST);
-		boolean b = testingManager.logWithParams(testLoggerName, testFileName, Level.FINEST, this.getClass().toString(), "testFinestLogLevelNonDefaultEmptyParams", "Success!", new Object[] {});
+		boolean b = testingManager.logWithParams(testFileName, Level.FINEST, this.getClass(), "testFinestLogLevelNonDefaultEmptyParams", "Success!", new Object[] {});
 		assert(b == true);
 	}
 	
 	@Test
 	public void testFinestLogLevelDefaultParams() {
-		boolean b = testingManager.logWithParams(testLoggerName, testFileName, Level.FINEST, this.getClass().toString(), "testFinestLogLevelDefaultParams", "Failure!", new Object[] {"test", "one"});
+		boolean b = testingManager.logWithParams(testFileName, Level.FINEST, this.getClass(), "testFinestLogLevelDefaultParams", "Failure!", new Object[] {"test", "one"});
 		assert(b == true);
 	}
 	
 	@Test
 	public void testFinestLogLevelNonDefaultParams() {
 		testingManager.setLogLevelForFile(testFileName, Level.FINEST);
-		boolean b = testingManager.logWithParams(testLoggerName, testFileName, Level.FINEST, this.getClass().toString(), "testFinestLogLevelNonDefaultParams", "Success!", new Object[] {"two", "test"});
+		boolean b = testingManager.logWithParams(testFileName, Level.FINEST, this.getClass(), "testFinestLogLevelNonDefaultParams", "Success!", new Object[] {"two", "test"});
 		assert(b == true);
 	}
 	
 	@Test
 	public void testInfoLogLevelDefaultParams() {
-		boolean b = testingManager.logWithParams(testLoggerName, testFileName, Level.INFO, this.getClass().toString(), "testInfoLogLevelDefaultParams", "Success!", new Object[] {"test", "one"});
+		boolean b = testingManager.logWithParams(testFileName, Level.INFO, this.getClass(), "testInfoLogLevelDefaultParams", "Success!", new Object[] {"test", "one"});
 		assert(b == true);
 	}
 	
 	@Test
 	public void testInfoLogLevelNonDefaultParams() {
 		testingManager.setLogLevelForFile(testFileName, Level.SEVERE);
-		boolean b = testingManager.logWithParams(testLoggerName, testFileName, Level.INFO, this.getClass().toString(), "testInfoLogLevelNonDefaultParams", "Failure!", new Object[] {"two", "test"});
+		boolean b = testingManager.logWithParams(testFileName, Level.INFO, this.getClass(), "testInfoLogLevelNonDefaultParams", "Failure!", new Object[] {"two", "test"});
 		assert(b == true);
 	}
 	
 	@Test
 	public void testInfoLogLevelDefaultLongParams() {
-		boolean b = testingManager.logWithParams(testLoggerName, testFileName, Level.INFO, this.getClass().toString(), "testInfoLogLevelNonDefaultParams", "Success!", new Object[] {"really.long.one", "really.long.two", "really.long.three", "very.very.very.very.long.four", "long.five", "6", "7", "8", "9", "10", "11"});
+		boolean b = testingManager.logWithParams(testFileName, Level.INFO, this.getClass(), "testInfoLogLevelNonDefaultParams", "Success!", new Object[] {"really.long.one", "really.long.two", "really.long.three", "very.very.very.very.long.four", "long.five", "6", "7", "8", "9", "10", "11"});
 		assert(b == true);
 	}
 	
 	@Test
 	public void testEnteringWithParams() {
 		testingManager.setLogLevelForFile(testFileName, Level.FINER);
-		boolean b = testingManager.enteringWithParams(testLoggerName, testFileName, "testEnteringWithParams", "Enter Success!", new Object[] {"param0", "param1", "param2"});
+		boolean b = testingManager.enteringWithParams(this.getClass(), testFileName, "testEnteringWithParams", "Enter Success!", new Object[] {"param0", "param1", "param2"});
 		assert(b == true);
 	}
 	
 	@Test
 	public void testEnteringWithoutParams() {
 		testingManager.setLogLevelForFile(testFileName, Level.FINER);
-		boolean b = testingManager.enteringWithoutParams(testLoggerName, testFileName, "testEnteringWithoutParams", "Enter Success!");
+		boolean b = testingManager.enteringWithoutParams(this.getClass(), testFileName, "testEnteringWithoutParams", "Enter Success!");
 		assert(b == true);
 	}
 	
 	@Test
 	public void testExitingWithResult() {
 		testingManager.setLogLevelForFile(testFileName, Level.FINER);
-		boolean b = testingManager.exitingWithResult(testLoggerName, testFileName, "testExitingWithResult", "Exit Success!", "result0");
+		boolean b = testingManager.exitingWithResult(this.getClass(), testFileName, "testExitingWithResult", "Exit Success!", "result0");
 		assert(b == true);
 	}
 	
 	@Test
 	public void testExitingWithoutResult() {
 		testingManager.setLogLevelForFile(testFileName, Level.FINER);
-		boolean b = testingManager.exitingWithoutResult(testLoggerName, testFileName, "testExitingWithoutResult", "Exit Success!");
+		boolean b = testingManager.exitingWithoutResult(this.getClass(), testFileName, "testExitingWithoutResult", "Exit Success!");
 		assert(b == true);
 	}
 }

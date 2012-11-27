@@ -20,7 +20,8 @@ package core.geography;
 
 import java.util.HashMap;
 
-import core.management.individual.AspectManager;
+import core.management.game.UniqueId;
+import core.management.ingame.AspectManager;
 
 /**
  * Represents a location that links other locations together, allowing
@@ -50,7 +51,7 @@ public abstract class LocationLink extends GeographicalLocation {
 	 * @param loc2 the second GeoLocation this link connects
 	 */
 	public LocationLink(String name,
-				int id,
+				UniqueId id,
 				int xCoord,
 				int yCoord,
 				AspectManager asp,
@@ -75,7 +76,7 @@ public abstract class LocationLink extends GeographicalLocation {
 	 * @param parent the GeoRegion this location link is a part of
 	 */
 	public LocationLink(String name,
-			int id,
+			UniqueId id,
 			int xCoord,
 			int yCoord,
 			AspectManager asp,
@@ -108,8 +109,8 @@ public abstract class LocationLink extends GeographicalLocation {
 	@Override
 	public CardinalDirection getDirFromPath(int id) {
 		LocationLink temp = this.paths.get(id);
-		if (temp != null && dirFromPath.containsKey(temp.getId())) {
-			return dirFromPath.get(temp.getId());
+		if (temp != null && dirFromPath.containsKey(temp.getUniqueId().getId())) {
+			return dirFromPath.get(temp.getUniqueId().getId());
 		} else {
 			return CardinalDirection.ERR;
 		}
@@ -118,8 +119,8 @@ public abstract class LocationLink extends GeographicalLocation {
 	@Override
 	public CardinalDirection getDirToPath(int id) {
 		LocationLink temp = this.paths.get(id);
-		if (temp != null && dirFromPath.containsKey(temp.getId())) {
-			return dirFromPath.get(temp.getId()).opposite();
+		if (temp != null && dirFromPath.containsKey(temp.getUniqueId().getId())) {
+			return dirFromPath.get(temp.getUniqueId().getId()).opposite();
 		} else {
 			return CardinalDirection.ERR;
 		}
@@ -171,9 +172,9 @@ public abstract class LocationLink extends GeographicalLocation {
 	 * belonging to the locations being linked by this LocationLink
 	 */
 	public CardinalDirection getDirFromGeoLoc(int id) {
-		if (id == loc1.getId()) {
+		if (id == loc1.getUniqueId().getId()) {
 			return dirFrom1;
-		} else if (id == loc2.getId()) {
+		} else if (id == loc2.getUniqueId().getId()) {
 			return dirFrom2;
 		}
 		return CardinalDirection.ERR;
@@ -189,9 +190,9 @@ public abstract class LocationLink extends GeographicalLocation {
 	 * belonging to the locations being linked by this LocationLink
 	 */
 	public CardinalDirection getDirToGeoLoc(int id) {
-		if (id == loc1.getId()) {
+		if (id == loc1.getUniqueId().getId()) {
 			return dirFrom1.opposite();
-		} else if (id == loc2.getId()) {
+		} else if (id == loc2.getUniqueId().getId()) {
 			return dirFrom2.opposite();
 		}
 		return CardinalDirection.ERR;
@@ -208,9 +209,9 @@ public abstract class LocationLink extends GeographicalLocation {
 	
 	@Override
 	public boolean registerLocationLink(LocationLink l) {
-		if (!paths.containsKey(l.getId())) {
-			paths.put(l.getId(), l);
-			dirFromPath.put(l.getId(), CardinalDirection.getDirFromCoords(l.getxCoord(), l.getyCoord(), this.getxCoord(), this.getyCoord()));
+		if (!paths.containsKey(l.getUniqueId().getId())) {
+			paths.put(l.getUniqueId().getId(), l);
+			dirFromPath.put(l.getUniqueId().getId(), CardinalDirection.getDirFromCoords(l.getxCoord(), l.getyCoord(), this.getxCoord(), this.getyCoord()));
 			return true;
 		}
 		return false;
@@ -227,9 +228,9 @@ public abstract class LocationLink extends GeographicalLocation {
 	 * @return true if successfully added, false otherwise
 	 */
 	public boolean registerLocationLink(LocationLink l, CardinalDirection dir) {
-		if (!paths.containsKey(l.getId())) {
-			paths.put(l.getId(), l);
-			dirFromPath.put(l.getId(), dir);
+		if (!paths.containsKey(l.getUniqueId().getId())) {
+			paths.put(l.getUniqueId().getId(), l);
+			dirFromPath.put(l.getUniqueId().getId(), dir);
 			return true;
 		}
 		return false;
@@ -245,9 +246,9 @@ public abstract class LocationLink extends GeographicalLocation {
 	 * @return true if successful, false otherwise
 	 */
 	public boolean changeLocLinkDir(LocationLink l, CardinalDirection dirNew) {
-		if (dirFromPath.containsKey(l.getId())) {
-			dirFromPath.remove(l.getId());
-			dirFromPath.put(l.getId(), dirNew);
+		if (dirFromPath.containsKey(l.getUniqueId().getId())) {
+			dirFromPath.remove(l.getUniqueId().getId());
+			dirFromPath.put(l.getUniqueId().getId(), dirNew);
 			return true;
 		}
 		return false;
@@ -255,9 +256,9 @@ public abstract class LocationLink extends GeographicalLocation {
 	
 	@Override
 	public LocationLink getPathById(int id) {
-		if (loc1 instanceof LocationLink && loc1.getId() == id) {
+		if (loc1 instanceof LocationLink && loc1.getUniqueId().getId() == id) {
 			return (LocationLink)loc1;
-		} else if (loc2 instanceof LocationLink && loc2.getId() == id) {
+		} else if (loc2 instanceof LocationLink && loc2.getUniqueId().getId() == id) {
 			return (LocationLink)loc2;
 		}
 		return paths.get(id);
@@ -342,6 +343,6 @@ public abstract class LocationLink extends GeographicalLocation {
 		if (loc1 == null || loc2 == null) {
 			return false;
 		}
-		return loc1.getParent().getId() != loc2.getParent().getId();
+		return !loc1.getParent().getUniqueId().equals(loc2.getParent().getUniqueId());
 	}
 }

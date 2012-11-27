@@ -19,7 +19,7 @@ package core.temporal;
 
 import java.util.ArrayList;
 
-import core.management.individual.AspectManager;
+import core.management.ingame.AspectManager;
 
 /**
  * @author SuperSimpleGuy
@@ -41,5 +41,7 @@ public interface IWorldMonth {
 	IWorldMonth clone();
 	boolean isDayValueHoliday(int dayValue);
 	IWorldDay getDayByValue(int dayValue);
+	String getCalendarName();
+	IWorldTimeDuration getDuration(IWorldMonth other);
 	
 }

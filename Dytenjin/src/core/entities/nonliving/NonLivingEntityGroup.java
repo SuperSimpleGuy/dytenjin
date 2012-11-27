@@ -19,6 +19,7 @@
 package core.entities.nonliving;
 
 import core.entities.Entity;
+import core.management.game.UniqueId;
 
 /**
  * Currently a stub, doesn't really do anything
@@ -32,7 +33,7 @@ public abstract class NonLivingEntityGroup extends Entity {
 	 * @param s the name of the group
 	 * @param id the unique id of this group
 	 */
-	public NonLivingEntityGroup(String s, int id) {
+	public NonLivingEntityGroup(String s, UniqueId id) {
 		super(s, id);
 	}
 	

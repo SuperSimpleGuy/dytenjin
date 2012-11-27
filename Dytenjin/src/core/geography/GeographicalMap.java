@@ -20,26 +20,26 @@ package core.geography;
 
 import java.util.HashMap;
 
-import core.Constants;
-import core.management.game.IUniqueId;
+import core.management.game.IHasUniqueId;
+import core.management.game.UniqueId;
 
 /**
  * Maintains all geographical regions and regional links, and
  * maintain the evolution of the entire map.
  * @author SuperSimpleGuy
  */
-public class GeographicalMap implements IUniqueId {
+public class GeographicalMap implements IHasUniqueId {
 
 	private HashMap<Integer, GeographicalRegion> geoRegions;
 	private HashMap<Integer, RegionLink> regLinks;
 	private String name;
-	private int id;
+	private UniqueId id;
 	
 	/**
 	 * Creates a new geographical map with a unique id
 	 * @param id a unique id to identify this map
 	 */
-	public GeographicalMap(int id) {
+	public GeographicalMap(UniqueId id) {
 		this.geoRegions = new HashMap<Integer, GeographicalRegion>();
 		this.regLinks = new HashMap<Integer, RegionLink>();
 		this.name = "";
@@ -52,7 +52,7 @@ public class GeographicalMap implements IUniqueId {
 	 * @param name the name of this geographical map
 	 * @param id a unique id to identify this map
 	 */
-	public GeographicalMap(String name, int id) {
+	public GeographicalMap(String name, UniqueId id) {
 		this(id);
 		this.name = name;
 	}
@@ -71,7 +71,7 @@ public class GeographicalMap implements IUniqueId {
 	 * @return true if successfully inserted, false otherwise
 	 */
 	public boolean putLocationLink(LocationLink locLink, GeographicalRegion gR1, GeographicalLocation gL1, GeographicalRegion gR2, GeographicalLocation gL2) {
-		return this.putLocationLink(locLink, gR1.getId(), gL1.getId(), gR2.getId(), gL2.getId());
+		return this.putLocationLink(locLink, gR1.getUniqueId().getId(), gL1.getUniqueId().getId(), gR2.getUniqueId().getId(), gL2.getUniqueId().getId());
 	}
 	
 	/**
@@ -124,7 +124,7 @@ public class GeographicalMap implements IUniqueId {
 		if (gL1.getParent() == null || gL2.getParent() == null) {
 			return false;
 		}
-		return this.putLocationLink(locLink, gL1.getParent().getId(), gL1.getId(), gL2.getParent().getId(), gL2.getId());
+		return this.putLocationLink(locLink, gL1.getParent().getUniqueId().getId(), gL1.getUniqueId().getId(), gL2.getParent().getUniqueId().getId(), gL2.getUniqueId().getId());
 	}
 	
 	/**
@@ -144,9 +144,9 @@ public class GeographicalMap implements IUniqueId {
 		int idOfGR2 = -1;
 		for (GeographicalRegion gR : geoRegions.values()) {
 			if (gR.getChildLocs().containsKey(idOfGL1)) {
-				idOfGR1 = gR.getId();
+				idOfGR1 = gR.getUniqueId().getId();
 			} else if (gR.getChildLocs().containsKey(idOfGL2)) {
-				idOfGR2 = gR.getId();
+				idOfGR2 = gR.getUniqueId().getId();
 			}
 			if (idOfGR1 != -1 && idOfGR2 != -1) {
 				break;
@@ -155,9 +155,9 @@ public class GeographicalMap implements IUniqueId {
 		if (idOfGR1 == -1 || idOfGR2 == -1) {
 			for (GeographicalRegion gR : regLinks.values()) {
 				if (gR.getChildLocs().containsKey(idOfGL1)) {
-					idOfGR1 = gR.getId();
+					idOfGR1 = gR.getUniqueId().getId();
 				} else if (gR.getChildLocs().containsKey(idOfGL2)) {
-					idOfGR2 = gR.getId();
+					idOfGR2 = gR.getUniqueId().getId();
 				}
 				if (idOfGR1 != -1 && idOfGR2 != -1) {
 					break;
@@ -177,7 +177,7 @@ public class GeographicalMap implements IUniqueId {
 	 * @return the LocationLink removed, null if unsuccessful
 	 */
 	public LocationLink removeLocationLink(LocationLink locLink, GeographicalRegion gR) {
-		return this.removeLocationLink(locLink.getId(), gR.getId());
+		return this.removeLocationLink(locLink.getUniqueId().getId(), gR.getUniqueId().getId());
 	}
 	
 	/**
@@ -207,7 +207,7 @@ public class GeographicalMap implements IUniqueId {
 		if (locLink.getParent() == null) {
 			return null;
 		}
-		return this.removeLocationLink(locLink.getId(), locLink.getParent().getId());
+		return this.removeLocationLink(locLink.getUniqueId().getId(), locLink.getParent().getUniqueId().getId());
 	}
 	
 	/**
@@ -220,14 +220,14 @@ public class GeographicalMap implements IUniqueId {
 		int idOfGR = -1;
 		for (GeographicalRegion gR : geoRegions.values()) {
 			if (gR.getChildLocs().containsKey(idOfLL)) {
-				idOfGR = gR.getId();
+				idOfGR = gR.getUniqueId().getId();
 				break;
 			}
 		}
 		if (idOfGR == -1) {
 			for (GeographicalRegion gR : regLinks.values()) {
 				if (gR.getChildLocs().containsKey(idOfLL)) {
-					idOfGR = gR.getId();
+					idOfGR = gR.getUniqueId().getId();
 					break;
 				}
 			}
@@ -246,7 +246,7 @@ public class GeographicalMap implements IUniqueId {
 	 * @return true if the add was successful, false otherwise
 	 */
 	public boolean registerGeoLocation(GeographicalLocation gL, GeographicalRegion gR) {
-		return this.registerGeoLocation(gL, gR.getId());
+		return this.registerGeoLocation(gL, gR.getUniqueId().getId());
 	}
 	
 	/**
@@ -276,7 +276,7 @@ public class GeographicalMap implements IUniqueId {
 	 * @return true if the removal is successful, false otherwise
 	 */
 	public GeographicalLocation unregisterGeoLocation(GeographicalRegion gR, GeographicalLocation gL) {
-		return this.unregisterGeoLocation(gR.getId(), gL.getId());
+		return this.unregisterGeoLocation(gR.getUniqueId().getId(), gL.getUniqueId().getId());
 	}
 	
 	/**
@@ -308,7 +308,7 @@ public class GeographicalMap implements IUniqueId {
 	 * @return true if the removal is successful, false otherwise
 	 */
 	public GeographicalLocation unregisterGeoLocation(GeographicalLocation gL) {
-		return this.unregisterGeoLocation(gL.getId());
+		return this.unregisterGeoLocation(gL.getUniqueId().getId());
 	}
 	
 	/**
@@ -342,15 +342,15 @@ public class GeographicalMap implements IUniqueId {
 		if (gR instanceof RegionLink) {
 			return false;
 		}
-		if (geoRegions.containsKey(gR.getId())) {
+		if (geoRegions.containsKey(gR.getUniqueId().getId())) {
 			return false;
 		}
-		geoRegions.put(gR.getId(), gR);
+		geoRegions.put(gR.getUniqueId().getId(), gR);
 		return true;
 	}
 	
 	public GeographicalRegion unregisterGeoRegion(GeographicalRegion gR) {
-		return this.unregisterGeoRegion(gR.getId());
+		return this.unregisterGeoRegion(gR.getUniqueId().getId());
 	}
 	
 	/**
@@ -371,14 +371,14 @@ public class GeographicalMap implements IUniqueId {
 		}
 		gr.isolateThisRegionLocationLinks();
 		for (RegionLink rL : gr.getPaths().values()) {
-			this.removeRegionLink(rL.getId());
-			gr.unregisterRegionLink(rL.getId());
+			this.removeRegionLink(rL.getUniqueId().getId());
+			gr.unregisterRegionLink(rL.getUniqueId().getId());
 		}
 		return gr;
 	}
 	
 	public RegionLink removeRegionLink(RegionLink rL) {
-		return this.removeRegionLink(rL.getId());
+		return this.removeRegionLink(rL.getUniqueId().getId());
 	}
 	
 	/**
@@ -393,13 +393,13 @@ public class GeographicalMap implements IUniqueId {
 		if (temp == null) {
 			return null;
 		}
-		temp.getLoc1().unregisterRegionLink(temp.getId());
-		temp.getLoc2().unregisterRegionLink(temp.getId());
+		temp.getLoc1().unregisterRegionLink(temp.getUniqueId().getId());
+		temp.getLoc2().unregisterRegionLink(temp.getUniqueId().getId());
 		temp.isolateThisRegionLocationLinks();
 		temp.setLoc1(null);
 		temp.setLoc2(null);
 		for (RegionLink rL : temp.getPaths().values()) {
-			temp.unregisterRegionLink(rL.getId());
+			temp.unregisterRegionLink(rL.getUniqueId().getId());
 		}
 		return temp;
 	}
@@ -417,7 +417,7 @@ public class GeographicalMap implements IUniqueId {
 	 * the new RegionLink trying to be inserted (prevents double-pathing)
 	 */
 	public boolean putRegLinkBetween(RegionLink freshRL, GeographicalRegion gR1, GeographicalRegion gR2) {
-		return this.putRegLinkBetween(freshRL, gR1.getId(), gR2.getId());
+		return this.putRegLinkBetween(freshRL, gR1.getUniqueId().getId(), gR2.getUniqueId().getId());
 	}
 	
 	/**
@@ -442,7 +442,7 @@ public class GeographicalMap implements IUniqueId {
 			r1 = geoRegions.get(idFirstGR);
 		} else if (regLinks.containsKey(idFirstGR)) {
 			r1 = regLinks.get(idFirstGR);
-			if (r1.getPathById(freshRL.getId()) != null) {
+			if (r1.getPathById(freshRL.getUniqueId().getId()) != null) {
 				return false;
 			}
 			rLink1 = true;
@@ -455,7 +455,7 @@ public class GeographicalMap implements IUniqueId {
 			r2 = geoRegions.get(idSecondGR);
 		} else if (regLinks.containsKey(idSecondGR)) {
 			r2 = regLinks.get(idFirstGR);
-			if (r2.getPathById(freshRL.getId()) != null) {
+			if (r2.getPathById(freshRL.getUniqueId().getId()) != null) {
 				return false;
 			}
 			rLink2 = true;
@@ -465,21 +465,21 @@ public class GeographicalMap implements IUniqueId {
 		freshRL.setLoc1(r1);
 		freshRL.setLoc2(r2);
 		if (!(r1.registerRegionLink(freshRL) && r2.registerRegionLink(freshRL))) {
-			r1.unregisterRegionLink(freshRL.getId());
-			r2.unregisterRegionLink(freshRL.getId());
+			r1.unregisterRegionLink(freshRL.getUniqueId().getId());
+			r2.unregisterRegionLink(freshRL.getUniqueId().getId());
 			return false;
 		}
 		if (rLink1 && !((RegionLink)r1).changeRegLinkDir(freshRL, freshRL.getDirFromGeoReg(idFirstGR).opposite())) {
-			r1.unregisterRegionLink(freshRL.getId());
-			r2.unregisterRegionLink(freshRL.getId());
+			r1.unregisterRegionLink(freshRL.getUniqueId().getId());
+			r2.unregisterRegionLink(freshRL.getUniqueId().getId());
 			return false;
 		}
 		if (rLink2 && !((RegionLink)r2).changeRegLinkDir(freshRL, freshRL.getDirFromGeoReg(idSecondGR).opposite())) {
-			r1.unregisterRegionLink(freshRL.getId());
-			r2.unregisterRegionLink(freshRL.getId());
+			r1.unregisterRegionLink(freshRL.getUniqueId().getId());
+			r2.unregisterRegionLink(freshRL.getUniqueId().getId());
 			return false;
 		}
-		regLinks.put(freshRL.getId(), freshRL);
+		regLinks.put(freshRL.getUniqueId().getId(), freshRL);
 		return true;
 	}
 
@@ -514,11 +514,6 @@ public class GeographicalMap implements IUniqueId {
 	public HashMap<Integer, RegionLink> getRegLinks() {
 		return regLinks;
 	}
-
-	@Override
-	public int getId() {
-		return id;
-	}
 	
 	@Override
 	public boolean equals(Object other) {
@@ -526,12 +521,12 @@ public class GeographicalMap implements IUniqueId {
 			return false;
 		}
 		GeographicalMap gM = (GeographicalMap)other;
-		return this.id == gM.getId();
+		return this.id.equals(gM.getUniqueId());
 	}
 
 	@Override
-	public String getIdType() {
-		return Constants.ID_MAP;
+	public UniqueId getUniqueId() {
+		return id;
 	}
 	
 }

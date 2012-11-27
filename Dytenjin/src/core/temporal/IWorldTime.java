@@ -17,7 +17,7 @@
  */
 package core.temporal;
 
-import core.management.individual.AspectManager;
+import core.management.ingame.AspectManager;
 
 /**
  * Methods required to keep track of the world time
@@ -109,4 +109,8 @@ public interface IWorldTime {
 	 * @return aspects related to this particular time
 	 */
 	AspectManager getSpecialAspects();
+	
+	String getCalendarName();
+	
+	IWorldTimeDuration getDuration(IWorldTime other);
 }

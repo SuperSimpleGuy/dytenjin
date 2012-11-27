@@ -20,9 +20,9 @@ package core.geography;
 
 import java.util.HashMap;
 
-import core.Constants;
-import core.management.game.IUniqueId;
-import core.management.individual.AspectManager;
+import core.management.game.IHasUniqueId;
+import core.management.game.UniqueId;
+import core.management.ingame.AspectManager;
 
 /**
  * Manages a region of locations, and as a parent map. Maintains its
@@ -30,13 +30,13 @@ import core.management.individual.AspectManager;
  * regions
  * @author SuperSimpleGuy
  */
-public abstract class GeographicalRegion implements IUniqueId {
+public abstract class GeographicalRegion implements IHasUniqueId {
 	
-	private int id;
 	private String name;
 	private AspectManager aspects;
 	private int xCoord;
 	private int yCoord;
+	private UniqueId id;
 	
 	protected HashMap<Integer, RegionLink> paths;
 	protected HashMap<Integer, GeographicalLocation> childLocs;
@@ -50,10 +50,10 @@ public abstract class GeographicalRegion implements IUniqueId {
 	 * @param asp initial aspects for the region
 	 */
 	public GeographicalRegion (String name,
-							   int id,
-							   int xCoord,
-							   int yCoord,
-							   AspectManager asp) {
+			UniqueId id,
+			int xCoord,
+			int yCoord,
+			AspectManager asp) {
 		this.id = id;
 		this.name = name;
 		this.aspects = asp;
@@ -75,10 +75,10 @@ public abstract class GeographicalRegion implements IUniqueId {
 		if (gL instanceof LocationLink) {
 			return false;
 		}
-		if (childLocs.containsKey(gL.getId())) {
+		if (childLocs.containsKey(gL.getUniqueId().getId())) {
 			return false;
 		} else {
-			childLocs.put(gL.getId(), gL);
+			childLocs.put(gL.getUniqueId().getId(), gL);
 			gL.setParent(this);
 			return true;
 		}
@@ -99,7 +99,7 @@ public abstract class GeographicalRegion implements IUniqueId {
 	 * @return true when successfully inserted, false otherwise.
 	 */
 	public boolean putEdgeLocLinkBetween(LocationLink newLL, GeographicalLocation myLocation, GeographicalRegion neighborRegion, GeographicalLocation neighborLocation) {
-		return this.putEdgeLocLinkBetween(newLL, myLocation.getId(), neighborRegion.getId(), neighborLocation.getId());
+		return this.putEdgeLocLinkBetween(newLL, myLocation.getUniqueId().getId(), neighborRegion.getUniqueId().getId(), neighborLocation.getUniqueId().getId());
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public abstract class GeographicalRegion implements IUniqueId {
 			if (r1 instanceof LocationLink) {
 				rLink1 = true;
 			}
-			if (rLink1 && ((LocationLink)r1).getPathById(newLL.getId()) != null) {
+			if (rLink1 && ((LocationLink)r1).getPathById(newLL.getUniqueId().getId()) != null) {
 				return false;
 			}
 		} else {
@@ -143,21 +143,21 @@ public abstract class GeographicalRegion implements IUniqueId {
 			if (r2 instanceof LocationLink) {
 				rLink2 = true;
 			}
-			if (rLink2 && ((LocationLink)r2).getPathById(newLL.getId()) != null) {
+			if (rLink2 && ((LocationLink)r2).getPathById(newLL.getUniqueId().getId()) != null) {
 				return false;
 			}
 		} else {
 			return false;
 		}
 		if (!(r1.registerLocationLink(newLL) && r2.registerLocationLink(newLL))) {
-			r1.unregisterLocationLink(newLL.getId());
-			r2.unregisterLocationLink(newLL.getId());
+			r1.unregisterLocationLink(newLL.getUniqueId().getId());
+			r2.unregisterLocationLink(newLL.getUniqueId().getId());
 			return false;
 		}
 		newLL.setParent(this);
 		newLL.setLoc1(r1);
 		newLL.setLoc2(r2);
-		childLocs.put(newLL.getId(), newLL);
+		childLocs.put(newLL.getUniqueId().getId(), newLL);
 		return true;
 	}
 	
@@ -173,7 +173,7 @@ public abstract class GeographicalRegion implements IUniqueId {
 	 * @return true when successfully inserted, false otherwise.
 	 */
 	public boolean putLocLinkBetween(LocationLink newLL, GeographicalLocation gL1, GeographicalLocation gL2) {
-		return this.putLocLinkBetween(newLL, gL1.getId(), gL2.getId());
+		return this.putLocLinkBetween(newLL, gL1.getUniqueId().getId(), gL2.getUniqueId().getId());
 	}
 	
 	/**
@@ -198,7 +198,7 @@ public abstract class GeographicalRegion implements IUniqueId {
 			if (r1 instanceof LocationLink) {
 				rLink1 = true;
 			}
-			if (rLink1 && ((LocationLink)r1).getPathById(newLL.getId()) != null) {
+			if (rLink1 && ((LocationLink)r1).getPathById(newLL.getUniqueId().getId()) != null) {
 				return false;
 			}
 		} else {
@@ -211,21 +211,21 @@ public abstract class GeographicalRegion implements IUniqueId {
 			if (r2 instanceof LocationLink) {
 				rLink2 = true;
 			}
-			if (rLink2 && ((LocationLink)r2).getPathById(newLL.getId()) != null) {
+			if (rLink2 && ((LocationLink)r2).getPathById(newLL.getUniqueId().getId()) != null) {
 				return false;
 			}
 		} else {
 			return false;
 		}
 		if (!(r1.registerLocationLink(newLL) && r2.registerLocationLink(newLL))) {
-			r1.unregisterLocationLink(newLL.getId());
-			r2.unregisterLocationLink(newLL.getId());
+			r1.unregisterLocationLink(newLL.getUniqueId().getId());
+			r2.unregisterLocationLink(newLL.getUniqueId().getId());
 			return false;
 		}
 		newLL.setParent(this);
 		newLL.setLoc1(r1);
 		newLL.setLoc2(r2);
-		childLocs.put(newLL.getId(), newLL);
+		childLocs.put(newLL.getUniqueId().getId(), newLL);
 		return true;
 	}
 	
@@ -237,7 +237,7 @@ public abstract class GeographicalRegion implements IUniqueId {
 	 * @return the LocationLink removed, or null if no such link was removed.
 	 */
 	public LocationLink removeLocationLink(LocationLink l) {
-		return this.removeLocationLink(l.getId());
+		return this.removeLocationLink(l.getUniqueId().getId());
 	}
 	
 	/**
@@ -361,11 +361,16 @@ public abstract class GeographicalRegion implements IUniqueId {
 	 * false otherwise
 	 */
 	public boolean registerRegionLink(RegionLink l) {
-		if (!paths.containsKey(l.getId())) {
-			paths.put(l.getId(), l);
+		if (!paths.containsKey(l.getUniqueId().getId())) {
+			paths.put(l.getUniqueId().getId(), l);
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public UniqueId getUniqueId() {
+		return id;
 	}
 
 	/**
@@ -400,16 +405,6 @@ public abstract class GeographicalRegion implements IUniqueId {
 	public HashMap<Integer, RegionLink> getPaths() {
 		return paths;
 	}
-
-	@Override
-	public int getId() {
-		return id;
-	}
-	
-	@Override
-	public String getIdType() {
-		return Constants.ID_REG;
-	}
 	
 	/**
 	 * Returns a HashMap of the child locations, where the
@@ -426,7 +421,7 @@ public abstract class GeographicalRegion implements IUniqueId {
 			return false;
 		}
 		GeographicalRegion gR = (GeographicalRegion)other;
-		return this.id == gR.getId();
+		return this.id.equals(gR.getUniqueId());
 	}
 
 	/**

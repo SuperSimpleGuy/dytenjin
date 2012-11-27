@@ -19,18 +19,19 @@
 package core.entities;
 
 import core.Constants;
-import core.management.game.IUniqueId;
-import core.management.individual.AspectManager;
+import core.management.game.IHasUniqueId;
+import core.management.game.UniqueId;
+import core.management.ingame.AspectManager;
 
 /**
  * An entity represents a living or non-living being or group of beings,
  * with a name, a unique id number, and aspects.
  * @author SuperSimpleGuy
  */
-public abstract class Entity implements IUniqueId {
+public abstract class Entity implements IHasUniqueId {
 	
 	protected String name;
-	private int id;
+	private UniqueId id;
 	protected AspectManager aMan;
 	
 	/**
@@ -38,7 +39,7 @@ public abstract class Entity implements IUniqueId {
 	 * @param s the entity's name
 	 * @param identificationNumber the entity's unique id
 	 */
-	public Entity(String s, int identificationNumber) {
+	public Entity(String s, UniqueId identificationNumber) {
 		this.name = s;
 		this.id = identificationNumber;
 		this.aMan = new AspectManager();
@@ -50,13 +51,13 @@ public abstract class Entity implements IUniqueId {
 	 * @param identificationNumber the entity's unique id
 	 * @param asp the entity's starting AspectManager
 	 */
-	public Entity(String s, int identificationNumber, AspectManager asp) {
+	public Entity(String s, UniqueId identificationNumber, AspectManager asp) {
 		this.name = s;
 		this.id = identificationNumber;
 		this.aMan = asp;
 	}
 	
-	public int getId() {
+	public UniqueId getUniqueId() {
 		return id;
 	}
 	

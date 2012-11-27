@@ -20,7 +20,7 @@ package core.temporal;
 /**
  * @author SuperSimpleGuy
  */
-public class WorldCompleteDate extends WorldDate{
+public class WorldCompleteDate extends WorldDate {
 
 	private IWorldTime currentTime;
 	

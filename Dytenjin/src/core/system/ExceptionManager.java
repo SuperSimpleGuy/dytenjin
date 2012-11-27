@@ -58,7 +58,7 @@ public class ExceptionManager {
 		if (e.getStackTrace().length > 0) {
 			method = e.getStackTrace()[0].getMethodName();
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(this.getClass().toString(), fileName, level, this.getClass().toString(), method, e.getLocalizedMessage());
+		CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(fileName, level, this.getClass(), method, e.getLocalizedMessage());
 		if (severeQuit && level.equals(Level.SEVERE)) {
 			e.printStackTrace();
 			System.exit(1);

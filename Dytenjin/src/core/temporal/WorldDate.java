@@ -17,10 +17,16 @@
  */
 package core.temporal;
 
+import java.util.logging.Level;
+
+import core.Constants;
+import core.system.CoreLogfileManager;
+import core.system.ExceptionManager;
+
 /**
  * @author SuperSimpleGuy
  */
-public class WorldDate {
+public class WorldDate implements Comparable<WorldDate> {
 
 	private IWorldYear currentYear;
 	private IWorldMonth currentMonth;
@@ -31,6 +37,11 @@ public class WorldDate {
 			IWorldYear currentYear,
 			IWorldMonth currentMonth,
 			IWorldDay currentDay) {
+		if (!currentYear.getCalendarName().equals(calendarName) ||
+				!currentMonth.getCalendarName().equals(calendarName) ||
+				!currentDay.getCalendarName().equals(calendarName)) {
+			ExceptionManager.SYS_EXCEPTION_MANAGER.throwException(new IllegalArgumentException("WorldDate created with mismatched day, month, and years from differing calendars"), Level.SEVERE, Constants.SYS_ERR_FILE);
+		}
 		this.calendarName = calendarName;
 		this.currentDay = currentDay;
 		this.currentMonth = currentMonth;
@@ -67,6 +78,56 @@ public class WorldDate {
 	 */
 	public String getCalendarName() {
 		return calendarName;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof WorldDate) || !this.getCalendarName().equals(((WorldDate)o).getCalendarName())) {
+			return false;
+		}
+		WorldDate date = (WorldDate) o;
+		return this.getCurrentYear().getYearValue() == date.getCurrentYear().getYearValue() &&
+				this.getCurrentMonth().getMonthValue() == date.getCurrentMonth().getMonthValue() &&
+				this.getCurrentDay().getDayValue() == date.getCurrentDay().getDayValue();
+	}
+	
+	@Override
+	public int compareTo(WorldDate o) {
+		if (!o.getCalendarName().equals(this.getCalendarName())) {
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(Constants.SYS_LOG_FILE, Level.WARNING, this.getClass(), "compareTo", "Cannot compare WorldDates belonging to different calendars.");
+			return 0;
+		}
+		
+		if (this.currentYear.getYearValue() < o.getCurrentYear().getYearValue()) {
+			return -1;
+		} else if (this.currentYear.getYearValue() > o.getCurrentYear().getYearValue()) {
+			return 1;
+		}
+		
+		if (this.currentMonth.getMonthValue() < o.getCurrentMonth().getMonthValue()) {
+			return -1;
+		} else if (this.currentMonth.getMonthValue() > o.getCurrentMonth().getMonthValue()) {
+			return 1;
+		}
+		
+		if (this.currentDay.getDayValue() < o.getCurrentDay().getDayValue()) {
+			return -1;
+		} else if (this.currentDay.getDayValue() > o.getCurrentDay().getDayValue()) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	
+	public IWorldTimeDuration getTimeBetween(WorldDate other) {
+		if (!other.getCalendarName().equals(this.getCalendarName())) {
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(Constants.SYS_LOG_FILE, Level.WARNING, this.getClass(), "getTimeBetween", "Cannot get time between WorldDates belonging to different calendars.");
+			return null;
+		}
+		IWorldTimeDuration temp = this.getCurrentYear().getDuration(other.getCurrentYear());
+		temp.addDuration(this.getCurrentMonth().getDuration(other.getCurrentMonth()));
+		temp.addDuration(this.getCurrentDay().getDuration(other.getCurrentDay()));
+		return temp;
 	}
 	
 }

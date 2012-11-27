@@ -20,10 +20,10 @@ package core.geography;
 
 import java.util.HashMap;
 
-import core.Constants;
 import core.entities.Entity;
-import core.management.game.IUniqueId;
-import core.management.individual.AspectManager;
+import core.management.game.IHasUniqueId;
+import core.management.game.UniqueId;
+import core.management.ingame.AspectManager;
 
 /**
  * Represents a geographical location that entities can occupy and own.
@@ -31,10 +31,10 @@ import core.management.individual.AspectManager;
  * instantiates.
  * @author SuperSimpleGuy
  */
-public abstract class GeographicalLocation implements IUniqueId {
+public abstract class GeographicalLocation implements IHasUniqueId {
 
 	private GeographicalRegion parent;
-	private int id;
+	private UniqueId id;
 	private String name;
 	private AspectManager aspMan;
 	private int xCoord;
@@ -57,11 +57,11 @@ public abstract class GeographicalLocation implements IUniqueId {
 	 * @param parent the parent Geo Region for this Geo Location
 	 */
 	public GeographicalLocation(String name,
-								int id,
-								int xCoord,
-								int yCoord,
-								AspectManager aspMan,
-								GeographicalRegion parent) {
+			UniqueId id,
+			int xCoord,
+			int yCoord,
+			AspectManager aspMan,
+			GeographicalRegion parent) {
 		this.id = id;
 		this.xCoord = xCoord;
 		this.yCoord = yCoord;
@@ -132,8 +132,8 @@ public abstract class GeographicalLocation implements IUniqueId {
 	 * otherwise
 	 */
 	public boolean registerLocationLink(LocationLink l) {
-		if (!paths.containsKey(l.getId())) {
-			paths.put(l.getId(), l);
+		if (!paths.containsKey(l.getUniqueId().getId())) {
+			paths.put(l.getUniqueId().getId(), l);
 			return true;
 		}
 		return false;
@@ -155,10 +155,10 @@ public abstract class GeographicalLocation implements IUniqueId {
 	public void removeSelfFromParent() {
 		for (LocationLink l : paths.values()) {
 			l.removeSelfFromParent();
-			this.unregisterLocationLink(l.getId());
+			this.unregisterLocationLink(l.getUniqueId().getId());
 		}
 		if (parent != null) {
-			parent.unregisterChildLoc(this.getId());
+			parent.unregisterChildLoc(this.getUniqueId().getId());
 		}
 	}
 
@@ -220,13 +220,8 @@ public abstract class GeographicalLocation implements IUniqueId {
 	}
 	
 	@Override
-	public int getId() {
+	public UniqueId getUniqueId() {
 		return id;
-	}
-	
-	@Override
-	public String getIdType() {
-		return Constants.ID_LOC;
 	}
 	
 	/**
@@ -251,7 +246,7 @@ public abstract class GeographicalLocation implements IUniqueId {
 			return false;
 		}
 		GeographicalLocation gL = (GeographicalLocation)other;
-		return this.id == gL.getId();
+		return this.id.equals(gL.getUniqueId());
 	}
 	
 	/**

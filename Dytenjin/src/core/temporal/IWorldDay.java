@@ -17,7 +17,7 @@
  */
 package core.temporal;
 
-import core.management.individual.AspectManager;
+import core.management.ingame.AspectManager;
 
 /**
  * 
@@ -30,6 +30,7 @@ public interface IWorldDay {
 	boolean isHoliday();
 	String getHolidayName();
 	AspectManager getSpecialAspects(IWorldTime time);
-	
+	String getCalendarName();
+	IWorldTimeDuration getDuration(IWorldDay other);
 	
 }

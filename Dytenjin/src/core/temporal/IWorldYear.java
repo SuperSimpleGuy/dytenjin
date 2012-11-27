@@ -19,7 +19,7 @@ package core.temporal;
 
 import java.util.ArrayList;
 
-import core.management.individual.AspectManager;
+import core.management.ingame.AspectManager;
 
 /**
  * @author SuperSimpleGuy
@@ -66,5 +66,9 @@ public interface IWorldYear {
 	ArrayList<IWorldMonth> getMonths();
 	
 	IWorldYear clone();
+	
+	String getCalendarName();
+	
+	IWorldTimeDuration getDuration(IWorldYear other);
 	
 }

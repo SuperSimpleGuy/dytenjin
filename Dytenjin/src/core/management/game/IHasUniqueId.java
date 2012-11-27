@@ -22,20 +22,13 @@ package core.management.game;
  * id compared to others that share its id type
  * @author SuperSimpleGuy
  */
-public interface IUniqueId {
-
-	/**
-	 * Returns the unique id of this object
-	 * @return the unique id of this object
-	 */
-	int getId();
+public interface IHasUniqueId {
 	
 	/**
-	 * Gets the type of this id, all other objects
-	 * that share this id type must have a unique
-	 * id amongst themselves. Objects with different
-	 * id types can share the same id.
-	 * @return the id type
+	 * Gets the UniqueId object that belongs to the
+	 * implementing class
+	 * @return the implementing class's UniqueId
+	 * containing the specific id information
 	 */
-	String getIdType();
+	UniqueId getUniqueId();
 }
