@@ -15,25 +15,14 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package core.management.ingame;
-
-import java.util.HashMap;
-
-import core.parsing.IIsParsable;
+package core.parsing;
 
 /**
- * 
  * @author SuperSimpleGuy
  */
-public class AspectManager {
+public interface IIsParsable {
 
-	private HashMap<Integer, IIsParsable> aspects;
-	
-	public AspectManager() {
-		aspects = new HashMap<Integer, IIsParsable>();
-	}
-	
-	//TODO: The usual HashMap managing stuff...
+	void setParserManager(ParserManager<?> pM);
+	ParserManager<?> getParserManager();
 	
 }

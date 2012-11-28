@@ -15,25 +15,28 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package core.management.ingame;
-
-import java.util.HashMap;
-
-import core.parsing.IIsParsable;
+package core.parsing;
 
 /**
- * 
  * @author SuperSimpleGuy
  */
-public class AspectManager {
-
-	private HashMap<Integer, IIsParsable> aspects;
+public class ParserManager<T extends CoreFileParser> {
 	
-	public AspectManager() {
-		aspects = new HashMap<Integer, IIsParsable>();
+	private T parser;
+	
+	public ParserManager(T parser) {
+		this.parser = parser;
 	}
 	
-	//TODO: The usual HashMap managing stuff...
+	public String getDescription(MultiGenericsWrapperMessage objArgs) {
+		if (objArgs.doTypesMatch(parser.getTypeOfArgs())) {
+			return parser.getMyDescription(objArgs);
+		}
+		return null;
+	}
+	
+	public MultiGenericsWrapperMessage getArgs() {
+		return new MultiGenericsWrapperMessage(parser.getTypeOfArgs());
+	}
 	
 }

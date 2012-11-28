@@ -16,24 +16,38 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package core.management.ingame;
+package core.parsing;
 
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.logging.Level;
 
-import core.parsing.IIsParsable;
+import core.Constants;
+import core.system.ExceptionManager;
 
 /**
  * 
  * @author SuperSimpleGuy
  */
-public class AspectManager {
+public abstract class CoreFileParser {
 
-	private HashMap<Integer, IIsParsable> aspects;
+	protected Scanner inFile;
+	protected Class<?>[] args;
 	
-	public AspectManager() {
-		aspects = new HashMap<Integer, IIsParsable>();
+	public CoreFileParser(String f, Class<?>[] args) {
+		try {
+			inFile = new Scanner(new File(f));
+		} catch (FileNotFoundException e) {
+			ExceptionManager.SYS_EXCEPTION_MANAGER.throwException(e, Level.SEVERE, Constants.SYS_ERR_FILE);
+		}
+		this.args = args;
 	}
 	
-	//TODO: The usual HashMap managing stuff...
+	public Class<?>[] getTypeOfArgs() {
+		return this.args;
+	}
+	
+	public abstract String getMyDescription(MultiGenericsWrapperMessage objArgs);
 	
 }
