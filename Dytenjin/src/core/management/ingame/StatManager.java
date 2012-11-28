@@ -21,7 +21,6 @@ package core.management.ingame;
 import java.util.Collection;
 import java.util.HashMap;
 
-import core.management.game.IHasUniqueId;
 import core.management.game.UniqueId;
 import core.parsing.IIsParsable;
 import core.parsing.ParserManager;
@@ -30,7 +29,7 @@ import core.parsing.ParserManager;
  * 
  * @author SuperSimpleGuy
  */
-public class StatManager implements IHasUniqueId, IIsParsable {
+public class StatManager implements IIsParsable {
 
 	private HashMap<String, StatDouble> stats;
 	private HashMap<Integer, StatManager> subStats;

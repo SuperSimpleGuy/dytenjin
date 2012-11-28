@@ -18,6 +18,10 @@
 package core.management.game;
 
 /**
+ * Contains identity information for another
+ * object, with a unique id and a shared id
+ * type. Within an id type, no two ids can
+ * be the same.
  * @author SuperSimpleGuy
  */
 public class UniqueId implements Comparable<UniqueId> {
@@ -25,6 +29,11 @@ public class UniqueId implements Comparable<UniqueId> {
 	private int id;
 	private int idType;
 	
+	/**
+	 * Creates a UniqueId with an id and an id type
+	 * @param id the id to contain
+	 * @param idType the type of id stored
+	 */
 	public UniqueId(int id, int idType) {
 		this.id = id;
 		this.idType = idType;
@@ -46,6 +55,13 @@ public class UniqueId implements Comparable<UniqueId> {
 		return idType;
 	}
 	
+	/**
+	 * True if this and another UniqueId share the
+	 * same type, false otherwise
+	 * @param other the other UniqueId
+	 * @return true if the two UniqueId objects share
+	 * the same id type, false otherwise
+	 */
 	public boolean hasSameType(UniqueId other) {
 		return other.getIdType() == this.idType;
 	}

@@ -20,10 +20,13 @@ package core.management.ingame;
 
 import java.util.HashMap;
 
+import core.management.game.UniqueId;
 import core.parsing.IIsParsable;
 
 /**
- * 
+ * Manages a set of aspects for a single entity,
+ * place, group, or otherwise describable object
+ * through use of {@link IIsParsable}
  * @author SuperSimpleGuy
  */
 public class AspectManager {
@@ -34,6 +37,24 @@ public class AspectManager {
 		aspects = new HashMap<Integer, IIsParsable>();
 	}
 	
-	//TODO: The usual HashMap managing stuff...
+	public boolean containsAspectType(UniqueId uId) {
+		return aspects.containsKey(uId.getIdType());
+	}
+	
+	public boolean addAspect(IIsParsable ip) {
+		if (aspects.containsKey(ip.getUniqueId().getIdType())) {
+			return false;
+		}
+		aspects.put(ip.getUniqueId().getId(), ip);
+		return true;
+	}
+	
+	public IIsParsable removeAspect(UniqueId uId) {
+		return aspects.remove(uId.getIdType());
+	}
+	
+	public IIsParsable getAspect(UniqueId uId) {
+		return aspects.get(uId.getIdType());
+	}
 	
 }

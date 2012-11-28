@@ -70,10 +70,10 @@ public class ParsingMap {
 		}
 	}
 	
-	public FileParser getParserFromClass(Class<?> classz) {
-		FileParser p = null;
+	public CoreFileParser getParserFromClass(Class<?> classz) {
+		CoreFileParser p = null;
 		try {
-			p = (FileParser)Class.forName(map.get(classz.getName())).newInstance();
+			p = (CoreFileParser)Class.forName(map.get(classz.getName())).newInstance();
 		} catch (Exception e) {
 			System.out.println(Constants.MAP_PARSING_ERROR_NO_CLASS + e.getLocalizedMessage());
 			System.exit(Constants.MAP_PARSING_ERROR_CODE);

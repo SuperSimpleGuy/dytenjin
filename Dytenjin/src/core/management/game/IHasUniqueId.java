@@ -19,7 +19,10 @@ package core.management.game;
 
 /**
  * Requires the implemented object to have a unique
- * id compared to others that share its id type
+ * id compared to others that share its id type.
+ * Typically a new UniqueId is created from the
+ * IdentityManager class and given to the
+ * implementing subclass's constructor
  * @author SuperSimpleGuy
  */
 public interface IHasUniqueId {

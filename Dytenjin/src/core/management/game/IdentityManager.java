@@ -21,44 +21,66 @@ package core.management.game;
 import java.util.HashMap;
 
 /**
- * 
+ * Manages UniqueIds for the engine, ensuring no
+ * two similar ids are generated for an id type
  * @author SuperSimpleGuy
  */
 public class IdentityManager {
 	
+	/**
+	 * The system's Identity Manager to use
+	 */
 	public static IdentityManager SYS_IDMNGR = new IdentityManager();
 
-	private HashMap<String, Integer> identities;
+	private HashMap<String, UniqueId> identities;
+	private int idTypeIndex;
 	
+	/**
+	 * Constructs an Identity Manager with no entries and no
+	 * various id types to manage
+	 */
 	private IdentityManager() {
-		identities = new HashMap<String, Integer>();
+		identities = new HashMap<String, UniqueId>();
+		idTypeIndex = 0;
 	}
 	
-	private IdentityManager(String[] keys) {
-		this();
-		for (String s : keys) {
-			this.addNewIdTracking(s);
-		}
-	}
-	
+	/**
+	 * Determines whether the id is free for the specified
+	 * key.
+	 * @param key the category of the id type to use
+	 * @param id the id to determine if free
+	 * @return true if available, false otherwise
+	 */
 	public boolean isIdFree(String key, int id) {
-		return identities.get(key) <= id;
+		return identities.get(key).getId() <= id;
 	}
 	
+	/**
+	 * Creates a new id type to manage new ids for
+	 * @param key the String representing the id type
+	 * @return true if a new id type was successfully
+	 * created, false otherwise
+	 */
 	public boolean addNewIdTracking(String key) {
 		if (identities.containsKey(key)) {
 			return false;
 		}
-		identities.put(key, 0);
+		identities.put(key, new UniqueId(0, idTypeIndex++));
 		return true;
 	}
 	
-	public int getNextFreeId(String key) {
-		if (!identities.containsKey(key)) {
-			return 0;
-		}
-		int temp = identities.get(key);
-		identities.put(key, temp + 1);
+	/**
+	 * Returns a new UniqueId object to pass to IHasUniqueId
+	 * constructors, guaranteed unique. Null-safe, as a key
+	 * that is not yet being tracked will automatically
+	 * create a new id type for it.
+	 * @param key the String representing the id type
+	 * @return the UniqueId to use for a new IHasUniqueId object
+	 */
+	public UniqueId getNextFreeId(String key) {
+		addNewIdTracking(key);
+		UniqueId temp = identities.get(key);
+		identities.put(key, new UniqueId(temp.getId() + 1, temp.getIdType()));
 		return temp;
 	}
 	

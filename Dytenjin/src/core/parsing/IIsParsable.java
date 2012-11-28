@@ -17,10 +17,12 @@
  */
 package core.parsing;
 
+import core.management.game.IHasUniqueId;
+
 /**
  * @author SuperSimpleGuy
  */
-public interface IIsParsable {
+public interface IIsParsable extends IHasUniqueId {
 
 	void setParserManager(ParserManager<?> pM);
 	ParserManager<?> getParserManager();
