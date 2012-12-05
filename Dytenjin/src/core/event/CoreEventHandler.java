@@ -24,7 +24,7 @@ import java.util.logging.Level;
 
 import core.Constants;
 import core.system.CoreLogfileManager;
-import core.temporal.IWorldTimeDuration;
+import core.temporal.WorldTimeDuration;
 import core.temporal.WorldCompleteDate;
 
 /**
@@ -195,15 +195,15 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 	 * are triggered again
 	 * @param d the date to trigger events on
 	 */
-	public void triggerDateEvents(IWorldTimeDuration timeSinceLast,
-			IWorldTimeDuration triggerStep,
+	public void triggerDateEvents(WorldTimeDuration timeSinceLast,
+			WorldTimeDuration triggerStep,
 			WorldCompleteDate d) {
 		while (timeSinceLast.longerThanOther(triggerStep)) {
 			CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(Constants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerDateEvents", "Triggering another set of events");
 			triggerEvents(triggerStep);
 			triggerCalEvents(triggerStep, d);
 			timeSinceLast.decreaseDuration(triggerStep);
-			d.advanceTime(triggerStep);
+			d = (WorldCompleteDate)d.getDateAfterDuration(triggerStep);
 		}
 		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "triggerDateEvents", "Void method done");
 		
@@ -215,7 +215,7 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 	 * @param triggerStep the amount of time that passes by between the
 	 * an event being re-triggered
 	 */
-	private void triggerEvents(IWorldTimeDuration triggerStep) {
+	private void triggerEvents(WorldTimeDuration triggerStep) {
 		//Trigger previous IEvents
 		for (int i = 0; i < prevEventTriggers.size(); i++) {
 			ICoreEvent e = prevEventTriggers.get(i);
@@ -248,7 +248,7 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 	 * an event being re-triggered
 	 * @param d the date of the trigger
 	 */
-	private void triggerCalEvents(IWorldTimeDuration triggerStep, WorldCompleteDate d) {
+	private void triggerCalEvents(WorldTimeDuration triggerStep, WorldCompleteDate d) {
 		//Trigger previous ICalendarEvents
 		for (int i = 0; i < prevCalEventTriggers.size(); i++) {
 			ICoreCalendarEvent e = prevCalEventTriggers.get(i);
