@@ -28,21 +28,24 @@ import core.system.ExceptionManager;
  */
 public class WorldDate implements Comparable<WorldDate> {
 
-	private IWorldYear currentYear;
-	private IWorldMonth currentMonth;
-	private IWorldDay currentDay;
-	private String calendarName;
+	private AWorldYear currentYear;
+	private AWorldMonth currentMonth;
+	private AWorldDay currentDay;
+	private WorldCalendar cal;
 	
-	public WorldDate(String calendarName,
-			IWorldYear currentYear,
-			IWorldMonth currentMonth,
-			IWorldDay currentDay) {
-		if (!currentYear.getCalendarName().equals(calendarName) ||
-				!currentMonth.getCalendarName().equals(calendarName) ||
-				!currentDay.getCalendarName().equals(calendarName)) {
-			ExceptionManager.SYS_EXCEPTION_MANAGER.throwException(new IllegalArgumentException("WorldDate created with mismatched day, month, and years from differing calendars"), Level.SEVERE, Constants.SYS_ERR_FILE);
+	public WorldDate(WorldCalendar cal,
+			AWorldYear currentYear,
+			AWorldMonth currentMonth,
+			AWorldDay currentDay) {
+		if (!currentYear.hasCalendar() ||
+				!currentMonth.hasCalendar() ||
+				!currentDay.hasCalendar() ||
+				!currentYear.getParent().getName().equals(cal.getName()) ||
+				!currentMonth.getParent().getParent().getName().equals(cal.getName()) ||
+				!currentDay.getParent().getParent().getParent().getName().equals(cal.getName())) {
+			ExceptionManager.SYS_EXCEPTION_MANAGER.throwException(new IllegalArgumentException("WorldDate created with mismatched day, month, and years from differing calendars, or not apart of a calendar"), Level.SEVERE, Constants.SYS_ERR_FILE);
 		}
-		this.calendarName = calendarName;
+		this.cal = cal;
 		this.currentDay = currentDay;
 		this.currentMonth = currentMonth;
 		this.currentYear = currentYear;
@@ -52,7 +55,7 @@ public class WorldDate implements Comparable<WorldDate> {
 	 * Returns the currentYear 
 	 * @return the currentYear
 	 */
-	public IWorldYear getCurrentYear() {
+	public AWorldYear getCurrentYear() {
 		return currentYear;
 	}
 
@@ -60,7 +63,7 @@ public class WorldDate implements Comparable<WorldDate> {
 	 * Returns the currentMonth 
 	 * @return the currentMonth
 	 */
-	public IWorldMonth getCurrentMonth() {
+	public AWorldMonth getCurrentMonth() {
 		return currentMonth;
 	}
 
@@ -68,21 +71,21 @@ public class WorldDate implements Comparable<WorldDate> {
 	 * Returns the currentDay 
 	 * @return the currentDay
 	 */
-	public IWorldDay getCurrentDay() {
+	public AWorldDay getCurrentDay() {
 		return currentDay;
 	}
 	
 	/**
-	 * Returns the calendar name which this date applies to
-	 * @return the calendar name which this date applies to
+	 * Returns the calendar which this date applies to
+	 * @return the calendar which this date applies to
 	 */
-	public String getCalendarName() {
-		return calendarName;
+	public WorldCalendar getWorldCalendar() {
+		return cal;
 	}
 	
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof WorldDate) || !this.getCalendarName().equals(((WorldDate)o).getCalendarName())) {
+		if (!(o instanceof WorldDate) || !this.getWorldCalendar().getName().equals(((WorldDate)o).getWorldCalendar().getName())) {
 			return false;
 		}
 		WorldDate date = (WorldDate) o;
@@ -93,7 +96,7 @@ public class WorldDate implements Comparable<WorldDate> {
 	
 	@Override
 	public int compareTo(WorldDate o) {
-		if (!o.getCalendarName().equals(this.getCalendarName())) {
+		if (!o.getWorldCalendar().getName().equals(this.getWorldCalendar().getName())) {
 			CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(Constants.SYS_LOG_FILE, Level.WARNING, this.getClass(), "compareTo", "Cannot compare WorldDates belonging to different calendars.");
 			return 0;
 		}
@@ -119,15 +122,18 @@ public class WorldDate implements Comparable<WorldDate> {
 		}
 	}
 	
-	public IWorldTimeDuration getTimeBetween(WorldDate other) {
-		if (!other.getCalendarName().equals(this.getCalendarName())) {
+	public int getDaysBetween(WorldDate other) {
+		if (!other.getWorldCalendar().getName().equals(this.getWorldCalendar().getName())) {
 			CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(Constants.SYS_LOG_FILE, Level.WARNING, this.getClass(), "getTimeBetween", "Cannot get time between WorldDates belonging to different calendars.");
-			return null;
+			return -1;
 		}
-		IWorldTimeDuration temp = this.getCurrentYear().getDuration(other.getCurrentYear());
-		temp.addDuration(this.getCurrentMonth().getDuration(other.getCurrentMonth()));
-		temp.addDuration(this.getCurrentDay().getDuration(other.getCurrentDay()));
+		int temp = this.getCurrentYear().getNumDaysBetween(other.getCurrentYear());
+		temp += this.getCurrentMonth().getNumDaysBetween(other.getCurrentMonth());
+		temp += this.getCurrentDay().getNumDaysBetween(other.getCurrentDay());
 		return temp;
 	}
 	
+	public WorldDate getDateAfterDuration(WorldTimeDuration duration) {
+		return cal.getDateFromTotalDays(cal.getTotalDaysToDate(this) + duration.getDayDuration());
+	}
 }

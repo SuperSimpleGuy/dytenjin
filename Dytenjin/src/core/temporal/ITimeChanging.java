@@ -24,6 +24,6 @@ package core.temporal;
  */
 public interface ITimeChanging {
 
-	void updateDay(IWorldDay d);
+	void updateOverPeriodOfTime(WorldTimeDuration d);
 	
 }

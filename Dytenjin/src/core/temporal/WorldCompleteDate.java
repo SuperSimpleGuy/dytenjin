@@ -22,26 +22,60 @@ package core.temporal;
  */
 public class WorldCompleteDate extends WorldDate {
 
-	private IWorldTime currentTime;
+	private AWorldTime currentTime;
 	
-	public WorldCompleteDate(String calendarName,
-			IWorldYear currentYear,
-			IWorldMonth currentMonth,
-			IWorldDay currentDay,
-			IWorldTime currentTime) {
+	public WorldCompleteDate(WorldCalendar calendarName,
+			AWorldYear currentYear,
+			AWorldMonth currentMonth,
+			AWorldDay currentDay,
+			AWorldTime currentTime) {
 		super(calendarName, currentYear, currentMonth, currentDay);
-		this.currentTime =currentTime;
+		this.currentTime = currentTime;
 	}
 
 	/**
 	 * Returns the currentTime 
 	 * @return the currentTime
 	 */
-	public IWorldTime getCurrentTime() {
+	public AWorldTime getCurrentTime() {
 		return currentTime;
 	}
 	
-	public void advanceTime(IWorldTimeDuration d) {
-		
+	@Override
+	public WorldDate getDateAfterDuration(WorldTimeDuration duration) {
+		WorldDate temp = super.getDateAfterDuration(duration);
+		AWorldTime tempTime = currentTime.changeTime(duration);
+		if (tempTime.getHour() >= currentTime.getHour()) {
+			return new WorldCompleteDate(temp.getWorldCalendar(),
+					temp.getCurrentYear(),
+					temp.getCurrentMonth(),
+					temp.getCurrentDay(),
+					tempTime);
+		}
+		AWorldDay tempDay = temp.getCurrentMonth().getDayByValue(temp.getCurrentDay().getDayValue() + 1);
+		if (tempDay != null) {
+			return new WorldCompleteDate(temp.getWorldCalendar(),
+					temp.getCurrentYear(),
+					temp.getCurrentMonth(),
+					tempDay,
+					tempTime);
+		}
+		AWorldMonth tempMonth = temp.getCurrentYear().getMonthByValue(temp.getCurrentMonth().getMonthValue() + 1);
+		if (tempMonth != null) {
+			return new WorldCompleteDate(temp.getWorldCalendar(),
+					temp.getCurrentYear(),
+					tempMonth,
+					tempMonth.getDayByValue(0),
+					tempTime);
+		}
+		AWorldYear tempYear = temp.getWorldCalendar().getYearFromValue(temp.getCurrentYear().getYearValue() + 1);
+		if (tempYear != null) {
+			return new WorldCompleteDate(temp.getWorldCalendar(),
+					tempYear,
+					tempYear.getMonthByValue(0),
+					tempYear.getMonthByValue(0).getDayByValue(0),
+					tempTime);
+		}
+		return null;
 	}
 }

@@ -20,22 +20,50 @@ package core.temporal;
 import core.management.ingame.AspectManager;
 
 /**
- * Methods required to keep track of the world time
  * @author SuperSimpleGuy
  */
-public interface IWorldTime {
+public abstract class AWorldTime {
 
+	private int hour;
+	private int subHour;
+	private int maxHour;
+	private int maxSubHour;
+	private AspectManager aspects;
+	private WorldCalendar parent;
+	
+	public AWorldTime(WorldCalendar parent, AspectManager aspects) {
+		this.maxHour = parent.getMaxHr();
+		this.maxSubHour = parent.getMaxSubHr();
+		this.hour = 0;
+		this.subHour = 0;
+		this.aspects = aspects;
+		this.parent = parent;
+	}
+	
+	public AWorldTime(WorldCalendar parent,
+			AspectManager aspects,
+			int hour,
+			int subHour) {
+		this(parent, aspects);
+		this.hour = hour;
+		this.subHour = subHour;
+	}
+	
 	/**
 	 * Returns the current hour
 	 * @return the current hour
 	 */
-	int getHour();
+	public int getHour() {
+		return hour;
+	}
 	
 	/**
 	 * Returns the number of hours in a day
 	 * @return the number of hours in a day
 	 */
-	int getHoursPerDay();
+	public int getHoursPerDay() {
+		return maxHour;
+	}
 	
 	/**
 	 * Returns true if this time is within the first half of
@@ -43,48 +71,54 @@ public interface IWorldTime {
 	 * @return true if this time is within the first half of
 	 * the day, false otherwise
 	 */
-	boolean isFirstHalfDay();
+	boolean isFirstHalfDay() {
+		return 2 * hour < maxHour;
+	}
 	
 	/**
 	 * Returns the current subhour (e.g. minutes)
 	 * @return the current subhour
 	 */
-	int getSubHour();
+	public int getSubHour() {
+		return subHour;
+	}
 	
 	/**
 	 * Returns the number of subhours in an hour
 	 * (e.g. 60 minutes in an hour)
 	 * @return the number of subhours in an hour
 	 */
-	int getSubHoursPerHour();
+	public int getSubHoursPerHour() {
+		return maxSubHour;
+	}
 	
 	/**
 	 * Returns the name of the hour singularly
 	 * (e.g. "hour")
 	 * @return the name of the hour singularly
 	 */
-	String getHourNameSing();
+	public abstract String getHourNameSing();
 	
 	/**
 	 * Returns the name of the subhour singularly
 	 * (e.g. "minute")
 	 * @return the name of the subhour singularly
 	 */
-	String getSubHourNameSing();
+	public abstract String getSubHourNameSing();
 	
 	/**
 	 * Returns the name of the hour pluraly
 	 * (e.g. "hours")
 	 * @return the name of the hour pluraly
 	 */
-	String getHourNamePlural();
+	public abstract String getHourNamePlural();
 	
 	/**
 	 * Returns the name of the subhour pluraly
 	 * (e.g. "minutes")
 	 * @return the name of the subhour pluraly
 	 */
-	String getSubHourNamePlural();
+	public abstract String getSubHourNamePlural();
 	
 	/**
 	 * Returns a new IWorldTime object representing the progression of
@@ -93,7 +127,7 @@ public interface IWorldTime {
 	 * @param deltaSubHour the amount of time passed in subhours
 	 * @return a new IWorldTime object representing the new time
 	 */
-	IWorldTime changeTime(int deltaHour, int deltaSubHour);
+	public abstract AWorldTime changeTime(WorldTimeDuration duration);
 	
 	/**
 	 * Returns an object representing the length of time between this
@@ -102,15 +136,22 @@ public interface IWorldTime {
 	 * @return a duration representing a period of time from now until
 	 * the specified ending time
 	 */
-	IWorldTimeDuration durationFromNowUntil(IWorldTime other);
+	public abstract WorldTimeDuration getDuration(AWorldTime other);
 	
 	/**
 	 * Represents aspects related to this particular time 
 	 * @return aspects related to this particular time
 	 */
-	AspectManager getSpecialAspects();
+	public AspectManager getSpecialAspects() {
+		return aspects;
+	}
 	
-	String getCalendarName();
+	public String getCalendarName() {
+		if (parent == null) {
+			return null;
+		}
+		return parent.getName();
+	}
 	
-	IWorldTimeDuration getDuration(IWorldTime other);
+	
 }
