@@ -29,42 +29,31 @@ import core.management.game.UniqueId;
  */
 public class StatManager implements IHasUniqueId {
 
-	protected HashMap<String, StatDouble> stats;
+	protected HashMap<Integer, StatDouble> stats;
 	private UniqueId id;
 	
 	public StatManager(UniqueId id) {
 		this.id = id;
-		this.stats = new HashMap<String, StatDouble>();
+		this.stats = new HashMap<Integer, StatDouble>();
 	}
 	
-	public StatManager(UniqueId id, String[] stat, double baseNumber) {
-		this(id);
-		for (String s : stat) {
-			stats.put(s, new StatDouble(s, 0));
-		}
-	}
-	
-	public double getStatRaw(String s) {
-		StatDouble temp = stats.get(s);
+	public double getStatRaw(int id) {
+		StatDouble temp = stats.get(id);
 		return (temp != null ? temp.getValue() : -1);
 	}
 	
-	public int getStatTrunc(String s) {
-		StatDouble temp = stats.get(s);
+	public int getStatTrunc(int id) {
+		StatDouble temp = stats.get(id);
 		return (temp != null ? temp.getValueTrunc() : -1);
 	}
 	
-	public int getStatRound(String s) {
-		StatDouble temp = stats.get(s);
+	public int getStatRound(int id) {
+		StatDouble temp = stats.get(id);
 		return (temp != null ? temp.getValueRound() : -1);
 	}
 	
-	public boolean hasStat(String s) {
-		return (stats.get(s) != null);
-	}
-	
-	public boolean changeStat(String s, double amount) {
-		StatDouble temp = stats.get(s);
+	public boolean changeStat(int id, double amount) {
+		StatDouble temp = stats.get(id);
 		if (temp == null) {
 			return false;
 		}
@@ -76,16 +65,16 @@ public class StatManager implements IHasUniqueId {
 		if (stats.containsKey(sD.getName())) {
 			return false;
 		}
-		this.stats.put(sD.getName(), sD);
+		this.stats.put(sD.getUniqueId().getId(), sD);
 		return true;
 	}
 	
-	public StatDouble removeStat(String s) {
-		return stats.remove(s);
+	public StatDouble removeStat(int id) {
+		return stats.remove(id);
 	}
 	
-	public String getDescription(String s) {
-		StatDouble temp = stats.get(s);
+	public String getDescription(int id) {
+		StatDouble temp = stats.get(id);
 		if (temp == null) {
 			return null;
 		} else {
@@ -93,15 +82,19 @@ public class StatManager implements IHasUniqueId {
 		}
 	}
 	
-	public void setDescription(String s, String desc) {
-		StatDouble temp = stats.get(s);
+	public void setDescription(int id, String desc) {
+		StatDouble temp = stats.get(id);
 		if (temp != null) {
-			stats.get(s).setDescription(desc);
+			stats.get(id).setDescription(desc);
 		}
 	}
 	
-	protected StatDouble findStat(String s) {
-		return stats.get(s);
+	protected StatDouble findStat(int id) {
+		return stats.get(id);
+	}
+	
+	public boolean hasStat(int id) {
+		return stats.get(id) != null;
 	}
 
 	@Override

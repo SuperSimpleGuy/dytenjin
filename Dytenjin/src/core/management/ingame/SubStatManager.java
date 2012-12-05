@@ -30,6 +30,7 @@ import core.parsing.ParserManager;
 public class SubStatManager extends StatManager implements IIsParsable {
 
 	private HashMap<Integer, StatManager> subStats;
+	protected HashMap<String, Double> masterList;
 	private ParserManager<?> pM;
 	
 	public SubStatManager(UniqueId id) {
@@ -37,33 +38,47 @@ public class SubStatManager extends StatManager implements IIsParsable {
 		this.subStats = new HashMap<Integer, StatManager>();
 	}
 	
-	public SubStatManager(UniqueId id, String[] stat, double baseNumber) {
-		super(id, stat, baseNumber);
-		this.subStats = new HashMap<Integer, StatManager>();
+	public double getMasterStatRaw(String s) {
+		double temp = masterList.get(s);
+		return temp;
 	}
 	
-	public double getStatRaw(String s) {
-		StatDouble temp = findStat(s);
+	public int getMasterStatTrunc(String s) {
+		double temp = masterList.get(s);
+		return (int)Math.floor(temp);
+	}
+	
+	public int getMasterStatRound(String s) {
+		double temp = masterList.get(s);
+		return (int)Math.round(temp);
+	}
+	
+	@Override
+	public double getStatRaw(int id) {
+		StatDouble temp = findStat(id);
 		return (temp != null ? temp.getValue() : -1);
 	}
 	
-	public int getStatTrunc(String s) {
-		StatDouble temp = findStat(s);
+	@Override
+	public int getStatTrunc(int id) {
+		StatDouble temp = findStat(id);
 		return (temp != null ? temp.getValueTrunc() : -1);
 	}
 	
-	public int getStatRound(String s) {
-		StatDouble temp = findStat(s);
+	@Override
+	public int getStatRound(int id) {
+		StatDouble temp = findStat(id);
 		return (temp != null ? temp.getValueRound() : -1);
 	}
 	
-	protected StatDouble findStat(String s) {
-		if (stats.containsKey(s)) {
-			return stats.get(s);
+	@Override
+	protected StatDouble findStat(int id) {
+		if (stats.containsKey(id)) {
+			return stats.get(id);
 		}
 		Collection<StatManager> col = subStats.values();
 		for (StatManager sT: col) {
-			StatDouble temp = sT.findStat(s);
+			StatDouble temp = sT.findStat(id);
 			if (temp != null) {
 				return temp;
 			}
@@ -71,12 +86,13 @@ public class SubStatManager extends StatManager implements IIsParsable {
 		return null;
 	}
 	
-	public boolean hasStat(String s) {
-		return (findStat(s) != null);
+	public boolean hasStat(int id) {
+		return (findStat(id) != null);
 	}
 	
-	public boolean changeStat(String s, double amount) {
-		StatDouble temp = findStat(s);
+	@Override
+	public boolean changeStat(int id, double amount) {
+		StatDouble temp = findStat(id);
 		if (temp == null) {
 			return false;
 		}
@@ -86,18 +102,30 @@ public class SubStatManager extends StatManager implements IIsParsable {
 	
 	public boolean addStat(StatDouble sD, UniqueId id) {
 		StatManager temp = findSubStat(id);
-		if (temp == null || findStat(sD.getName()) != null) {
+		if (temp == null || findStat(sD.getUniqueId().getId()) != null) {
 			return false;
+		}
+		if (this.masterList.containsKey(sD.getName())) {
+			this.masterList.put(sD.getName(), this.masterList.get(sD.getName()) + sD.getValue());
+		} else {
+			this.masterList.put(sD.getName(), sD.getValue());
 		}
 		return temp.addStat(sD);
 	}
 	
-	public StatDouble removeStat(String s, UniqueId id) {
-		StatManager temp = findSubStat(id);
-		if (temp == null || findStat(s) == null) {
+	public StatDouble removeStat(int id, UniqueId idUnique) {
+		StatManager tempSM = findSubStat(idUnique);
+		if (tempSM == null || findStat(id) == null) {
 			return null;
 		}
-		return temp.removeStat(s);
+		StatDouble tempSD = tempSM.removeStat(id);
+		if (tempSD != null) {
+			double temp = this.masterList.get(tempSD.getName()) - tempSD.getValue();
+			if (temp == 0.0) {
+				masterList.remove(tempSD.getName());
+			}
+		}
+		return tempSD;
 	}
 	
 	private StatManager findSubStat(StatManager s) {
@@ -118,6 +146,10 @@ public class SubStatManager extends StatManager implements IIsParsable {
 	
 	public StatManager removeSubStat(UniqueId id) {
 		return subStats.remove(id.getId());
+	}
+	
+	protected Double findMasterStat(String s) {
+		return masterList.get(s);
 	}
 
 	@Override

@@ -17,6 +17,7 @@
  */
 package core.management.ingame;
 
+import core.management.game.UniqueId;
 import core.temporal.ITimeChanging;
 import core.temporal.WorldTimeDuration;
 
@@ -34,9 +35,10 @@ public class StatCondition extends StatDouble implements ITimeChanging {
 	 */
 	public StatCondition(String name,
 			double value,
+			UniqueId id,
 			WorldTimeDuration initDuration,
 			StatManager parent) {
-		this(name, "", value, initDuration, parent);
+		this(name, "", value, id, initDuration, parent);
 	}
 	
 	/**
@@ -48,12 +50,13 @@ public class StatCondition extends StatDouble implements ITimeChanging {
 	public StatCondition(String name,
 			String description,
 			double value,
+			UniqueId id,
 			WorldTimeDuration initDuration,
 			StatManager parent) {
-		super(name, description, value);
+		super(name, description, value, id);
 		this.durLeft = initDuration;
 		this.parent = parent;
-		if (!parent.hasStat(this.getName())) {
+		if (!parent.hasStat(super.getUniqueId().getId())) {
 			parent.addStat(this);
 		}
 	}
@@ -66,7 +69,7 @@ public class StatCondition extends StatDouble implements ITimeChanging {
 	public void updateOverPeriodOfTime(WorldTimeDuration d) {
 		durLeft.decreaseDuration(d);
 		if (!this.isValid()) {
-			parent.removeStat(this.getName());
+			parent.removeStat(super.getUniqueId().getId());
 		}
 	}
 

@@ -17,25 +17,31 @@
  */
 package core.management.ingame;
 
+import core.management.game.IHasUniqueId;
+import core.management.game.UniqueId;
+
 /**
  * @author SuperSimpleGuy
  */
-public class StatDouble {
+public class StatDouble implements IHasUniqueId {
 
 	private String name;
 	private String description;
 	private double value;
+	private UniqueId id;
 	
-	public StatDouble(String name, double value) {
+	public StatDouble(String name, double value, UniqueId id) {
 		this.name = name;
 		this.value = value;
 		this.description = "";
+		this.id = id;
 	}
 	
-	public StatDouble(String name, String description, double value) {
+	public StatDouble(String name, String description, double value, UniqueId id) {
 		this.name = name;
 		this.value = value;
 		this.description = description;
+		this.id = id;
 	}
 	
 	public void changeByValue(double amount) {
@@ -88,5 +94,10 @@ public class StatDouble {
 	 */
 	public int getValueTrunc() {
 		return (int) Math.floor(value);
+	}
+
+	@Override
+	public UniqueId getUniqueId() {
+		return id;
 	}
 }
