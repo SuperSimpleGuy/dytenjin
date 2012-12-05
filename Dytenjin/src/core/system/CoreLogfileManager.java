@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import core.Constants;
+import core.CoreConstants;
 
 /**
  * @author SuperSimpleGuy
@@ -41,14 +41,14 @@ public class CoreLogfileManager {
 	private FileHandler getFileHandler(String fileName) throws RuntimeException {
 		FileHandler fHand = null;
 		try {
-			fHand = new FileHandler(fileName, Constants.MAX_LOG_BYTES, Constants.MAX_LOG_FILES, Constants.LOG_APPEND);
+			fHand = new FileHandler(fileName, CoreConstants.MAX_LOG_BYTES, CoreConstants.MAX_LOG_FILES, CoreConstants.LOG_APPEND);
 			fHand.setFormatter(new SimpleFormatter());
 			fHand.setFormatter(new DytenjinFormatter());
 		} catch (Exception e) {
-			if (fileName.equals(Constants.SYS_LOG_FILE)) {
+			if (fileName.equals(CoreConstants.SYS_LOG_FILE)) {
 				throw new RuntimeException("Could not register the core system's logging file (FileHandler failed).", e);
 			} else {
-				logWithParams(Constants.SYS_LOG_FILE, Level.WARNING, this.getClass(), "registerFileLogger", "Could not register a file logger.", new String[] {fileName, e.getMessage()});
+				logWithParams(CoreConstants.SYS_LOG_FILE, Level.WARNING, this.getClass(), "registerFileLogger", "Could not register a file logger.", new String[] {fileName, e.getMessage()});
 			}
 		}
 		return fHand;

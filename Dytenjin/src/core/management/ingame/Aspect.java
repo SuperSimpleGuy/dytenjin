@@ -15,14 +15,43 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package core.management.ingame;
 
-package core;
+import core.management.game.IHasUniqueId;
+import core.management.game.UniqueId;
+import core.parsing.IIsParsable;
+import core.parsing.ParserManager;
 
 /**
- * Placeholder for thinking out encounters and questlines.
- * Currently does nothing.
  * @author SuperSimpleGuy
  */
-public class Scenario {
+public abstract class Aspect implements IHasUniqueId, IIsParsable {
+
+	/* (non-Javadoc)
+	 * @see core.management.game.IHasUniqueId#getUniqueId()
+	 */
+	@Override
+	public UniqueId getUniqueId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see core.parsing.IIsParsable#setParserManager(core.parsing.ParserManager)
+	 */
+	@Override
+	public void setParserManager(ParserManager<?> pM) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see core.parsing.IIsParsable#getParserManager()
+	 */
+	@Override
+	public ParserManager<?> getParserManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

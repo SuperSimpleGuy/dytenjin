@@ -30,17 +30,17 @@ import core.parsing.IIsParsable;
  */
 public class AspectManager {
 
-	private HashMap<Integer, IIsParsable> aspects;
+	private HashMap<Integer, Aspect> aspects;
 	
 	public AspectManager() {
-		aspects = new HashMap<Integer, IIsParsable>();
+		aspects = new HashMap<Integer, Aspect>();
 	}
 	
 	public boolean containsAspectType(int idType) {
 		return aspects.containsKey(idType);
 	}
 	
-	public boolean addAspect(IIsParsable ip) {
+	public boolean addAspect(Aspect ip) {
 		if (aspects.containsKey(ip.getUniqueId().getIdType())) {
 			return false;
 		}
@@ -48,11 +48,11 @@ public class AspectManager {
 		return true;
 	}
 	
-	public IIsParsable removeAspect(int idType) {
+	public Aspect removeAspect(int idType) {
 		return aspects.remove(idType);
 	}
 	
-	public IIsParsable getAspect(int idType) {
+	public Aspect getAspect(int idType) {
 		return aspects.get(idType);
 	}
 	

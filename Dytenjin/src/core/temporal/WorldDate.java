@@ -19,7 +19,7 @@ package core.temporal;
 
 import java.util.logging.Level;
 
-import core.Constants;
+import core.CoreConstants;
 import core.system.CoreLogfileManager;
 import core.system.ExceptionManager;
 
@@ -43,7 +43,7 @@ public class WorldDate implements Comparable<WorldDate> {
 				!currentYear.getParent().getName().equals(cal.getName()) ||
 				!currentMonth.getParent().getParent().getName().equals(cal.getName()) ||
 				!currentDay.getParent().getParent().getParent().getName().equals(cal.getName())) {
-			ExceptionManager.SYS_EXCEPTION_MANAGER.throwException(new IllegalArgumentException("WorldDate created with mismatched day, month, and years from differing calendars, or not apart of a calendar"), Level.SEVERE, Constants.SYS_ERR_FILE);
+			ExceptionManager.SYS_EXCEPTION_MANAGER.throwException(new IllegalArgumentException("WorldDate created with mismatched day, month, and years from differing calendars, or not apart of a calendar"), Level.SEVERE, CoreConstants.SYS_ERR_FILE);
 		}
 		this.cal = cal;
 		this.currentDay = currentDay;
@@ -97,7 +97,7 @@ public class WorldDate implements Comparable<WorldDate> {
 	@Override
 	public int compareTo(WorldDate o) {
 		if (!o.getWorldCalendar().getName().equals(this.getWorldCalendar().getName())) {
-			CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(Constants.SYS_LOG_FILE, Level.WARNING, this.getClass(), "compareTo", "Cannot compare WorldDates belonging to different calendars.");
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(CoreConstants.SYS_LOG_FILE, Level.WARNING, this.getClass(), "compareTo", "Cannot compare WorldDates belonging to different calendars.");
 			return 0;
 		}
 		
@@ -124,7 +124,7 @@ public class WorldDate implements Comparable<WorldDate> {
 	
 	public int getDaysBetween(WorldDate other) {
 		if (!other.getWorldCalendar().getName().equals(this.getWorldCalendar().getName())) {
-			CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(Constants.SYS_LOG_FILE, Level.WARNING, this.getClass(), "getTimeBetween", "Cannot get time between WorldDates belonging to different calendars.");
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(CoreConstants.SYS_LOG_FILE, Level.WARNING, this.getClass(), "getTimeBetween", "Cannot get time between WorldDates belonging to different calendars.");
 			return -1;
 		}
 		int temp = this.getCurrentYear().getNumDaysBetween(other.getCurrentYear());

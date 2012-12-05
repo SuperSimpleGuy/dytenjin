@@ -23,7 +23,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.logging.Level;
 
-import core.Constants;
+import core.CoreConstants;
 import core.system.ExceptionManager;
 
 /**
@@ -39,7 +39,7 @@ public abstract class CoreFileParser {
 		try {
 			inFile = new Scanner(new File(f));
 		} catch (FileNotFoundException e) {
-			ExceptionManager.SYS_EXCEPTION_MANAGER.throwException(e, Level.SEVERE, Constants.SYS_ERR_FILE);
+			ExceptionManager.SYS_EXCEPTION_MANAGER.throwException(e, Level.SEVERE, CoreConstants.SYS_ERR_FILE);
 		}
 		this.args = args;
 	}

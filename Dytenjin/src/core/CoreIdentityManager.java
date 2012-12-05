@@ -16,21 +16,23 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package core.management.game;
+package core;
 
 import java.util.HashMap;
+
+import core.management.game.UniqueId;
 
 /**
  * Manages UniqueIds for the engine, ensuring no
  * two similar ids are generated for an id type
  * @author SuperSimpleGuy
  */
-public class IdentityManager {
+public class CoreIdentityManager {
 	
 	/**
 	 * The system's Identity Manager to use
 	 */
-	public static IdentityManager SYS_IDMNGR = new IdentityManager();
+	public static CoreIdentityManager SYS_IDMNGR = new CoreIdentityManager();
 
 	private HashMap<String, UniqueId> identities;
 	private int idTypeIndex;
@@ -39,7 +41,7 @@ public class IdentityManager {
 	 * Constructs an Identity Manager with no entries and no
 	 * various id types to manage
 	 */
-	private IdentityManager() {
+	private CoreIdentityManager() {
 		identities = new HashMap<String, UniqueId>();
 		idTypeIndex = 0;
 	}

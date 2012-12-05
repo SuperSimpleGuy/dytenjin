@@ -15,16 +15,15 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package core;
 
-
 /**
- * Placeholder while determining the other framework elements
- * needed to support a World.
- * Currently does nothing.
  * @author SuperSimpleGuy
  */
-public class World {
+public class Dytenjin {
+
+	public static void main(String[] args) {
+		
+	}
 	
 }

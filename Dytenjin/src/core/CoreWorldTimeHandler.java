@@ -16,7 +16,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package core.temporal;
+package core;
+
+import core.temporal.WorldCalendar;
+import core.temporal.WorldCompleteDate;
+import core.temporal.WorldDate;
 
 /**
  * 

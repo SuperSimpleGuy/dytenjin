@@ -16,13 +16,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package core.event;
+package core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 
-import core.Constants;
+import core.event.ICalendarEvent;
+import core.event.ICalendarEventCaller;
+import core.event.ICoreCalendarEvent;
+import core.event.ICoreEvent;
+import core.event.IEvent;
+import core.event.IEventCaller;
 import core.system.CoreLogfileManager;
 import core.temporal.WorldTimeDuration;
 import core.temporal.WorldCompleteDate;
@@ -49,7 +54,7 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 		dailyCalEvents = new HashMap<Integer, ICoreCalendarEvent>();
 		prevEventTriggers = new ArrayList<ICoreEvent>();
 		prevCalEventTriggers = new ArrayList<ICoreCalendarEvent>();
-		CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(Constants.SYS_LOG_FILE, Level.INFO, this.getClass(), "CoreEventHandler", "Created a CoreEventHandler");
+		CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(CoreConstants.SYS_LOG_FILE, Level.INFO, this.getClass(), "CoreEventHandler", "Created a CoreEventHandler");
 	}
 	
 	/**
@@ -60,7 +65,7 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 	 */
 	private boolean isKeyFree(int id) {
 		boolean temp = !dailyEvents.containsKey(id) && !dailyCalEvents.containsKey(id);;
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "isKeyFree", "Boolean method done", temp);
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "isKeyFree", "Boolean method done", temp);
 		return temp;
 	}
 	
@@ -71,11 +76,11 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 	 */
 	public boolean addDailyEvent(ICoreEvent e) {
 		if (!isKeyFree(e.getUniqueId().getId())) {
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "addDailyEvent", "Boolean method done, did not add", false);
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "addDailyEvent", "Boolean method done, did not add", false);
 			return false;
 		}
 		dailyEvents.put(e.getUniqueId().getId(), e);
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "addDailyEvent", "Boolean method done, successfully added", true);
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "addDailyEvent", "Boolean method done, successfully added", true);
 		return true;
 	}
 	
@@ -91,7 +96,7 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 				temp.add(event);
 			}
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "addDailyEvents", "ArrayList<ICoreEvent> method done", temp);
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "addDailyEvents", "ArrayList<ICoreEvent> method done", temp);
 		return temp;
 	}
 	
@@ -102,11 +107,11 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 	 */
 	public boolean addDailyCalEvents(ICoreCalendarEvent e) {
 		if (!isKeyFree(e.getUniqueId().getId())) {
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "addDailyCalEvents", "Boolean method done, did not add", false);
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "addDailyCalEvents", "Boolean method done, did not add", false);
 			return false;
 		}
 		dailyCalEvents.put(e.getUniqueId().getId(), e);
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "addDailyCalEvents", "Boolean method done, successfully added", true);
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "addDailyCalEvents", "Boolean method done, successfully added", true);
 		return true;
 	}
 	
@@ -122,7 +127,7 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 				temp.add(event);
 			}
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "addRandomEvents", "ArrayList<ICoreCalendarEvent> method done", temp);
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "addRandomEvents", "ArrayList<ICoreCalendarEvent> method done", temp);
 		return temp;
 	}
 	
@@ -132,7 +137,7 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 	 * @return the event removed, or null if nothing was removed
 	 */
 	public ICoreEvent removeDailyEvent(ICoreEvent e) {
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "removeDailyEvent(ICoreEvent e)", "ICoreEvent method done");
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "removeDailyEvent(ICoreEvent e)", "ICoreEvent method done");
 		return this.removeDailyEvent(e.getUniqueId().getId());
 	}
 	
@@ -146,13 +151,13 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 		if (temp != null) {
 			for (int i = 0; i < prevEventTriggers.size(); i++) {
 				if (prevEventTriggers.get(i).getUniqueId().getId() == id) {
-					CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "removeDailyEvent(int id)", "ICoreEvent method done. Removing previously triggering event: id/index", new Object[] {id, i});
+					CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(CoreConstants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "removeDailyEvent(int id)", "ICoreEvent method done. Removing previously triggering event: id/index", new Object[] {id, i});
 					prevEventTriggers.remove(i);
 					return temp;
 				}
 			}
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "removeDailyEvent(int id)", "ICoreEvent method done", temp);
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "removeDailyEvent(int id)", "ICoreEvent method done", temp);
 		return temp;
 	}
 	
@@ -162,7 +167,7 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 	 * @return the event removed, or null if nothing was removed
 	 */
 	public ICoreCalendarEvent removeDailyCalEvent(ICoreCalendarEvent e) {
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "removeDailyCalEvent(ICoreCalendarEvent e)", "ICoreCalendarEvent method done");
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "removeDailyCalEvent(ICoreCalendarEvent e)", "ICoreCalendarEvent method done");
 		return this.removeDailyCalEvent(e.getUniqueId().getId());
 	}
 	
@@ -176,13 +181,13 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 		if (temp != null) {
 			for (int i = 0; i < prevCalEventTriggers.size(); i++) {
 				if (prevCalEventTriggers.get(i).getUniqueId().getId() == id) {
-					CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "removeDailyCalEvent(int id)", "ICoreCalendarEvent method done. Removing previously triggering event: id/index", new Object[] {id, i});
+					CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(CoreConstants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "removeDailyCalEvent(int id)", "ICoreCalendarEvent method done. Removing previously triggering event: id/index", new Object[] {id, i});
 					prevCalEventTriggers.remove(i);
 					return temp;
 				}
 			}
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), Constants.SYS_FINER_FILE, "removeDailyCalEvent(int id)", "ICoreCalendarEvent method done", temp);
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "removeDailyCalEvent(int id)", "ICoreCalendarEvent method done", temp);
 		return temp;
 	}
 	
@@ -199,13 +204,13 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 			WorldTimeDuration triggerStep,
 			WorldCompleteDate d) {
 		while (timeSinceLast.longerThanOther(triggerStep)) {
-			CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(Constants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerDateEvents", "Triggering another set of events");
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithoutParams(CoreConstants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerDateEvents", "Triggering another set of events");
 			triggerEvents(triggerStep);
 			triggerCalEvents(triggerStep, d);
 			timeSinceLast.decreaseDuration(triggerStep);
 			d = (WorldCompleteDate)d.getDateAfterDuration(triggerStep);
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "triggerDateEvents", "Void method done");
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "triggerDateEvents", "Void method done");
 		
 	}
 	
@@ -220,11 +225,11 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 		for (int i = 0; i < prevEventTriggers.size(); i++) {
 			ICoreEvent e = prevEventTriggers.get(i);
 			if (e.getDurationLength().longerThanOther(triggerStep)) {
-				CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerEvents(IWorldTimeDuration triggerStep)", "Triggering event & reducing duration", new Object[] {e.getUniqueId().getId()});;
+				CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(CoreConstants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerEvents(IWorldTimeDuration triggerStep)", "Triggering event & reducing duration", new Object[] {e.getUniqueId().getId()});;
 				e.triggerEvent();
 				e.decreaseDuration(triggerStep);
 			} else {
-				CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerEvents(IWorldTimeDuration triggerStep)", "Ending trigger on event", new Object[] {e.getUniqueId().getId()});
+				CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(CoreConstants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerEvents(IWorldTimeDuration triggerStep)", "Ending trigger on event", new Object[] {e.getUniqueId().getId()});
 				e.endTriggerEvent();
 				prevEventTriggers.remove(i);
 			}
@@ -232,13 +237,13 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 		//Trigger possible IEvents
 		for (ICoreEvent e : dailyEvents.values()) {
 			if (e.triggerEvent()) {
-				CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerEvents(IWorldTimeDuration triggerStep)", "Triggered new event", new Object[] {e.getUniqueId().getId()});
+				CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(CoreConstants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerEvents(IWorldTimeDuration triggerStep)", "Triggered new event", new Object[] {e.getUniqueId().getId()});
 				if (!prevEventTriggers.contains(e)) {
 					prevEventTriggers.add(e);
 				}
 			}
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "triggerEvents(IWorldTimeDuration triggerStep)", "Void method done");
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "triggerEvents(IWorldTimeDuration triggerStep)", "Void method done");
 	}
 	
 	/**
@@ -253,11 +258,11 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 		for (int i = 0; i < prevCalEventTriggers.size(); i++) {
 			ICoreCalendarEvent e = prevCalEventTriggers.get(i);
 			if (e.getDurationLength().longerThanOther(triggerStep)) {
-				CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerCalEvents(IWorldTimeDuration triggerStep, WorldCompleteDate d)", "Triggering event & reducing duration", new Object[] {e.getUniqueId().getId()});;
+				CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(CoreConstants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerCalEvents(IWorldTimeDuration triggerStep, WorldCompleteDate d)", "Triggering event & reducing duration", new Object[] {e.getUniqueId().getId()});;
 				e.triggerEvent(d);
 				e.decreaseDuration(triggerStep);
 			} else {
-				CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerCalEvents(IWorldTimeDuration triggerStep, WorldCompleteDate d)", "Ending trigger on event", new Object[] {e.getUniqueId().getId()});
+				CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(CoreConstants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerCalEvents(IWorldTimeDuration triggerStep, WorldCompleteDate d)", "Ending trigger on event", new Object[] {e.getUniqueId().getId()});
 				e.endTriggerEvent(d);
 				prevCalEventTriggers.remove(i);
 			}
@@ -265,22 +270,22 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 		//Trigger possible ICalendarEvents
 		for (ICoreCalendarEvent e : dailyCalEvents.values()) {
 			if (e.triggerEvent(d)) {
-				CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerCalEvents(IWorldTimeDuration triggerStep, WorldCompleteDate d)", "Triggered new event", new Object[] {e.getUniqueId().getId()});
+				CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(CoreConstants.SYS_LOG_FILE, Level.FINEST, this.getClass(), "triggerCalEvents(IWorldTimeDuration triggerStep, WorldCompleteDate d)", "Triggered new event", new Object[] {e.getUniqueId().getId()});
 				if (!prevCalEventTriggers.contains(e)) {
 					prevCalEventTriggers.add(e);
 				}
 			}
 		}
-		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "triggerCalEvents(IWorldTimeDuration triggerStep, WorldCompleteDate d)", "Void method done");
+		CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "triggerCalEvents(IWorldTimeDuration triggerStep, WorldCompleteDate d)", "Void method done");
 	}
 
 	@Override
 	public boolean registerEvent(IEvent e) {
 		if (e instanceof ICoreEvent) {
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "registerEvent(IEvent e)", "Boolean method done");
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "registerEvent(IEvent e)", "Boolean method done");
 			return addDailyEvent((ICoreEvent)e);
 		} else {
-			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.INFO, this.getClass(), "registerEvent(IEvent)", "IEvent parameter passed not of ICoreEvent type.", new IEvent[] {e});
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(CoreConstants.SYS_LOG_FILE, Level.INFO, this.getClass(), "registerEvent(IEvent)", "IEvent parameter passed not of ICoreEvent type.", new IEvent[] {e});
 			return false;
 		}
 	}
@@ -288,10 +293,10 @@ public class CoreEventHandler implements ICalendarEventCaller, IEventCaller {
 	@Override
 	public boolean registerEvent(ICalendarEvent e) {
 		if (e instanceof ICoreCalendarEvent) {
-			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), Constants.SYS_FINER_FILE, "registerEvent(ICalendarEvent e)", "Boolean method done");
+			CoreLogfileManager.ENGINE_LOGMNGR.exitingWithoutResult(this.getClass(), CoreConstants.SYS_FINER_FILE, "registerEvent(ICalendarEvent e)", "Boolean method done");
 			return addDailyCalEvents((ICoreCalendarEvent)e);
 		} else {
-			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(Constants.SYS_LOG_FILE, Level.INFO, this.getClass(), "registerEvent(IEvent)", "ICalendarEvent parameter passed not of ICoreCalendarEvent type.", new ICalendarEvent[] {e});
+			CoreLogfileManager.ENGINE_LOGMNGR.logWithParams(CoreConstants.SYS_LOG_FILE, Level.INFO, this.getClass(), "registerEvent(IEvent)", "ICalendarEvent parameter passed not of ICoreCalendarEvent type.", new ICalendarEvent[] {e});
 			return false;
 		}
 	}

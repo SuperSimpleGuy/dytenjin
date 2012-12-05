@@ -22,7 +22,7 @@ package core;
  * This class manages the constants used in the framework
  * @author SuperSimpleGuy
  */
-public class Constants {
+public class CoreConstants {
 	
 	public static final String ERR_WORLDCAL_YEARS = "Cannot have gap between consecutive years.";
 	
