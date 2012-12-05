@@ -21,7 +21,7 @@ package core.entities;
 import core.management.game.UniqueId;
 
 /**
- * Represents an entity whose fields are essentially a mask for
+ * Represents an {@link Entity} whose fields are essentially a mask for
  * another, secret entity. Think of the Dread Pirate Roberts from
  * Princess Bride
  * @author SuperSimpleGuy
@@ -34,7 +34,7 @@ public abstract class HiddenEntity<T extends Entity> extends Entity {
 	/**
 	 * Creates an entity with a name and id, and default aspects.
 	 * @param s the entity's name
-	 * @param id the entity's unique id
+	 * @param id the entity's {@link UniqueId}
 	 */
 	public HiddenEntity(String s, UniqueId id) {
 		super(s, id);

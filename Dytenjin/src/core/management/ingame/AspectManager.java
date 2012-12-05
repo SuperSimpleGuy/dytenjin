@@ -20,7 +20,6 @@ package core.management.ingame;
 
 import java.util.HashMap;
 
-import core.management.game.UniqueId;
 import core.parsing.IIsParsable;
 
 /**
@@ -37,24 +36,24 @@ public class AspectManager {
 		aspects = new HashMap<Integer, IIsParsable>();
 	}
 	
-	public boolean containsAspectType(UniqueId uId) {
-		return aspects.containsKey(uId.getIdType());
+	public boolean containsAspectType(int idType) {
+		return aspects.containsKey(idType);
 	}
 	
 	public boolean addAspect(IIsParsable ip) {
 		if (aspects.containsKey(ip.getUniqueId().getIdType())) {
 			return false;
 		}
-		aspects.put(ip.getUniqueId().getId(), ip);
+		aspects.put(ip.getUniqueId().getIdType(), ip);
 		return true;
 	}
 	
-	public IIsParsable removeAspect(UniqueId uId) {
-		return aspects.remove(uId.getIdType());
+	public IIsParsable removeAspect(int idType) {
+		return aspects.remove(idType);
 	}
 	
-	public IIsParsable getAspect(UniqueId uId) {
-		return aspects.get(uId.getIdType());
+	public IIsParsable getAspect(int idType) {
+		return aspects.get(idType);
 	}
 	
 }

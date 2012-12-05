@@ -18,7 +18,6 @@
 
 package core.entities;
 
-import core.Constants;
 import core.management.game.IHasUniqueId;
 import core.management.game.UniqueId;
 import core.management.ingame.AspectManager;
@@ -37,7 +36,7 @@ public abstract class Entity implements IHasUniqueId {
 	/**
 	 * Creates an entity with a name and id, and default aspects.
 	 * @param s the entity's name
-	 * @param identificationNumber the entity's unique id
+	 * @param identificationNumber the entity's {@link UniqueId}
 	 */
 	public Entity(String s, UniqueId identificationNumber) {
 		this.name = s;
@@ -48,8 +47,8 @@ public abstract class Entity implements IHasUniqueId {
 	/**
 	 * Creates an entity with a name and id, and specific aspects.
 	 * @param s the entity's name
-	 * @param identificationNumber the entity's unique id
-	 * @param asp the entity's starting AspectManager
+	 * @param identificationNumber the entity's {@link UniqueId}
+	 * @param asp the entity's starting {@link UniqueId}
 	 */
 	public Entity(String s, UniqueId identificationNumber, AspectManager asp) {
 		this.name = s;
@@ -57,12 +56,12 @@ public abstract class Entity implements IHasUniqueId {
 		this.aMan = asp;
 	}
 	
+	/**
+	 * Returns this Entity's {@link UniqueId}
+	 * @return this Entity's {@link UniqueId}
+	 */
 	public UniqueId getUniqueId() {
 		return id;
-	}
-	
-	public String getIdType() {
-		return Constants.ID_ENTITY;
 	}
 	
 	/**
@@ -85,7 +84,7 @@ public abstract class Entity implements IHasUniqueId {
 	/**
 	 * Returns the original or copy of this entity's
 	 * aspects, depending on subclass implementation
-	 * @return the aspects of this entity
+	 * @return the {@link AspectManager} of this entity
 	 */
 	public abstract AspectManager getAspectMan();
 }

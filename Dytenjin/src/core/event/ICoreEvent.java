@@ -19,7 +19,7 @@
 package core.event;
 
 import core.management.game.IHasUniqueId;
-import core.temporal.IWorldTimeDuration;
+import core.temporal.WorldTimeDuration;
 
 /**
  * Provides an interface for executing events not
@@ -37,12 +37,12 @@ public interface ICoreEvent extends IEvent, IHasUniqueId {
 	 * Returns the duration of the event
 	 * @return the IWorldTimeDuration of the event
 	 */
-	IWorldTimeDuration getDurationLength();
+	WorldTimeDuration getDurationLength();
 	
 	/**
 	 * 
 	 * @param d
 	 */
-	void decreaseDuration(IWorldTimeDuration d);
+	void decreaseDuration(WorldTimeDuration d);
 	
 }

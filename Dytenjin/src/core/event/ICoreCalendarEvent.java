@@ -18,7 +18,7 @@
 package core.event;
 
 import core.management.game.IHasUniqueId;
-import core.temporal.IWorldTimeDuration;
+import core.temporal.WorldTimeDuration;
 import core.temporal.WorldCompleteDate;
 
 /**
@@ -38,12 +38,12 @@ public interface ICoreCalendarEvent extends ICalendarEvent, IHasUniqueId {
 	 * Returns the duration of the event
 	 * @return the IWorldTimeDuration of the event
 	 */
-	IWorldTimeDuration getDurationLength();
+	WorldTimeDuration getDurationLength();
 	
 	/**
 	 * 
 	 * @param d
 	 */
-	void decreaseDuration(IWorldTimeDuration d);
+	void decreaseDuration(WorldTimeDuration d);
 	
 }

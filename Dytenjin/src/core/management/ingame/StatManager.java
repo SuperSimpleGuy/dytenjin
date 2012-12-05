@@ -18,27 +18,22 @@
 
 package core.management.ingame;
 
-import java.util.Collection;
 import java.util.HashMap;
 
+import core.management.game.IHasUniqueId;
 import core.management.game.UniqueId;
-import core.parsing.IIsParsable;
-import core.parsing.ParserManager;
 
 /**
  * 
  * @author SuperSimpleGuy
  */
-public class StatManager implements IIsParsable {
+public class StatManager implements IHasUniqueId {
 
-	private HashMap<String, StatDouble> stats;
-	private HashMap<Integer, StatManager> subStats;
+	protected HashMap<String, StatDouble> stats;
 	private UniqueId id;
-	private ParserManager<?> pM;
 	
 	public StatManager(UniqueId id) {
 		this.id = id;
-		this.subStats = new HashMap<Integer, StatManager>();
 		this.stats = new HashMap<String, StatDouble>();
 	}
 	
@@ -50,68 +45,26 @@ public class StatManager implements IIsParsable {
 	}
 	
 	public double getStatRaw(String s) {
-		StatDouble temp = findStat(s);
+		StatDouble temp = stats.get(s);
 		return (temp != null ? temp.getValue() : -1);
 	}
 	
 	public int getStatTrunc(String s) {
-		StatDouble temp = findStat(s);
+		StatDouble temp = stats.get(s);
 		return (temp != null ? temp.getValueTrunc() : -1);
 	}
 	
 	public int getStatRound(String s) {
-		StatDouble temp = findStat(s);
+		StatDouble temp = stats.get(s);
 		return (temp != null ? temp.getValueRound() : -1);
 	}
 	
-	private StatDouble findStat(String s) {
-		if (stats.containsKey(s)) {
-			return stats.get(s);
-		}
-		Collection<StatManager> col = subStats.values();
-		for (StatManager sT: col) {
-			StatDouble temp = sT.findStat(s);
-			if (temp != null) {
-				return temp;
-			}
-		}
-		return null;
-	}
-	
-	private StatManager findSubStat(StatManager s) {
-		if (subStats.containsKey(s.getUniqueId().getId())) {
-			return subStats.get(s.getUniqueId().getId());
-		}
-		Collection<StatManager> col = subStats.values();
-		for (StatManager sT: col) {
-			StatManager temp = sT.findSubStat(s);
-			if (temp != null) {
-				return temp;
-			}
-		}
-		return null;
-	}
-	
-	private StatManager findSubStat(UniqueId id) {
-		if (subStats.containsKey(id.getId())) {
-			return subStats.get(id.getId());
-		}
-		Collection<StatManager> col = subStats.values();
-		for (StatManager sT: col) {
-			StatManager temp = sT.findSubStat(id);
-			if (temp != null) {
-				return temp;
-			}
-		}
-		return null;
-	}
-	
 	public boolean hasStat(String s) {
-		return (findStat(s) != null);
+		return (stats.get(s) != null);
 	}
 	
 	public boolean changeStat(String s, double amount) {
-		StatDouble temp = findStat(s);
+		StatDouble temp = stats.get(s);
 		if (temp == null) {
 			return false;
 		}
@@ -119,74 +72,41 @@ public class StatManager implements IIsParsable {
 		return true;
 	}
 	
-	public boolean addSubStat(StatManager sM) {
-		if (!sM.getUniqueId().hasSameType(id) || findSubStat(sM) != null) {
+	public boolean addStat(StatDouble sD) {
+		if (stats.containsKey(sD.getName())) {
 			return false;
 		}
-		subStats.put(sM.getUniqueId().getId(), sM);
-		return true;
-	}
-	
-	public StatManager removeSubStat(UniqueId id) {
-		if (subStats.containsKey(id.getId())) {
-			return subStats.remove(id.getId());
-		}
-		Collection<StatManager> col = subStats.values();
-		for (StatManager sT: col) {
-			StatManager temp = sT.removeSubStat(id);
-			if (temp != null) {
-				return temp;
-			}
-		}
-		return null;
-	}
-	
-	public boolean addStat(StatDouble sD, UniqueId id) {
-		StatManager temp = findSubStat(id);
-		if (temp == null || findStat(sD.getName()) != null) {
-			return false;
-		}
-		return temp.addStat(sD);
-	}
-	
-	private boolean addStat(StatDouble sD) {
 		this.stats.put(sD.getName(), sD);
 		return true;
 	}
 	
-	private StatDouble removeStat(String s) {
+	public StatDouble removeStat(String s) {
 		return stats.remove(s);
 	}
 	
-	public StatDouble removeStat(String s, UniqueId id) {
-		StatManager temp = findSubStat(id);
-		if (temp == null || findStat(s) == null) {
-			return null;
-		}
-		return temp.removeStat(s);
-	}
-	
 	public String getDescription(String s) {
-		return findStat(s).getDescription();
+		StatDouble temp = stats.get(s);
+		if (temp == null) {
+			return null;
+		} else {
+			return temp.getDescription();
+		}
 	}
 	
 	public void setDescription(String s, String desc) {
-		findStat(s).setDescription(desc);
+		StatDouble temp = stats.get(s);
+		if (temp != null) {
+			stats.get(s).setDescription(desc);
+		}
+	}
+	
+	protected StatDouble findStat(String s) {
+		return stats.get(s);
 	}
 
 	@Override
 	public UniqueId getUniqueId() {
 		return id;
-	}
-
-	@Override
-	public void setParserManager(ParserManager<?> pM) {
-		this.pM = pM;
-	}
-
-	@Override
-	public ParserManager<?> getParserManager() {
-		return pM;
 	}
 	
 }
